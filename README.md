@@ -11,7 +11,7 @@
 MIG_mose generates machine-readable files from AHB documents.
 
 ## Installation
-Kohlrahbi is a Python based tool.
+MIGmose is a Python based tool.
 Therefore you have to make sure, that Python is running on your machine.
 
 We recommend to use virtual environments to keep your system clean.
