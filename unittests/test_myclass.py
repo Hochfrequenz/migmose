@@ -1,4 +1,4 @@
-from mypackage.mymodule import MyClass
+from migmose.mymodule import MyClass
 
 
 class TestMyClass:
