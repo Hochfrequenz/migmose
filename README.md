@@ -34,5 +34,5 @@ source .venv/bin/activate
 Finally, install the package with
 
 ```bash
-pip install kohlrahbi
+pip install migmose
 ```
