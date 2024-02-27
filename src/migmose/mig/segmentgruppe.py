@@ -1,6 +1,7 @@
 """
 contains class for structured segmentgroups in mig tables. builds table recursively.
 """
+
 from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile
 
 
