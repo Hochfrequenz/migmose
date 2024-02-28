@@ -12,7 +12,7 @@ isort==5.13.2
     # via pylint
 mccabe==0.7.0
     # via pylint
-platformdirs==3.1.0
+platformdirs==4.2.0
     # via pylint
 pylint==3.1.0
     # via -r dev_requirements/requirements-linting.in
@@ -20,5 +20,5 @@ tomli==2.0.1
     # via pylint
 tomlkit==0.11.6
     # via pylint
-typing-extensions==4.9.0
+typing-extensions==4.10.0
     # via astroid
