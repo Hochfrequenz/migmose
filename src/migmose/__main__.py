@@ -28,18 +28,38 @@ def get_paragraphs_up_to_diagram(parent: Union[Document, _Cell]) -> Generator[Un
             yield Table(child, parent)
 
 
+def parse_raw_nachrichtenstrukturzeile(input: Path) -> list[str]:
+    """
+    parses raw nachrichtenstrukturzeile from a table . returns list of raw lines
+    """
+    doc = docx.Document(input)
+    docx_objects = get_paragraphs_up_to_diagram(doc)
+    mig_tables = []
+    nachrichtenstruktur_header = "Status\tMaxWdh\n\tZähler\tNr\tBez\tSta\tBDEW\tSta\tBDEW\tEbene\tInhalt"
+    for object in docx_objects:
+        if isinstance(object, Table):
+            for ind, line in enumerate(object._cells):
+                # marks the beginning of the complete nachrichtentruktur table
+                if line.text == nachrichtenstruktur_header:
+                    mig_tables.extend([row.text for row in object._cells[ind + 1 :]])
+                break
+    # filter empty rows and headers
+    mig_tables = [row for row in mig_tables if row != "\n" and row != nachrichtenstruktur_header]
+    return mig_tables
+
+
 if __name__ == "__main__":
     # doc = docx.Document(Path("C:\\GitRepos\\migmose\\unittests\\test_data\\ORDCHG_MIG_1_1_info_20230331_v2.docx"))
-    doc = docx.Document(Path("C:\\GitRepos\\migmose\\unittests\\test_data\\UTILMD_MIG_Strom_S1.1_info_20230331.docx"))
-    test = get_paragraphs_up_to_diagram(doc)
-    mig_tables = []
-    for i in test:
-        if isinstance(i, Table):
-            for ind, testtest in enumerate(i._cells):
-                if testtest.text == "Status\tMaxWdh\n\tZähler\tNr\tBez\tSta\tBDEW\tSta\tBDEW\tEbene\tInhalt":
-                    print(i._cells[ind + 2].text)
-                    mig_tables.extend([row.text for row in i._cells[ind + 2 :]])
-                break
-    for item in mig_tables:
-        if item != "\n":
-            print(item)
+    testpath = Path("C:\\GitRepos\\migmose\\unittests\\test_data\\UTILMD_MIG_Strom_S1.1_info_20230331.docx")
+    # test = get_paragraphs_up_to_diagram(doc)
+    # mig_tables = []
+    # for i in test:
+    #    if isinstance(i, Table):
+    #        for ind, testtest in enumerate(i._cells):
+    #            if testtest.text == "Status\tMaxWdh\n\tZähler\tNr\tBez\tSta\tBDEW\tSta\tBDEW\tEbene\tInhalt":
+    #                print(i._cells[ind + 2].text)
+    #                mig_tables.extend([row.text for row in i._cells[ind + 2 :]])
+    #            break
+    mig_table = parse_raw_nachrichtenstrukturzeile(testpath)
+    for item in mig_table:
+        print(item)
