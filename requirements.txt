@@ -6,8 +6,12 @@
 #
 annotated-types==0.6.0
     # via pydantic
+click==8.1.3
+    # via migmose (pyproject.toml)
 colorama==0.4.6
-    # via loguru
+    # via
+    #   click
+    #   loguru
 loguru==0.7.2
     # via migmose (pyproject.toml)
 lxml==5.1.0
