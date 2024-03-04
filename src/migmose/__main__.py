@@ -2,6 +2,7 @@
 contains CLI logic for migmose.
 """
 
+import json
 from pathlib import Path
 from typing import Generator, Union
 
@@ -79,7 +80,9 @@ def preliminary_output_as_json(table: list[str], message_type: str, output_dir: 
     if not output_dir.exists():
         output_dir.mkdir(parents=True, exist_ok=True)
     file_path = output_dir.joinpath(f"{message_type}_preliminary_output.json")
-    file_path.write_text(str(table), encoding="utf-8")
+    structured_json = {line: None for line in table}
+    with open(file_path, "w") as json_file:
+        json.dump(structured_json, json_file, indent=4, encoding="utf-8")
     logger.info(f"Created and wrote to {file_path}")
 
 
