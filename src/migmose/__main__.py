@@ -49,17 +49,8 @@ def parse_raw_nachrichtenstrukturzeile(input: Path) -> list[str]:
 
 
 if __name__ == "__main__":
-    # doc = docx.Document(Path("C:\\GitRepos\\migmose\\unittests\\test_data\\ORDCHG_MIG_1_1_info_20230331_v2.docx"))
-    testpath = Path("C:\\GitRepos\\migmose\\unittests\\test_data\\UTILMD_MIG_Strom_S1.1_info_20230331.docx")
-    # test = get_paragraphs_up_to_diagram(doc)
-    # mig_tables = []
-    # for i in test:
-    #    if isinstance(i, Table):
-    #        for ind, testtest in enumerate(i._cells):
-    #            if testtest.text == "Status\tMaxWdh\n\tZähler\tNr\tBez\tSta\tBDEW\tSta\tBDEW\tEbene\tInhalt":
-    #                print(i._cells[ind + 2].text)
-    #                mig_tables.extend([row.text for row in i._cells[ind + 2 :]])
-    #            break
+    testpath = Path("C:\\GitRepos\\migmose\\unittests\\test_data\\ORDCHG_MIG_1_1_info_20230331_v2.docx")
+    # testpath = Path("C:\\GitRepos\\migmose\\unittests\\test_data\\UTILMD_MIG_Strom_S1.1_info_20230331.docx")
     mig_table = parse_raw_nachrichtenstrukturzeile(testpath)
     for item in mig_table:
         print(item)
