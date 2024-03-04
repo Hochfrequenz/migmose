@@ -12,7 +12,7 @@ filelock==3.13.1
     # via virtualenv
 platformdirs==4.2.0
     # via virtualenv
-pydantic==2.6.2
+pydantic==2.6.3
     # via migmose (pyproject.toml)
 pydantic-core==2.16.3
     # via pydantic
