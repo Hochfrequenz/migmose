@@ -7,12 +7,12 @@
 annotated-types==0.6.0
     # via pydantic
 colorama==0.4.6
-    # via colorlog
-colorlog==6.8.2
+    # via loguru
+loguru==0.7.2
     # via migmose (pyproject.toml)
+pydantic==2.6.3
 lxml==5.1.0
     # via python-docx
-pydantic==2.6.2
     # via migmose (pyproject.toml)
 pydantic-core==2.16.3
     # via pydantic
@@ -22,4 +22,5 @@ typing-extensions==4.10.0
     # via
     #   pydantic
     #   pydantic-core
-    #   python-docx
+win32-setctime==1.1.0
+    # via loguru
