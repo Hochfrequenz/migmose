@@ -37,7 +37,7 @@ class NachrichtenstrukturZeile(BaseModel):
     def init_raw_lines(cls, raw_line: str) -> "NachrichtenstrukturZeile":
         """
         reads one raw line and returns a NachrichtenstrukturZeile object"""
-        fields = raw_line.split("\t")
+        fields = raw_line.split("\t")[1:]
         field_names = [
             "zaehler",
             "nr",
