@@ -16,7 +16,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
-dependencies = ["click", "loguru", "pydantic", "python-docx"] # add all the dependencies  here
+dependencies = ["more-itertools","click", "loguru", "pydantic", "python-docx"] # add all the dependencies  here
 dynamic = ["readme", "version"]
 
 [project.urls]
