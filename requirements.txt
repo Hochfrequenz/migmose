@@ -6,12 +6,10 @@
 #
 annotated-types==0.6.0
     # via pydantic
-distlib==0.3.8
-    # via virtualenv
-filelock==3.13.1
-    # via virtualenv
-platformdirs==4.2.0
-    # via virtualenv
+colorama==0.4.6
+    # via loguru
+loguru==0.7.2
+    # via migmose (pyproject.toml)
 pydantic==2.6.3
     # via migmose (pyproject.toml)
 pydantic-core==2.16.3
@@ -20,5 +18,5 @@ typing-extensions==4.10.0
     # via
     #   pydantic
     #   pydantic-core
-virtualenv==20.25.1
-    # via migmose (pyproject.toml)
+win32-setctime==1.1.0
+    # via loguru
