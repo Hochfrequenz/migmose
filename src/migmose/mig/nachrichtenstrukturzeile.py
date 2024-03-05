@@ -2,6 +2,8 @@
 contains class for lines in mig tables
 """
 
+from typing import Any
+
 from pydantic import BaseModel
 
 
@@ -30,3 +32,26 @@ class NachrichtenstrukturZeile(BaseModel):
     bdew_maximale_wiederholungen: int | None = None
     ebene: int | None = None
     inhalt: str | None = None
+
+    @classmethod
+    def init_raw_lines(cls, raw_line: str) -> "NachrichtenstrukturZeile":
+        """
+        reads one raw line and returns a NachrichtenstrukturZeile object"""
+        fields = raw_line.split("\t")
+        field_names = [
+            "zaehler",
+            "nr",
+            "bezeichnung",
+            "standard_status",
+            "bdew_status",
+            "standard_maximale_wiederholungen",
+            "bdew_maximale_wiederholungen",
+            "ebene",
+            "inhalt",
+        ]
+        if len(fields) == len(field_names) - 1:
+            field_names = field_names[:1] + field_names[2:]
+        elif len(fields) != len(field_names):
+            raise ValueError(f"Expected 8 or 9 fields, got {len(fields)}, line: {raw_line}")
+        field_dict: dict[str, Any] = dict(zip(field_names, fields))
+        return cls(**field_dict)

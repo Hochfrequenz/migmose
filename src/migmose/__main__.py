@@ -81,7 +81,7 @@ def preliminary_output_as_json(table: list[str], message_type: str, output_dir: 
     file_path = output_dir.joinpath(f"{message_type}_preliminary_output.json")
     structured_json = {line: None for line in table}
     with open(file_path, "w", encoding="utf-8") as json_file:
-        json.dump(structured_json, json_file, indent=4, encoding="utf-8")
+        json.dump(structured_json, json_file, indent=4)
     logger.info(f"Created and wrote to {file_path}")
 
 
