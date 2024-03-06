@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from migmose.__main__ import parse_raw_nachrichtenstrukturzeile
 from migmose.mig.nachrichtenstruktur import NachrichtenstrukturTabelle
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
+from migmose.parsing import parse_raw_nachrichtenstrukturzeile
 
 
 class TestNestedNachrichtenstruktur:

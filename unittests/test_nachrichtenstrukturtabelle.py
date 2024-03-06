@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from migmose.__main__ import parse_raw_nachrichtenstrukturzeile
 from migmose.mig.nachrichtenstruktur import NachrichtenstrukturTabelle
+from migmose.parsing import parse_raw_nachrichtenstrukturzeile
 
 
 class TestNachrichtenstrukturTabelle:
