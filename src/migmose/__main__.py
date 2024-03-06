@@ -13,6 +13,7 @@ from docx.oxml import CT_Tbl  # type: ignore[import]
 from docx.table import Table, _Cell  # type: ignore[import]
 from docx.text.paragraph import Paragraph  # type: ignore[import]
 from loguru import logger
+from maus.edifact import EdifactFormat
 
 
 # add CLI logic
@@ -27,7 +28,8 @@ from loguru import logger
 @click.option(
     "-mt",
     "--message_type",
-    type=click.Choice(["UTILMD", "ORDCHG"], case_sensitive=False),
+    type=click.Choice(list(map(lambda x: x.name, EdifactFormat)), case_sensitive=False),
+    # Taken from https://github.com/pallets/click/issues/605#issuecomment-889462570
     prompt="Please specify which message type to be parsed.",
     help="Defines the set of message types to be parsed.",
     multiple=True,
@@ -39,7 +41,7 @@ from loguru import logger
     prompt="Please enter the path to the directory which should contain the output files.",
     help="Set path to directory which contains the output files. If the directory does not exist, it will be created.",
 )
-def main(input_dir: Path, output_dir, message_type: list[str]) -> None:
+def main(input_dir: Path, output_dir, message_type: list[EdifactFormat]) -> None:
     """
     Main function. Uses CLI input.
     """
@@ -51,7 +53,7 @@ def main(input_dir: Path, output_dir, message_type: list[str]) -> None:
         preliminary_output_as_json(mig_table, m_type, output_dir)
 
 
-def find_file_to_type(message_types: list[str], input_dir: Path) -> dict[str, Path]:
+def find_file_to_type(message_types: list[EdifactFormat], input_dir: Path) -> dict[EdifactFormat, Path]:
     """
     finds the file with the message type in the input directory
     """
@@ -72,7 +74,7 @@ def find_file_to_type(message_types: list[str], input_dir: Path) -> dict[str, Pa
     raise click.Abort()
 
 
-def preliminary_output_as_json(table: list[str], message_type: str, output_dir: Path) -> None:
+def preliminary_output_as_json(table: list[str], message_type: EdifactFormat, output_dir: Path) -> None:
     """
     writes the preliminary output as json
     """
@@ -81,7 +83,7 @@ def preliminary_output_as_json(table: list[str], message_type: str, output_dir: 
     file_path = output_dir.joinpath(f"{message_type}_preliminary_output.json")
     structured_json = {line: None for line in table}
     with open(file_path, "w", encoding="utf-8") as json_file:
-        json.dump(structured_json, json_file, indent=4)
+        json.dump(structured_json, json_file, indent=4, encoding="utf-8")
     logger.info(f"Created and wrote to {file_path}")
 
 
@@ -102,7 +104,7 @@ def get_paragraphs_up_to_diagram(parent: Union[Document, _Cell]) -> Generator[Un
 
 def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
     """
-    parses raw nachrichtenstrukturzeile from a table . returns list of raw lines
+    parses raw nachrichtenstrukturzeile from a table. returns list of raw lines
     """
     # pylint: disable=protected-access
     doc = docx.Document(input_path)
