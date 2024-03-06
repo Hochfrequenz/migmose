@@ -22,11 +22,11 @@ class NachrichtenstrukturZeile(BaseModel):
     """
 
     zaehler: str
-    nr: str
-    bezeichnung: str
-    standard_status: str
-    bdew_status: str
-    standard_maximale_wiederholungen: int
-    bdew_maximale_wiederholungen: int
-    ebene: int
-    inhalt: str
+    nr: str | None = None
+    bezeichnung: str | None = None
+    standard_status: str | None = None
+    bdew_status: str | None = None
+    standard_maximale_wiederholungen: int | None = None
+    bdew_maximale_wiederholungen: int | None = None
+    ebene: int | None = None
+    inhalt: str | None = None

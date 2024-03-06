@@ -6,17 +6,36 @@
 #
 annotated-types==0.6.0
     # via pydantic
+attrs==23.2.0
+    # via maus
+click==8.1.7
+    # via migmose (pyproject.toml)
 colorama==0.4.6
-    # via loguru
+    # via
+    #   click
+    #   loguru
 loguru==0.7.2
     # via migmose (pyproject.toml)
+lxml==5.1.0
+    # via python-docx
+marshmallow==3.21.1
+    # via maus
+maus==0.4.2
+    # via migmose (pyproject.toml)
+more-itertools==10.2.0
+    # via maus
+packaging==23.2
+    # via marshmallow
 pydantic==2.6.3
     # via migmose (pyproject.toml)
 pydantic-core==2.16.3
     # via pydantic
+python-docx==1.1.0
+    # via migmose (pyproject.toml)
 typing-extensions==4.10.0
     # via
     #   pydantic
     #   pydantic-core
+    #   python-docx
 win32-setctime==1.1.0
     # via loguru
