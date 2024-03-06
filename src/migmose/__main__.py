@@ -102,7 +102,7 @@ def get_paragraphs_up_to_diagram(parent: Union[Document, _Cell]) -> Generator[Un
 
 def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
     """
-    parses raw nachrichtenstrukturzeile from a table . returns list of raw lines
+    parses raw nachrichtenstrukturzeile from a table. returns list of raw lines
     """
     # pylint: disable=protected-access
     doc = docx.Document(input_path)
