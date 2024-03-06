@@ -46,6 +46,6 @@ def main(input_dir: Path, output_dir, message_type: list[EdifactFormat]) -> None
             print(item)
         preliminary_output_as_json(mig_table, m_type, output_dir)
 
-
+       
 if __name__ == "__main__":
     main()  # pylint:disable=no-value-for-parameter
