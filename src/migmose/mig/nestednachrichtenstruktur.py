@@ -10,7 +10,7 @@ from migmose.mig.nachrichtenstruktur import NachrichtenstrukturTabelle
 from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile
 
 
-class SegmentGruppe(BaseModel):
+class NestedNachrichtenstruktur(BaseModel):
     """
     class for structured segmentgroups in mig tables. Builds table recursively. Inherits from NachrichtenstrukturZeile
     e.g.(ORDCHG):
@@ -62,15 +62,15 @@ class SegmentGruppe(BaseModel):
 
     header_linie: Optional[NachrichtenstrukturZeile] = None
     segmente: list[Optional[NachrichtenstrukturZeile]] = []
-    segmentgruppen: list[Optional["SegmentGruppe"]] = []
+    segmentgruppen: list[Optional["NestedNachrichtenstruktur"]] = []
 
     @classmethod
     def structure_table(
         cls, table: NachrichtenstrukturTabelle, segmentgruppe: Optional[NachrichtenstrukturZeile] = None, index: int = 0
-    ) -> Tuple["SegmentGruppe", int]:
+    ) -> Tuple["NestedNachrichtenstruktur", int]:
         """init structured table"""
         collected_segments: list[Optional[NachrichtenstrukturZeile]] = []
-        collected_segmentgroups: list[Optional["SegmentGruppe"]] = []
+        collected_segmentgroups: list[Optional["NestedNachrichtenstruktur"]] = []
         i = index
         while i < len(table.lines):
             line = table.lines[i]
