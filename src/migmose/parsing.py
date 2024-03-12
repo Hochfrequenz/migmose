@@ -39,7 +39,8 @@ def find_file_to_format(message_formats: list[EdifactFormat], input_dir: Path) -
 
 def preliminary_output_as_json(table: list[str], message_format: EdifactFormat, output_dir: Path) -> None:
     """
-    writes the preliminary output as json
+    Writes the preliminary output as json.
+    Serves only as a preliminary helper function until more precise class methods are implemented.
     """
     if not output_dir.exists():
         output_dir.mkdir(parents=True, exist_ok=True)

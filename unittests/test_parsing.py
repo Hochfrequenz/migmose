@@ -18,12 +18,18 @@ class TestParsing:
     """
 
     def test_find_file_to_format(self):
-        message_type = [EdifactFormat.ORDCHG]
+        """
+        Test find_file_to_format function. Tests whether the MIG to edifact format ORDCHG is found in the test folder.
+        """
+        message_format = [EdifactFormat.ORDCHG]
         input_dir = Path("unittests/test_data/")
-        file_dict = find_file_to_format(message_type, input_dir)
+        file_dict = find_file_to_format(message_format, input_dir)
         assert file_dict[EdifactFormat.ORDCHG] == input_dir / Path("ORDCHG_MIG_1_1_info_20230331_v2.docx")
 
     def test_find_only_one_file(self, caplog):
+        """
+        Tests to find multiple formats when one is not present.
+        """
         message_formats = [EdifactFormat.ORDCHG, EdifactFormat.ORDRSP]
         input_dir = Path("unittests/test_data/")
         with caplog.at_level(logging.WARNING):
@@ -32,7 +38,9 @@ class TestParsing:
             assert file_dict[EdifactFormat.ORDCHG] == input_dir / Path("ORDCHG_MIG_1_1_info_20230331_v2.docx")
 
     def test_parse_raw_nachrichtenstrukturzeile(self):
-
+        """
+        Test to parse the raw nachrichtenstrukturzeile from a docx file.
+        """
         input_file = Path("unittests/test_data/ORDCHG_MIG_1_1_info_20230331_v2.docx")
         mig_table = parse_raw_nachrichtenstrukturzeile(input_file)
         assert len(mig_table) == 18
@@ -40,6 +48,8 @@ class TestParsing:
         assert "Nachrichten-Endesegment" in mig_table[-1]
 
     def test_preliminary_output_as_json(self, tmp_path):
+        """Tests the preliminary output as json function.
+        Asserts that the outputfile exists and has the correct content."""
         table = ["line1", "line2", "line3"]
         message_format = EdifactFormat.ORDCHG
         output_dir = tmp_path / Path("output")
