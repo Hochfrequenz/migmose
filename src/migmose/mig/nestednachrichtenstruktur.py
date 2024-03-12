@@ -11,7 +11,7 @@ from loguru import logger
 from maus.edifact import EdifactFormat
 from pydantic import BaseModel
 
-from migmose.mig.nachrichtenstruktur import NachrichtenstrukturTabelle
+from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
 from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile
 
 

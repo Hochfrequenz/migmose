@@ -3,7 +3,7 @@ from pathlib import Path
 
 from maus.edifact import EdifactFormat
 
-from migmose.mig.nachrichtenstruktur import NachrichtenstrukturTabelle
+from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
 from migmose.parsing import parse_raw_nachrichtenstrukturzeile
 

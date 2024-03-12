@@ -7,7 +7,7 @@ from pathlib import Path
 import click
 from maus.edifact import EdifactFormat
 
-from migmose.mig.nachrichtenstruktur import NachrichtenstrukturTabelle
+from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
 from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturzeile
 
@@ -45,6 +45,7 @@ def main(input_dir: Path, output_dir, message_format: list[EdifactFormat]) -> No
     for m_format, file in dict_files.items():
         raw_lines = parse_raw_nachrichtenstrukturzeile(file)
         nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.init_raw_table(raw_lines)
+        nachrichtenstrukturtabelle.output_as_csv(m_format, output_dir)
         nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
             nachrichtenstrukturtabelle
         )
