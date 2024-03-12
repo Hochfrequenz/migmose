@@ -32,7 +32,7 @@ class TestNestedNachrichtenstruktur:
         nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
             nachrichtenstrukturtabelle
         )
-        NestedNachrichtenstruktur.output_as_json(nested_nachrichtenstruktur, message_format, output_dir)
+        nested_nachrichtenstruktur.output_as_json(message_format, output_dir)
 
         file_path = output_dir / Path(f"{message_format}_nested_nachrichtenstruktur.json")
 

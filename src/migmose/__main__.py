@@ -48,7 +48,7 @@ def main(input_dir: Path, output_dir, message_format: list[EdifactFormat]) -> No
         nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
             nachrichtenstrukturtabelle
         )
-        NestedNachrichtenstruktur.output_as_json(nested_nachrichtenstruktur, m_format, output_dir)
+        nested_nachrichtenstruktur.output_as_json(m_format, output_dir)
 
 
 if __name__ == "__main__":
