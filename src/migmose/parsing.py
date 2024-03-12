@@ -81,5 +81,5 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
                 mig_tables.extend([row.text for row in docx_object._cells[ind + 1 :]])
             break
     # filter empty rows and headers
-    mig_tables = [row for row in mig_tables if row not in ("\n", nachrichtenstruktur_header)]
+    mig_tables = [row for row in mig_tables if row not in ("", "\n", nachrichtenstruktur_header)]
     return mig_tables

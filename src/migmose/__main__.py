@@ -7,7 +7,9 @@ from pathlib import Path
 import click
 from maus.edifact import EdifactFormat
 
-from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturzeile, preliminary_output_as_json
+from migmose.mig.nachrichtenstruktur import NachrichtenstrukturTabelle
+from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
+from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturzeile
 
 
 # add CLI logic
@@ -41,10 +43,12 @@ def main(input_dir: Path, output_dir, message_format: list[EdifactFormat]) -> No
     """
     dict_files = find_file_to_format(message_format, input_dir)
     for m_format, file in dict_files.items():
-        mig_table = parse_raw_nachrichtenstrukturzeile(file)
-        for item in mig_table:
-            print(item)
-        preliminary_output_as_json(mig_table, m_format, output_dir)
+        raw_lines = parse_raw_nachrichtenstrukturzeile(file)
+        nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.init_raw_table(raw_lines)
+        nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
+            nachrichtenstrukturtabelle
+        )
+        nested_nachrichtenstruktur.output_as_json(m_format, output_dir)
 
 
 if __name__ == "__main__":
