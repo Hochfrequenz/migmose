@@ -23,14 +23,14 @@ class TestNestedNachrichtenstruktur:
 
     def test_output_as_json(self, tmp_path):
         input_file = Path("unittests/test_data/ORDCHG_MIG_1_1_info_20230331_v2.docx")
-        message_type = EdifactFormat.ORDCHG
+        message_format = EdifactFormat.ORDCHG
         output_dir = tmp_path / Path("output")
         raw_lines = parse_raw_nachrichtenstrukturzeile(input_file)
         nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.init_raw_table(raw_lines)
         nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.structure_table(nachrichtenstrukturtabelle)
-        NestedNachrichtenstruktur.output_as_json(nested_nachrichtenstruktur, message_type, output_dir)
+        NestedNachrichtenstruktur.output_as_json(nested_nachrichtenstruktur, message_format, output_dir)
 
-        file_path = output_dir / Path(f"{message_type}_Nested_nachrichtenstruktur.json")
+        file_path = output_dir / Path(f"{message_format}_Nested_nachrichtenstruktur.json")
 
         assert file_path.exists()
 
