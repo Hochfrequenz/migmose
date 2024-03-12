@@ -10,7 +10,7 @@ from migmose.parsing import parse_raw_nachrichtenstrukturzeile
 
 class TestNestedNachrichtenstruktur:
     """
-    A class with pytest unit tests.
+    A class with pytest unit tests for nested Nachrichtenstrukturen.
     """
 
     def test_structure_table(self):

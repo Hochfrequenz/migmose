@@ -6,7 +6,7 @@ from migmose.parsing import parse_raw_nachrichtenstrukturzeile
 
 class TestNachrichtenstrukturTabelle:
     """
-    A class with pytest unit tests.
+    A class with pytest unit tests for NachrichtenstrukturTabellen.
     """
 
     def test_init_nachrichtenstrukturtabelle(self):
