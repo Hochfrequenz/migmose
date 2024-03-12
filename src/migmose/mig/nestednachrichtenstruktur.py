@@ -81,7 +81,7 @@ class NestedNachrichtenstruktur(BaseModel):
             else:
                 collected_segments.append(line)
                 i += 1
-            if i < len(table.lines) - 1:
+            if i < len(table.lines):
                 next_line_segmentgruppe = table.lines[i].nr is None
 
                 if segmentgruppe is not None and (
