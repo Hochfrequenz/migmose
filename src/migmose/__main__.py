@@ -7,7 +7,7 @@ from pathlib import Path
 import click
 from maus.edifact import EdifactFormat
 
-from migmose.parsing import find_file_to_type, parse_raw_nachrichtenstrukturzeile, preliminary_output_as_json
+from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturzeile, preliminary_output_as_json
 
 
 # add CLI logic
@@ -21,11 +21,11 @@ from migmose.parsing import find_file_to_type, parse_raw_nachrichtenstrukturzeil
 )
 @click.option(
     "-mt",
-    "--message_type",
+    "--message_format",
     type=click.Choice(list(map(lambda x: x.name, EdifactFormat)), case_sensitive=False),
     # Taken from https://github.com/pallets/click/issues/605#issuecomment-889462570
-    prompt="Please specify which message type to be parsed.",
-    help="Defines the set of message types to be parsed.",
+    prompt="Please specify which message format to be parsed.",
+    help="Defines the set of message formats to be parsed.",
     multiple=True,
 )
 @click.option(
@@ -35,16 +35,16 @@ from migmose.parsing import find_file_to_type, parse_raw_nachrichtenstrukturzeil
     prompt="Please enter the path to the directory which should contain the output files.",
     help="Set path to directory which contains the output files. If the directory does not exist, it will be created.",
 )
-def main(input_dir: Path, output_dir, message_type: list[EdifactFormat]) -> None:
+def main(input_dir: Path, output_dir, message_format: list[EdifactFormat]) -> None:
     """
     Main function. Uses CLI input.
     """
-    dict_files = find_file_to_type(message_type, input_dir)
-    for m_type, file in dict_files.items():
+    dict_files = find_file_to_format(message_format, input_dir)
+    for m_format, file in dict_files.items():
         mig_table = parse_raw_nachrichtenstrukturzeile(file)
         for item in mig_table:
             print(item)
-        preliminary_output_as_json(mig_table, m_type, output_dir)
+        preliminary_output_as_json(mig_table, m_format, output_dir)
 
 
 if __name__ == "__main__":
