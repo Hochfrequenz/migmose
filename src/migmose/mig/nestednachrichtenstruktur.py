@@ -2,8 +2,12 @@
 contains class for structured segmentgroups in mig tables. Builds table recursively.
 """
 
+import json
+from pathlib import Path
 from typing import Optional, Tuple
 
+from loguru import logger
+from maus.edifact import EdifactFormat
 from pydantic import BaseModel
 
 from migmose.mig.nachrichtenstruktur import NachrichtenstrukturTabelle
@@ -97,3 +101,19 @@ class NestedNachrichtenstruktur(BaseModel):
                         i,
                     )
         return cls(header_linie=segmentgruppe, segmente=collected_segments, segmentgruppen=collected_segmentgroups), i
+
+    @classmethod
+    def output_as_json(
+        cls, instance: "NestedNachrichtenstruktur", message_type: EdifactFormat, output_dir: Path
+    ) -> None:
+        """
+        writes the NestedNachrichtenstruktur as json
+        """
+
+        if not output_dir.exists():
+            output_dir.mkdir(parents=True, exist_ok=True)
+        file_path = output_dir.joinpath(f"{message_type}_Nested_nachrichtenstruktur.json")
+        structured_json = instance.model_dump()
+        with open(file_path, "w", encoding="utf-8") as json_file:
+            json.dump(structured_json, json_file, indent=4)
+        logger.info(f"Wrote nested Nachrichtenstruktur for {message_type} to {file_path}")
