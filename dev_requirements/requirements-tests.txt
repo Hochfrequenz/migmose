@@ -13,11 +13,11 @@ iniconfig==2.0.0
     # via pytest
 loguru==0.7.2
     # via pytest-loguru
-packaging==23.2
+packaging==24.0
     # via pytest
 pluggy==1.4.0
     # via pytest
-pytest==8.0.2
+pytest==8.1.1
     # via
     #   -r dev_requirements\requirements-tests.in
     #   pytest-loguru

@@ -16,34 +16,34 @@ from loguru import logger
 from maus.edifact import EdifactFormat
 
 
-def find_file_to_type(message_types: list[EdifactFormat], input_dir: Path) -> dict[EdifactFormat, Path]:
+def find_file_to_format(message_formats: list[EdifactFormat], input_dir: Path) -> dict[EdifactFormat, Path]:
     """
     finds the file with the message type in the input directory
     """
     file_dict = {}
-    for message_type in message_types:
+    for message_format in message_formats:
         list_of_all_files = [
-            file for file in input_dir.iterdir() if message_type in file.name and file.suffix == ".docx"
+            file for file in input_dir.iterdir() if message_format in file.name and file.suffix == ".docx"
         ]
         if len(list_of_all_files) == 1:
-            file_dict[message_type] = list_of_all_files[0]
+            file_dict[message_format] = list_of_all_files[0]
         elif len(list_of_all_files) > 1:
-            logger.warning(f"⚠️ There are several files for {message_type}.", fg="red")
+            logger.warning(f"⚠️ There are several files for {message_format}.", fg="red")
         else:
-            logger.warning(f"⚠️ No file found for {message_type}.", fg="red")
+            logger.warning(f"⚠️ No file found for {message_format}.", fg="red")
     if file_dict:
         return file_dict
-    logger.error("⚠️ No files found in the input directory.", fg="red")
+    logger.error("❌ No files found in the input directory.", fg="red")
     raise click.Abort()
 
 
-def preliminary_output_as_json(table: list[str], message_type: EdifactFormat, output_dir: Path) -> None:
+def preliminary_output_as_json(table: list[str], message_format: EdifactFormat, output_dir: Path) -> None:
     """
-    writes the preliminary output as json
+    Writes the preliminary output as json.
+    Serves only as a preliminary helper function until more precise class methods are implemented.
     """
-    if not output_dir.exists():
-        output_dir.mkdir(parents=True, exist_ok=True)
-    file_path = output_dir.joinpath(f"{message_type}_preliminary_output.json")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    file_path = output_dir.joinpath(f"{message_format}_preliminary_output.json")
     structured_json = {line: None for line in table}
     with open(file_path, "w", encoding="utf-8") as json_file:
         json.dump(structured_json, json_file, indent=4)
