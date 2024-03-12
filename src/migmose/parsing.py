@@ -42,8 +42,7 @@ def preliminary_output_as_json(table: list[str], message_format: EdifactFormat, 
     Writes the preliminary output as json.
     Serves only as a preliminary helper function until more precise class methods are implemented.
     """
-    if not output_dir.exists():
-        output_dir.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
     file_path = output_dir.joinpath(f"{message_format}_preliminary_output.json")
     structured_json = {line: None for line in table}
     with open(file_path, "w", encoding="utf-8") as json_file:
