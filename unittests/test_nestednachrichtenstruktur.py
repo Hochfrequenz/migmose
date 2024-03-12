@@ -17,7 +17,9 @@ class TestNestedNachrichtenstruktur:
         file_path = Path("unittests/test_data/ORDCHG_MIG_1_1_info_20230331_v2.docx")
         raw_lines = parse_raw_nachrichtenstrukturzeile(file_path)
         nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.init_raw_table(raw_lines)
-        nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.structure_table(nachrichtenstrukturtabelle)
+        nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
+            nachrichtenstrukturtabelle
+        )
         assert len(nested_nachrichtenstruktur.segmente) == 5
         assert len(nested_nachrichtenstruktur.segmentgruppen[3].segmentgruppen) == 1
 
@@ -27,7 +29,9 @@ class TestNestedNachrichtenstruktur:
         output_dir = tmp_path / Path("output")
         raw_lines = parse_raw_nachrichtenstrukturzeile(input_file)
         nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.init_raw_table(raw_lines)
-        nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.structure_table(nachrichtenstrukturtabelle)
+        nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
+            nachrichtenstrukturtabelle
+        )
         NestedNachrichtenstruktur.output_as_json(nested_nachrichtenstruktur, message_format, output_dir)
 
         file_path = output_dir / Path(f"{message_format}_nested_nachrichtenstruktur.json")

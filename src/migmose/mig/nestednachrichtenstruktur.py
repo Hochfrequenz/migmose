@@ -4,6 +4,7 @@ contains class for structured segmentgroups in mig tables. Builds table recursiv
 
 import json
 from pathlib import Path
+from types import NoneType
 from typing import Optional, Tuple
 
 from loguru import logger
@@ -69,10 +70,10 @@ class NestedNachrichtenstruktur(BaseModel):
     segmentgruppen: list[Optional["NestedNachrichtenstruktur"]] = []
 
     @classmethod
-    def structure_table(
-        cls, table: NachrichtenstrukturTabelle, segmentgruppe: Optional[NachrichtenstrukturZeile] = None, index: int = 0
+    def create_nested_nachrichtenstruktur(
+        cls, table: NachrichtenstrukturTabelle, header_line: Optional[NachrichtenstrukturZeile] = None, index: int = 0
     ) -> Tuple["NestedNachrichtenstruktur", int]:
-        """init structured table"""
+        """init nested Nachrichtenstruktur"""
         collected_segments: list[Optional[NachrichtenstrukturZeile]] = []
         collected_segmentgroups: list[Optional["NestedNachrichtenstruktur"]] = []
         i = index
@@ -80,27 +81,28 @@ class NestedNachrichtenstruktur(BaseModel):
             line = table.lines[i]
             is_line_segmentgruppe = line.nr is None
             if is_line_segmentgruppe:
-                added_segmentgroup, i = cls.structure_table(table, line, i + 1)
+                added_segmentgroup, i = cls.create_nested_nachrichtenstruktur(table, line, i + 1)
                 collected_segmentgroups.append(added_segmentgroup)
             else:
                 collected_segments.append(line)
                 i += 1
-            if i < len(table.lines):
-                next_line_segmentgruppe = table.lines[i].nr is None
+            if i < len(table.lines) and not isinstance(header_line, NoneType):
+                is_next_line_segmentgruppe = table.lines[i].nr is None
+                is_current_ebene_greater_than_next_ebene = line.ebene > table.lines[i].ebene
+                is_current_header_ebene_greater_eq_than_next_ebene = header_line.ebene >= table.lines[i].ebene
 
-                if segmentgruppe is not None and (
-                    (next_line_segmentgruppe and table.lines[i].ebene <= segmentgruppe.ebene)  # type: ignore [operator]
-                    or (line.ebene > table.lines[i].ebene)  # type: ignore [operator]
-                ):
+                if (
+                    is_next_line_segmentgruppe and is_current_header_ebene_greater_eq_than_next_ebene
+                ) or is_current_ebene_greater_than_next_ebene:
                     return (
                         cls(
-                            header_linie=segmentgruppe,
+                            header_linie=header_line,
                             segmente=collected_segments,
                             segmentgruppen=collected_segmentgroups,
                         ),
                         i,
                     )
-        return cls(header_linie=segmentgruppe, segmente=collected_segments, segmentgruppen=collected_segmentgroups), i
+        return cls(header_linie=header_line, segmente=collected_segments, segmentgruppen=collected_segmentgroups), i
 
     @classmethod
     def output_as_json(

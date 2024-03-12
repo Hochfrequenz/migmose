@@ -45,7 +45,9 @@ def main(input_dir: Path, output_dir, message_format: list[EdifactFormat]) -> No
     for m_format, file in dict_files.items():
         raw_lines = parse_raw_nachrichtenstrukturzeile(file)
         nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.init_raw_table(raw_lines)
-        nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.structure_table(nachrichtenstrukturtabelle)
+        nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
+            nachrichtenstrukturtabelle
+        )
         NestedNachrichtenstruktur.output_as_json(nested_nachrichtenstruktur, m_format, output_dir)
 
 
