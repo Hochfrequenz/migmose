@@ -14,7 +14,6 @@ MIG_mose is the sister of [kohlrahbi](https://github.com/Hochfrequenz/kohlrahbi)
 - MIG_mose is a Python(3.11,3.12) project.
 - .docx files a processed by the [python-docx](https://python-docx.readthedocs.io/en/latest/) library.
 - EdiFact formats are used as in [maus.edifact](https://github.com/Hochfrequenz/mig_ahb_utility_stack/blob/main/src/maus/edifact.py).
--
 
 This is at the moment a MWE (Minimum Working Example) and will be extended in the future.
 See below for an overview of its features.
