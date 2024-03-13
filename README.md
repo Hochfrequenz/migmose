@@ -63,7 +63,7 @@ Below the available options are listed:
     - Example: `--output_dir /path/to/output_directory`
 - **Output File Type (`-ft`, `--file-type`):**
     - Description: Defines the output format. Choose between csv for flat Nachrichtenstruktur tables and nested_json for json files of the nested Nachrichtenstruktur tables. Default is csv..
-    - Example: `--file_type "csv"
+    - Example: `--file-type "csv"
 ### Usage Example
 
 To use the CLI logic provided by this tool, follow the command syntax below:
