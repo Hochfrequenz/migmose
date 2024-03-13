@@ -52,12 +52,12 @@ def main(input_dir: Path, output_dir, message_format: list[EdifactFormat], file_
     Main function. Uses CLI input.
     """
     if message_format is None:
-        message = f"❌ No message format specified. Please specify the message format."
+        message = "❌ No message format specified. Please specify the message format."
         click.secho(message, fg="yellow")
         logger.error(message)
         raise click.Abort()
     if file_type is None:
-        message = f"❌ No output format specified. Please specify the output format."
+        message = "❌ No output format specified. Please specify the output format."
         click.secho(message, fg="yellow")
         logger.error(message)
         raise click.Abort()
