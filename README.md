@@ -50,7 +50,7 @@ At this point, MIG_mose works as a command-line interface tool (CLI).
 There are several flags available to provide a user-friendly way to interact with MIG_mose.
 Below the available options are listed:
 
-- **Input Directory (`-i`, `--input_dir`):**
+- **Input Directory (`-i`, `--input-dir`):**
     - Description: This option allows the user to specify the path to the directory containing the .docx files for the MIGs (Message Implementation Guides).
     - Example: `--input_dir /path/to/input_directory`
 
