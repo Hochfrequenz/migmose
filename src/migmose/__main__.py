@@ -67,13 +67,13 @@ def main(input_dir: Path, output_dir, message_format: list[EdifactFormat], file_
         raw_lines = parse_raw_nachrichtenstrukturzeile(file)
         nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.create_nachrichtenstruktur_tabelle(raw_lines)
         if "csv" in file_type:
-            logger.info("💾 Saving flat Nachrichtenstruktur table as csv.")
+            logger.info("💾 Saving flat Nachrichtenstruktur table for {} as csv to {}.", m_format, output_dir)
             nachrichtenstrukturtabelle.to_csv(m_format, output_dir)
         nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
             nachrichtenstrukturtabelle
         )
         if "nested_json" in file_type:
-            logger.info("💾 Saving nested Nachrichtenstruktur as json.")
+            logger.info("💾 Saving nested Nachrichtenstruktur for {} as json to {}.", m_format, output_dir)
             nested_nachrichtenstruktur.to_json(m_format, output_dir)
 
 
