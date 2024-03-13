@@ -22,7 +22,7 @@ from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturze
     help="Set path to directory which contains the .docx files for the migs",
 )
 @click.option(
-    "-mt",
+    "-mf",
     "--message_format",
     type=click.Choice(list(map(lambda x: x.name, EdifactFormat)), case_sensitive=False),
     # Taken from https://github.com/pallets/click/issues/605#issuecomment-889462570
