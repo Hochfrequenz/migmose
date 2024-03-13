@@ -44,12 +44,12 @@ def main(input_dir: Path, output_dir, message_format: list[EdifactFormat]) -> No
     dict_files = find_file_to_format(message_format, input_dir)
     for m_format, file in dict_files.items():
         raw_lines = parse_raw_nachrichtenstrukturzeile(file)
-        nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.init_raw_table(raw_lines)
-        nachrichtenstrukturtabelle.output_as_csv(m_format, output_dir)
+        nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.create_nachrichtenstruktur_tabelle(raw_lines)
+        nachrichtenstrukturtabelle.to_csv(m_format, output_dir)
         nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
             nachrichtenstrukturtabelle
         )
-        nested_nachrichtenstruktur.output_as_json(m_format, output_dir)
+        nested_nachrichtenstruktur.to_json(m_format, output_dir)
 
 
 if __name__ == "__main__":

@@ -17,23 +17,23 @@ class TestNachrichtenstrukturTabelle:
             "\t0580\t527\tRFF\tC\tD\t9\t9\t3\tReferenz auf die ID einer Messlokation",
             "\t0590\tRFF\tC\tD\t9\t9\t3\tReferenz auf die ID einer Messlokation",
         ]
-        nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.init_raw_table(raw_lines)
+        nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.create_nachrichtenstruktur_tabelle(raw_lines)
         assert len(nachrichtenstrukturtabelle.lines) == len(raw_lines)
         assert nachrichtenstrukturtabelle.lines[0].zaehler == "0580"
 
     def test_parse(self):
         file_path = Path("unittests/test_data/ORDCHG_MIG_1_1_info_20230331_v2.docx")
         raw_lines = parse_raw_nachrichtenstrukturzeile(file_path)
-        nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.init_raw_table(raw_lines)
+        nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.create_nachrichtenstruktur_tabelle(raw_lines)
         assert len(nachrichtenstrukturtabelle.lines) == 18
 
-    def test_output_as_csv(self, tmp_path):
+    def test_to_csv(self, tmp_path):
         input_file = Path("unittests/test_data/ORDCHG_MIG_1_1_info_20230331_v2.docx")
         message_format = EdifactFormat.ORDCHG
         output_dir = tmp_path / Path("output")
         raw_lines = parse_raw_nachrichtenstrukturzeile(input_file)
-        nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.init_raw_table(raw_lines)
-        nachrichtenstrukturtabelle.output_as_csv(message_format, output_dir)
+        nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.create_nachrichtenstruktur_tabelle(raw_lines)
+        nachrichtenstrukturtabelle.to_csv(message_format, output_dir)
 
         file_path = output_dir / Path(f"{message_format}_nachrichtenstruktur.csv")
 
