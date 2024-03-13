@@ -7,7 +7,7 @@
 ![Linting status badge](https://github.com/Hochfrequenz/migmose/workflows/Linting/badge.svg)
 ![Black status badge](https://github.com/Hochfrequenz/migmose/workflows/Formatting/badge.svg)
 
-MIG_mose generates machine-readable files from MIG documents (cf. [edi-energy](https://www.edi-energy.de/index.php?id=38)).
+MIG_mose generates machine-readable files from MIG documents ([edi-energy](https://www.edi-energy.de/index.php?id=38)).
 MIG_mose is the sister of [kohlrahbi](https://github.com/Hochfrequenz/kohlrahbi).
 
 ## Tech-Stack
@@ -55,7 +55,7 @@ Below the available options are listed:
     - Example: `--input_dir /path/to/input_directory`
 
 - **Message Format (`-mf`, `--message-format`):**
-    - Description: This option defines the set of message formats to be parsed. Users can specify multiple message formats by providing multiple values. The formats are EdiFact formats (cf. [maus.edifact.EdifactFormat](https://github.com/Hochfrequenz/mig_ahb_utility_stack/blob/main/src/maus/edifact.py)).
+    - Description: This option defines the set of message formats to be parsed. Users can specify multiple message formats by providing multiple values. The formats are EdiFact formats (cf. [maus.edifact.EdifactFormat](https://github.com/Hochfrequenz/mig_ahb_utility_stack/blob/main/src/maus/edifact.py)). If no format is specified, all formats are parsed.
     - Example: `--message_format "UTILMD" --message_format "ORDCHG"`
 
 - **Output Directory (`-o`, `--output-dir`):**
