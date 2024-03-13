@@ -44,7 +44,7 @@ Finally, install the package with
 ```bash
 pip install migmose
 ```
-## Features and how to use them
+## Features And How To Use Them
 
 At this point, MIG_mose works as a command-line interface tool (CLI). There are several flags available to provide a user-friendly way to interact with MIG_mose.
 Below the available options are listed:
