@@ -69,7 +69,7 @@ Below the available options are listed:
 To use the CLI logic provided by this tool, follow the command syntax below:
 
 ```bash
-migmose -i /path/to/input_directory - /path/to/output_directory -mf "UTILMD" -mf "ORDCHG" -ft "csv"
+migmose -i /path/to/input_directory -o /path/to/output_directory -mf "UTILMD" -mf "ORDCHG" -ft "csv"
 ```
 
 ## Development
