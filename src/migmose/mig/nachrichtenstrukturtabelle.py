@@ -38,7 +38,7 @@ class NachrichtenstrukturTabelle(BaseModel):
         file_path = output_dir.joinpath(f"{message_type}_nachrichtenstruktur.csv")
         fieldnames = list(NachrichtenstrukturZeile.model_fields.keys())
         with open(file_path, "w", encoding="utf-8") as csv_file:
-            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+            writer = csv.DictWriter(csv_file, fieldnames=fieldnames, dialect="excel")
             writer.writeheader()
             for nachrichtenstruktur_zeile in self.lines:
                 writer.writerow(nachrichtenstruktur_zeile.model_dump())
