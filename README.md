@@ -54,7 +54,7 @@ Below the available options are listed:
     - Description: This option allows the user to specify the path to the directory containing the .docx files for the MIGs (Message Implementation Guides).
     - Example: `--input_dir /path/to/input_directory`
 
-- **Message Format (`-mf`, `--message_format`):**
+- **Message Format (`-mf`, `--message-format`):**
     - Description: This option defines the set of message formats to be parsed. Users can specify multiple message formats by providing multiple values. The formats are EdiFact formats (cf. [maus.edifact.EdifactFormat](https://github.com/Hochfrequenz/mig_ahb_utility_stack/blob/main/src/maus/edifact.py)).
     - Example: `--message_format "UTILMD" --message_format "ORDCHG"`
 
