@@ -5,12 +5,8 @@
 #
 #    pip-compile-multi
 #
-colorama==0.4.6
-    # via
-    #   loguru
-    #   pytest
-coverage==7.4.3
-    # via -r dev_requirements\requirements-coverage.in
+coverage==7.4.4
+    # via -r dev_requirements/requirements-coverage.in
 iniconfig==2.0.0
     # via pytest
 loguru==0.7.2
@@ -22,6 +18,4 @@ pluggy==1.4.0
 pytest==8.1.1
     # via pytest-loguru
 pytest-loguru==0.3.0
-    # via -r dev_requirements\requirements-coverage.in
-win32-setctime==1.1.0
-    # via loguru
+    # via -r dev_requirements/requirements-coverage.in
