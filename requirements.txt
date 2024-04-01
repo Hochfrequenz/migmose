@@ -16,7 +16,7 @@ colorama==0.4.6
     #   loguru
 loguru==0.7.2
     # via migmose (pyproject.toml)
-lxml==5.1.0
+lxml==5.2.0
     # via python-docx
 marshmallow==3.21.1
     # via maus
