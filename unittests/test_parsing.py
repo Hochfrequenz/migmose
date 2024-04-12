@@ -45,7 +45,7 @@ class TestParsing:
         input_dir = Path("unittests/test_data/")
         file_dict = find_file_to_format(message_formats, input_dir)
         assert file_dict[EdifactFormat.IFTSTA] == input_dir / Path(
-            "IFTSTAMIG-informatorischeLesefassung2.0eKonsolidierteLesefassungmitFehlerkorrekturenStand11.03.2024_99991231_20240311.docx"
+            "IFTSTAMIG-informatorischeLesefassung2.0emitFehlerkorrekturenStand11.03.2024_99991231_20240311.docx"
         )
 
     def test_parse_raw_nachrichtenstrukturzeile(self):
