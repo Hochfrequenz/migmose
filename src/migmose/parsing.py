@@ -31,7 +31,6 @@ def find_file_to_format(message_formats: list[EdifactFormat], input_dir: Path) -
             file_dict[message_format] = list_of_all_files[0]
         elif len(list_of_all_files) > 1:
             file_dict[message_format] = get_latest_file(list_of_all_files)
-            logger.warning(f"⚠️ There are several files for {message_format}.", fg="red")
         else:
             logger.warning(f"⚠️ No file found for {message_format}.", fg="red")
     if file_dict:
