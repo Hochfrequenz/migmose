@@ -23,6 +23,9 @@ dynamic = ["readme", "version"]
 Changelog = "https://github.com/Hochfrequenz/migmose/releases"
 Homepage = "https://github.com/Hochfrequenz/migmose"
 
+[project.scripts]
+migmose = "migmose.__main__:main"
+
 [tool.black]
 line-length = 120
 target_version = ["py311", "py312"]
