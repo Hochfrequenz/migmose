@@ -67,11 +67,11 @@ def get_latest_file(file_list: list[Path]) -> Path:
 
     # Initialize variables to keep track of the latest file and date
     latest_file: Path
-    latest_date: datetime
+    latest_date: datetime | None = None
 
     for file_path in file_list:
         date, path = extract_date(file_path)
-        if date > latest_date:
+        if latest_date is None or date > latest_date:
             latest_file = path
             latest_date = date
 
