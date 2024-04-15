@@ -60,7 +60,8 @@ def get_latest_file(file_list: list[Path]) -> Path:
             return datetime.strptime(match.group(1), "%Y%m%d"), file_path
         logger.warning(
             f"⚠️ No timestamp in filename found in {file_path}."
-            + "in case of multiple docx files in this path, it must be a timestamp with format 'yyyyMMdd.docx' in filename.",
+            + "in case of multiple docx files in this path, it must be a "
+            + "timestamp with format 'yyyyMMdd.docx' in filename.",
             fg="red",
         )
         raise click.Abort()
