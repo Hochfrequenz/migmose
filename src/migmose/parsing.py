@@ -39,7 +39,7 @@ def find_file_to_format(message_formats: list[EdifactFormat], input_dir: Path) -
     raise click.Abort()
 
 
-def get_latest_file(file_list):
+def get_latest_file(file_list: list[Path]) -> Path | None:
     """
     This function takes a list of docx files Path
     and returns the Path of the latest MIG docx file based on the timestamp in its name.
