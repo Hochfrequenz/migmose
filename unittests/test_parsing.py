@@ -37,6 +37,17 @@ class TestParsing:
             assert f"No file found for {EdifactFormat.ORDRSP}." in caplog.text
             assert file_dict[EdifactFormat.ORDCHG] == input_dir / Path("ORDCHG_MIG_1_1_info_20230331_v2.docx")
 
+    def test_find_only_one_file_multiple_docx(self):
+        """
+        Tests to find multiple docx files with the same message_format.
+        """
+        message_formats = [EdifactFormat.IFTSTA]
+        input_dir = Path("unittests/test_data/")
+        file_dict = find_file_to_format(message_formats, input_dir)
+        assert file_dict[EdifactFormat.IFTSTA] == input_dir / Path(
+            "IFTSTAMIG-informatorischeLesefassung2.0emitFehlerkorrekturenStand11.03.2024_99991231_20240311.docx"
+        )
+
     def test_parse_raw_nachrichtenstrukturzeile(self):
         """
         Test to parse the raw nachrichtenstrukturzeile from a docx file.
