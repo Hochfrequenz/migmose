@@ -5,7 +5,7 @@ contains class for structured segmentgroups in mig tables. Builds table recursiv
 import json
 from pathlib import Path
 from types import NoneType
-from typing import Optional, Tuple
+from typing import Any, Optional, Tuple
 
 from loguru import logger
 from maus.edifact import EdifactFormat
@@ -104,7 +104,7 @@ class NestedNachrichtenstruktur(BaseModel):
                     )
         return cls(header_linie=header_line, segmente=collected_segments, segmentgruppen=collected_segmentgroups), i
 
-    def to_json(self, message_type: EdifactFormat, output_dir: Path) -> None:
+    def to_json(self, message_type: EdifactFormat, output_dir: Path) -> dict[str, Any]:
         """
         writes the NestedNachrichtenstruktur as json
         """
@@ -114,3 +114,4 @@ class NestedNachrichtenstruktur(BaseModel):
         with open(file_path, "w", encoding="utf-8") as json_file:
             json.dump(structured_json, json_file, indent=4)
         logger.info(f"Wrote nested Nachrichtenstruktur for {message_type} to {file_path}")
+        return structured_json
