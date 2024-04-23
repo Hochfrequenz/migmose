@@ -4,97 +4,111 @@ contains class for trees consisting of segments of mig tables
 
 import json
 from pathlib import Path
-from types import NoneType
-from typing import Any, Optional, Tuple
+from typing import Any
 
 from loguru import logger
 from maus.edifact import EdifactFormat
 from pydantic import BaseModel
 
-from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
-from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile
-
 
 class ReducedNestedNachrichtenstruktur(BaseModel):
     """will contain the tree structure of nachrichtenstruktur tables"""
-
-    header_linie: Optional[NachrichtenstrukturZeile] = None
-    segmente: list[Optional[NachrichtenstrukturZeile]] = []
-    segmentgruppen: list[Optional["ReducedNestedNachrichtenstruktur"]] = []
 
     @classmethod
     def create_reduced_nested_nachrichtenstruktur(cls, json_nachrichten_struktur: dict[str, Any]) -> dict[str, Any]:
         """init nested Nachrichtenstruktur"""
 
-        def remove_duplicates(cls, data) -> dict[str, Any]:
-            # Helper function to create a unique identifier for each segment
-            def get_identifier(segment) -> tuple[str, str]:
-                return (segment.get("zaehler"), segment.get("bezeichnung"))
+        # Helper function to create a unique identifier for each segment
+        def get_identifier(segment) -> tuple[str, str]:
+            return (segment.get("zaehler"), segment.get("bezeichnung"))
 
-            # Helper function to create a unique identifier for each segment group using header data
-            def get_segmentgruppe_identifier(segment_group) -> tuple[str, str]:
-                header = segment_group.get("header_linie", {})
-                return (header.get("zaehler"), header.get("bezeichnung"))
+        # Helper function to create a unique identifier for each segment group using header data
+        def get_segmentgruppe_identifier(segment_group) -> tuple[str, str]:
+            header = segment_group.get("header_linie", {})
+            return (header.get("zaehler"), header.get("bezeichnung"))
 
-            def count_segments(segment_group) -> int:
-                # Start with counting segments directly under the current segment group
-                total_segments = len(segment_group.get("segmente", []))
-                # Recursively count segments in nested segment groups
-                for nested_sg in segment_group.get("segmentgruppen", []):
-                    total_segments += count_segments(nested_sg)
+        def count_segments(segment_group) -> int:
+            # Start with counting segments directly under the current segment group
+            total_segments = len(segment_group.get("segmente", []))
+            # Recursively count segments in nested segment groups
+            for nested_sg in segment_group.get("segmentgruppen", []):
+                total_segments += count_segments(nested_sg)
 
-                return total_segments
+            return total_segments
 
-            # Function to process segments and remove duplicates within the same list
-            def process_segments(segments):
-                seen = set()
-                unique_segments = []
-                for segment in segments:
-                    identifier = get_identifier(segment)
-                    if identifier not in seen:
-                        seen.add(identifier)
-                        unique_segments.append(segment)
-                return unique_segments
+        # Function to process segments and remove duplicates within the same list.
+        def process_segments(segments):
+            seen = set()
+            unique_segments = []
+            for segment in segments:
+                identifier = get_identifier(segment)
+                if identifier not in seen:
+                    seen.add(identifier)
+                    unique_segments.append(segment)
+            return unique_segments
 
-            # Recursive function to traverse and clean segment groups
-            def clean_segmentgruppen(segmentgruppen):
+        # Recursive function to traverse and clean segment groups
+        def process_segmentgruppen(segmentgruppen, segment_count_dict, seen=None, depth=0):
+            """Recursively clean segment groups to avoid duplicates, keep largest, with debugging for circular references."""
+            if seen is None:
                 seen = {}
-                unique_segmentgruppen = []
-                for sg in segmentgruppen:
-                    identifier = get_segmentgruppe_identifier(sg)
-                    current_count = count_segments(sg)
+            result = []
 
-                    if identifier in seen:
-                        # Compare segment counts and keep the one with more segments
-                        existing_sg, existing_count = seen[identifier]
-                        if current_count > existing_count:
-                            # Replace the existing segment group with this one because it has more segments
-                            unique_segmentgruppen.remove(existing_sg)
-                            unique_segmentgruppen.append(sg)
-                            seen[identifier] = (sg, current_count)
+            for sg in segmentgruppen:
+                identifier = get_segmentgruppe_identifier(sg)
+                max_count, max_sg = segment_count_dict[identifier]
+
+                if identifier not in seen:
+                    seen[identifier] = max_sg
+                    print(f"Added {identifier} with {max_count} segments at depth {depth}.")
+
+                sg["segmente"] = process_segments(max_sg.get("segmente", []))
+                sg["segmentgruppen"] = process_segmentgruppen(
+                    max_sg.get("segmentgruppen", []), segment_count_dict, seen, depth + 1
+                )
+
+            # Compile the unique list from the seen dictionary after recursive processing to avoid circular reference
+            if depth == 0:  # Only compile on the initial call, not recursive ones
+                result = [seen[key] for key in seen]
+            return result
+
+        def build_segment_count_dict(segment_groups):
+            segment_count_dict = {}
+            for sg in segment_groups:
+                name = get_segmentgruppe_identifier(sg)
+                count = count_segments(sg)
+
+                # Check if the current segment group's count is greater than the stored count
+                if name in segment_count_dict:
+                    existing_count, existing_sg = segment_count_dict[name]
+                    if count > existing_count:
+                        segment_count_dict[name] = (count, sg)
+                else:
+                    segment_count_dict[name] = (count, sg)
+
+                # Process nested segment groups recursively and update the dictionary
+                nested_counts = build_segment_count_dict(sg.get("segmentgruppen", []))
+                for nested_name, (nested_count, nested_sg) in nested_counts.items():
+                    if nested_name in segment_count_dict:
+                        existing_count, existing_sg = segment_count_dict[nested_name]
+                        if nested_count > existing_count:
+                            segment_count_dict[nested_name] = (nested_count, nested_sg)
                     else:
-                        # If not seen, add it directly
-                        seen[identifier] = (sg, current_count)
-                        unique_segmentgruppen.append(sg)
+                        segment_count_dict[nested_name] = (nested_count, nested_sg)
 
-                    # Process segments within this group
-                    sg["segmente"] = process_segments(sg.get("segmente", []))
-                    # Recursively clean nested segment groups
-                    sg["segmentgruppen"] = clean_segmentgruppen(sg.get("segmentgruppen", []))
+            return segment_count_dict
 
-                return unique_segmentgruppen
+        data: dict[str, Any] = json_nachrichten_struktur
+        # Start processing the top-level segments
+        if "segmente" in data:
+            data["segmente"] = process_segments(data["segmente"])
 
-            # Start processing the top-level segments
-            if "segmente" in data:
-                data["segmente"] = process_segments(data["segmente"])
+        # Process segment groups recursively
+        if "segmentgruppen" in data:
+            segment_count_dict = build_segment_count_dict(data["segmentgruppen"])
+            data["segmentgruppen"] = process_segmentgruppen(data["segmentgruppen"], segment_count_dict)
 
-            # Process segment groups recursively
-            if "segmentgruppen" in data:
-                data["segmentgruppen"] = clean_segmentgruppen(data["segmentgruppen"])
-
-            return data
-
-        return remove_duplicates(cls, json_nachrichten_struktur)
+        return data
 
     @classmethod
     def save_to_json_file(
