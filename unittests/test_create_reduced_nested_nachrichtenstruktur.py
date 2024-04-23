@@ -1,14 +1,11 @@
 import unittest
-from pathlib import Path
-from typing import Any
-
-from maus.edifact import EdifactFormat
-from pydantic import BaseModel
 
 from migmose.mig.reducednestednachrichtenstruktur import ReducedNestedNachrichtenstruktur
 
 
 class TestReducedNestedNachrichtenstruktur(unittest.IsolatedAsyncioTestCase):
+    """test class for create_reduced_nested_nachrichtenstruktur"""
+
     def setUp(self) -> None:
         self.input_data = {
             "header_linie": None,
