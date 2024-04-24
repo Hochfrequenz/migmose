@@ -74,17 +74,15 @@ def main(input_dir: Path, output_dir, message_format: list[EdifactFormat], file_
             nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
                 nachrichtenstrukturtabelle
             )
+            reduced_nested_nachrichtenstruktur = (
+                ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(nested_nachrichtenstruktur)
+            )
+            # Save the nested Nachrichtenstruktur as json
             logger.info("💾 Saving nested Nachrichtenstruktur for {} as json to {}.", m_format, output_dir)
-            json_nested_nachrichtenstruktur = nested_nachrichtenstruktur.to_json(m_format, output_dir)
-            json_reduced_nested_nachrichtenstruktur = (
-                ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(
-                    json_nested_nachrichtenstruktur
-                )
-            )
+            nested_nachrichtenstruktur.to_json(m_format, output_dir)
+            # Save the reduced nested Nachrichtenstruktur as json
             logger.info("💾 Saving reduced nested Nachrichtenstruktur for {} as json to {}.", m_format, output_dir)
-            ReducedNestedNachrichtenstruktur.save_to_json_file(
-                m_format, output_dir, json_reduced_nested_nachrichtenstruktur
-            )
+            reduced_nested_nachrichtenstruktur.to_json(m_format, output_dir)
 
 
 if __name__ == "__main__":
