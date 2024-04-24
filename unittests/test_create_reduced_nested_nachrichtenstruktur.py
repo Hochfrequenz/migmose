@@ -1,19 +1,54 @@
-import unittest
+import pytest
 
 from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile
 from migmose.mig.reducednestednachrichtenstruktur import ReducedNestedNachrichtenstruktur
 
 
-class TestReducedNestedNachrichtenstruktur(unittest.IsolatedAsyncioTestCase):
+class TestReducedNestedNachrichtenstruktur:
     """test class for create_reduced_nested_nachrichtenstruktur"""
 
-    def setUp(self) -> None:
-        self.input_data = ReducedNestedNachrichtenstruktur(
-            header_linie=None,
-            segmente=[
-                NachrichtenstrukturZeile(
-                    zaehler="101",
-                    bezeichnung="SG1",
+    input_data = ReducedNestedNachrichtenstruktur(
+        header_linie=None,
+        segmente=[
+            NachrichtenstrukturZeile(
+                zaehler="101",
+                bezeichnung="SG1",
+                bdew_status="D",
+                nr=None,
+                ebene=0,
+                inhalt="None",
+                standard_status="M",
+                standard_maximale_wiederholungen=1,
+                bdew_maximale_wiederholungen=1,
+            ),
+            NachrichtenstrukturZeile(
+                zaehler="101",
+                bezeichnung="SG1",
+                bdew_status="R",
+                nr=None,
+                ebene=0,
+                inhalt="None",
+                standard_status="M",
+                standard_maximale_wiederholungen=1,
+                bdew_maximale_wiederholungen=1,
+            ),
+            NachrichtenstrukturZeile(
+                zaehler="102",
+                bezeichnung="SG2",
+                bdew_status="S",
+                nr=None,
+                ebene=0,
+                inhalt="None",
+                standard_status="M",
+                standard_maximale_wiederholungen=1,
+                bdew_maximale_wiederholungen=1,
+            ),
+        ],
+        segmentgruppen=[
+            ReducedNestedNachrichtenstruktur(
+                header_linie=NachrichtenstrukturZeile(
+                    zaehler="201",
+                    bezeichnung="SG5",
                     bdew_status="D",
                     nr=None,
                     ebene=0,
@@ -22,10 +57,26 @@ class TestReducedNestedNachrichtenstruktur(unittest.IsolatedAsyncioTestCase):
                     standard_maximale_wiederholungen=1,
                     bdew_maximale_wiederholungen=1,
                 ),
-                NachrichtenstrukturZeile(
-                    zaehler="101",
-                    bezeichnung="SG1",
-                    bdew_status="R",
+                segmente=[
+                    NachrichtenstrukturZeile(
+                        zaehler="103",
+                        bezeichnung="SG3",
+                        bdew_status="S",
+                        nr=None,
+                        ebene=1,
+                        inhalt="None",
+                        standard_status="M",
+                        standard_maximale_wiederholungen=1,
+                        bdew_maximale_wiederholungen=1,
+                    ),
+                ],
+                segmentgruppen=[],
+            ),
+            ReducedNestedNachrichtenstruktur(
+                header_linie=NachrichtenstrukturZeile(
+                    zaehler="201",
+                    bezeichnung="SG5",
+                    bdew_status="D",
                     nr=None,
                     ebene=0,
                     inhalt="None",
@@ -33,86 +84,34 @@ class TestReducedNestedNachrichtenstruktur(unittest.IsolatedAsyncioTestCase):
                     standard_maximale_wiederholungen=1,
                     bdew_maximale_wiederholungen=1,
                 ),
-                NachrichtenstrukturZeile(
-                    zaehler="102",
-                    bezeichnung="SG2",
-                    bdew_status="S",
-                    nr=None,
-                    ebene=0,
-                    inhalt="None",
-                    standard_status="M",
-                    standard_maximale_wiederholungen=1,
-                    bdew_maximale_wiederholungen=1,
-                ),
-            ],
-            segmentgruppen=[
-                ReducedNestedNachrichtenstruktur(
-                    header_linie=NachrichtenstrukturZeile(
-                        zaehler="201",
-                        bezeichnung="SG5",
-                        bdew_status="D",
+                segmente=[
+                    NachrichtenstrukturZeile(
+                        zaehler="103",
+                        bezeichnung="SG3",
+                        bdew_status="S",
                         nr=None,
-                        ebene=0,
+                        ebene=1,
                         inhalt="None",
                         standard_status="M",
                         standard_maximale_wiederholungen=1,
                         bdew_maximale_wiederholungen=1,
                     ),
-                    segmente=[
-                        NachrichtenstrukturZeile(
-                            zaehler="103",
-                            bezeichnung="SG3",
-                            bdew_status="S",
-                            nr=None,
-                            ebene=1,
-                            inhalt="None",
-                            standard_status="M",
-                            standard_maximale_wiederholungen=1,
-                            bdew_maximale_wiederholungen=1,
-                        ),
-                    ],
-                    segmentgruppen=[],
-                ),
-                ReducedNestedNachrichtenstruktur(
-                    header_linie=NachrichtenstrukturZeile(
-                        zaehler="201",
-                        bezeichnung="SG5",
-                        bdew_status="D",
+                    NachrichtenstrukturZeile(
+                        zaehler="107",
+                        bezeichnung="SG7",
+                        bdew_status="S",
                         nr=None,
-                        ebene=0,
+                        ebene=1,
                         inhalt="None",
                         standard_status="M",
                         standard_maximale_wiederholungen=1,
                         bdew_maximale_wiederholungen=1,
                     ),
-                    segmente=[
-                        NachrichtenstrukturZeile(
-                            zaehler="103",
-                            bezeichnung="SG3",
-                            bdew_status="S",
-                            nr=None,
-                            ebene=1,
-                            inhalt="None",
-                            standard_status="M",
-                            standard_maximale_wiederholungen=1,
-                            bdew_maximale_wiederholungen=1,
-                        ),
-                        NachrichtenstrukturZeile(
-                            zaehler="107",
-                            bezeichnung="SG7",
-                            bdew_status="S",
-                            nr=None,
-                            ebene=1,
-                            inhalt="None",
-                            standard_status="M",
-                            standard_maximale_wiederholungen=1,
-                            bdew_maximale_wiederholungen=1,
-                        ),
-                    ],
-                    segmentgruppen=[],
-                ),
-            ],
-        )
+                ],
+                segmentgruppen=[],
+            ),
+        ],
+    )
 
     def test_create_reduced_nested_nachrichtenstruktur(self):
         """test if the reduced nested nachrichtenstruktur is created correctly"""
@@ -186,6 +185,4 @@ class TestReducedNestedNachrichtenstruktur(unittest.IsolatedAsyncioTestCase):
 
         output = ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(self.input_data)
 
-        self.assertEqual(output, expected_output)
-
-
+        assert output == expected_output
