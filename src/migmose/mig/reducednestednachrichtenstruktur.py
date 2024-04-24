@@ -4,13 +4,12 @@ contains class for trees consisting of segments of mig tables
 
 import json
 from pathlib import Path
-from typing import Any, Optional, Tuple
+from typing import Any, Optional
 
 from loguru import logger
 from maus.edifact import EdifactFormat
 from pydantic import BaseModel
 
-from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
 from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
 
@@ -61,7 +60,8 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
         def process_segmentgruppen(
             segmentgruppen: NestedNachrichtenstruktur, segment_count_dict: dict, seen: dict = None, depth: int = 0
         ):
-            """Recursively clean segment groups to avoid duplicates, keep largest, with debugging for circular references."""
+            """Recursively clean segment groups to avoid duplicates, keep largest,
+            with debugging for circular references."""
             if seen is None:
                 seen = {}
             result = []
@@ -90,7 +90,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
 
                 # Check if the current segment group's count is greater than the stored count
                 if name in segment_count_dict:
-                    existing_count, existing_sg = segment_count_dict[name]
+                    existing_count, _ = segment_count_dict[name]
                     if count > existing_count:
                         segment_count_dict[name] = (count, sg)
                 else:
@@ -100,7 +100,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
                 nested_counts = build_segment_count_dict(sg.segmentgruppen)
                 for nested_name, (nested_count, nested_sg) in nested_counts.items():
                     if nested_name in segment_count_dict:
-                        existing_count, existing_sg = segment_count_dict[nested_name]
+                        existing_count, _ = segment_count_dict[nested_name]
                         if nested_count > existing_count:
                             segment_count_dict[nested_name] = (nested_count, nested_sg)
                     else:
