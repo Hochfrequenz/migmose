@@ -1,5 +1,3 @@
-import pytest
-
 from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile
 from migmose.mig.reducednestednachrichtenstruktur import ReducedNestedNachrichtenstruktur
 
