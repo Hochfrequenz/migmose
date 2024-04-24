@@ -29,6 +29,7 @@ def find_file_to_format(message_formats: list[EdifactFormat], input_dir: Path) -
             for file in input_dir.iterdir()
             if message_format in file.name and "MIG" in file.name and file.suffix == ".docx"
         ]
+
         if len(list_of_all_files) == 1:
             file_dict[message_format] = list_of_all_files[0]
         elif len(list_of_all_files) > 1:
