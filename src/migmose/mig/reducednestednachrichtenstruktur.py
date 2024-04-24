@@ -122,12 +122,12 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
 
     def to_json(self, message_type: EdifactFormat, output_dir: Path) -> dict[str, Any]:
         """
-        writes the NestedNachrichtenstruktur as json
+        writes the reduced NestedNachrichtenstruktur as json
         """
         output_dir.mkdir(parents=True, exist_ok=True)
         file_path = output_dir.joinpath(f"{message_type}_reduced_nested_nachrichtenstruktur.json")
         structured_json = self.model_dump()
         with open(file_path, "w", encoding="utf-8") as json_file:
             json.dump(structured_json, json_file, indent=4)
-        logger.info(f"Wrote nested Nachrichtenstruktur for {message_type} to {file_path}")
+        logger.info(f"Wrote reduced nested Nachrichtenstruktur for {message_type} to {file_path}")
         return structured_json
