@@ -189,5 +189,3 @@ class TestReducedNestedNachrichtenstruktur(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(output, expected_output)
 
 
-if __name__ == "__main__":
-    unittest.main()
