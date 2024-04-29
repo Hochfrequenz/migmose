@@ -75,7 +75,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
 
                     if identifier not in seen:
                         seen[identifier] = max_sg
-                        print(f"Added {identifier} with {max_count} segments at depth {depth}.")
+                        logger.info("Added %s with %s segments at depth %s." % (identifier, max_count, depth))
 
                     sg.segmente = process_segments(max_sg.segmente)
                     sg.segmentgruppen = process_segmentgruppen(
