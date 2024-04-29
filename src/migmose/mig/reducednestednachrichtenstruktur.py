@@ -28,7 +28,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
         """init nested Nachrichtenstruktur"""
 
         # Helper function to create a unique identifier for each segment
-        def get_identifier(segment: NachrichtenstrukturZeile | None) -> tuple[str, str]:
+        def get_identifier(segment: Optional[NachrichtenstrukturZeile]) -> tuple[str, str]:
             if segment is None:
                 return ("0", "root")
             return (segment.zaehler, segment.bezeichnung)
@@ -57,7 +57,10 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
 
         # Recursive function to traverse and clean segment groups
         def process_segmentgruppen(
-            segmentgruppen: list[NestedNachrichtenstruktur | None], segment_count_dict: dict, seen=None, depth: int = 0
+            segmentgruppen: list[Optional[NestedNachrichtenstruktur]],
+            segment_count_dict: dict,
+            seen=None,
+            depth: int = 0,
         ):
             """Recursively clean segment groups to avoid duplicates, keep largest,
             with debugging for circular references."""
@@ -84,7 +87,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
                 result = [seen[key] for key in seen]
             return result
 
-        def build_segment_count_dict(segment_groups: list[NestedNachrichtenstruktur | None]):
+        def build_segment_count_dict(segment_groups: list[Optional[NestedNachrichtenstruktur]]):
             segment_count_dict: dict = {}
             for sg in segment_groups:
                 if sg is not None:
