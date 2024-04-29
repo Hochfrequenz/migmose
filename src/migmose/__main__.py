@@ -42,7 +42,7 @@ from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturze
 @click.option(
     "-ft",
     "--file-type",
-    type=click.Choice(["csv", "nested_json"], case_sensitive=False),
+    type=click.Choice(["csv", "nested_json", "reduced_nested_json"], case_sensitive=False),
     default=["csv"],
     prompt="Please specify how the output should be formatted.",
     help="Defines the output format. Choose between csv and nested_json and reduced_nested_json. Default is csv.",
@@ -74,12 +74,17 @@ def main(input_dir: Path, output_dir, message_format: list[EdifactFormat], file_
             nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
                 nachrichtenstrukturtabelle
             )
-            reduced_nested_nachrichtenstruktur = (
-                ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(nested_nachrichtenstruktur)
-            )
             # Save the nested Nachrichtenstruktur as json
             logger.info("💾 Saving nested Nachrichtenstruktur for %s as json to %s." % (m_format, output_dir))
             nested_nachrichtenstruktur.to_json(m_format, output_dir)
+
+        if "reduced_nested_json" in file_type:
+            nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
+                nachrichtenstrukturtabelle
+            )
+            reduced_nested_nachrichtenstruktur = (
+                ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(nested_nachrichtenstruktur)
+            )
             # Save the reduced nested Nachrichtenstruktur as json
             logger.info("💾 Saving reduced nested Nachrichtenstruktur for %s as json to %s." % (m_format, output_dir))
             reduced_nested_nachrichtenstruktur.to_json(m_format, output_dir)
