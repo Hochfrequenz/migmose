@@ -75,7 +75,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
 
                     if identifier not in seen:
                         seen[identifier] = max_sg
-                        logger.info("Added %s with %s segments at depth %s." % (identifier, max_count, depth))
+                        logger.info("Added {} with {} segments at depth {}.", identifier, max_count, depth)
 
                     sg.segmente = process_segments(max_sg.segmente)
                     sg.segmentgruppen = process_segmentgruppen(
@@ -131,9 +131,9 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
         writes the reduced NestedNachrichtenstruktur as json
         """
         output_dir.mkdir(parents=True, exist_ok=True)
-        file_path = output_dir.joinpath("%s_reduced_nested_nachrichtenstruktur.json" % message_type)
+        file_path = output_dir.joinpath(f"{message_type}_reduced_nested_nachrichtenstruktur.json")
         structured_json = self.model_dump()
         with open(file_path, "w", encoding="utf-8") as json_file:
             json.dump(structured_json, json_file, indent=4)
-        logger.info("Wrote reduced nested Nachrichtenstruktur for %s to %s" % (message_type, file_path))
+        logger.info("Wrote reduced nested Nachrichtenstruktur for {} to {}", message_type, file_path)
         return structured_json

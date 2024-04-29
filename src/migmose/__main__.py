@@ -75,7 +75,7 @@ def main(input_dir: Path, output_dir, message_format: list[EdifactFormat], file_
                 nachrichtenstrukturtabelle
             )
             # Save the nested Nachrichtenstruktur as json
-            logger.info("💾 Saving nested Nachrichtenstruktur for %s as json to %s." % (m_format, output_dir))
+            logger.info("💾 Saving nested Nachrichtenstruktur for {} as json to {}.", m_format, output_dir)
             nested_nachrichtenstruktur.to_json(m_format, output_dir)
 
         if "reduced_nested_json" in file_type:
@@ -86,7 +86,7 @@ def main(input_dir: Path, output_dir, message_format: list[EdifactFormat], file_
                 ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(nested_nachrichtenstruktur)
             )
             # Save the reduced nested Nachrichtenstruktur as json
-            logger.info("💾 Saving reduced nested Nachrichtenstruktur for %s as json to %s." % (m_format, output_dir))
+            logger.info("💾 Saving reduced nested Nachrichtenstruktur for {} as json to {}.", m_format, output_dir)
             reduced_nested_nachrichtenstruktur.to_json(m_format, output_dir)
 
 
