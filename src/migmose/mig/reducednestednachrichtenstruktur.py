@@ -48,7 +48,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
             segments: list[Optional[NachrichtenstrukturZeile]],
         ) -> list[Optional[NachrichtenstrukturZeile]]:
             seen = set()
-            unique_segments = []
+            unique_segments: list[Optional[NachrichtenstrukturZeile]] = []
             for segment in segments:
                 if segment is not None:
                     identifier = get_identifier(segment)
@@ -59,7 +59,9 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
 
         # Recursive function to traverse and clean segment groups
         def process_segmentgruppen(
-            segmentgruppen: list[Optional[NestedNachrichtenstruktur]],
+            segmentgruppen: (
+                list[Optional[NestedNachrichtenstruktur]] | list[Optional[ReducedNestedNachrichtenstruktur]]
+            ),
             segment_count_dict: dict,
             seen=None,
             depth: int = 0,
@@ -90,13 +92,15 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
             return result
 
         def build_segment_count_dict(
-            segment_groups: list[Optional[NestedNachrichtenstruktur]],
+            segment_groups: (
+                list[Optional[NestedNachrichtenstruktur]] | list[Optional[ReducedNestedNachrichtenstruktur]]
+            ),
         ) -> dict[tuple[str, str], tuple[int, ReducedNestedNachrichtenstruktur]]:
             segment_count_dict: dict[tuple[str, str], tuple[int, ReducedNestedNachrichtenstruktur]] = {}
             for _sg in segment_groups:
                 if _sg is not None:
                     sg = ReducedNestedNachrichtenstruktur(
-                        header_linie=_sg.header_linie, segmente=_sg.segmente, segmentgruppen=_sg.segmentgruppen
+                        header_linie=_sg.header_linie, segmente=_sg.segmente, segmentgruppen=_sg.segmentgruppen  # type: ignore
                     )
                     name = get_identifier(sg.header_linie)
                     count = count_segments(sg)
