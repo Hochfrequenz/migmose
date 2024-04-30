@@ -43,7 +43,7 @@ class TestReducedNestedNachrichtenstruktur:
             ),
         ],
         segmentgruppen=[
-            ReducedNestedNachrichtenstruktur(
+            NestedNachrichtenstruktur(
                 header_linie=NachrichtenstrukturZeile(
                     zaehler="201",
                     bezeichnung="SG5",
