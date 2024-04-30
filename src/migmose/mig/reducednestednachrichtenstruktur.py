@@ -89,7 +89,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
                 result = [seen[key] for key in seen]
             return result
 
-        def build_segment_count_dict(segment_groups: list[Optional[NestedNachrichtenstruktur]]):
+        def build_segment_count_dict(segment_groups: list[Optional[NestedNachrichtenstruktur]]) -> dict[tuple[str, str], tuple[int, NestedNachrichtenstruktur]]:
             segment_count_dict: dict = {}
             for sg in segment_groups:
                 if sg is not None:
