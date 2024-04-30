@@ -100,7 +100,9 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
             for _sg in segment_groups:
                 if _sg is not None:
                     sg = ReducedNestedNachrichtenstruktur(
-                        header_linie=_sg.header_linie, segmente=_sg.segmente, segmentgruppen=_sg.segmentgruppen  # type: ignore
+                        header_linie=_sg.header_linie,
+                        segmente=_sg.segmente,
+                        segmentgruppen=_sg.segmentgruppen,  # type: ignore
                     )
                     name = get_identifier(sg.header_linie)
                     count = count_segments(sg)
