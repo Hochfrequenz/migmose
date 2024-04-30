@@ -117,7 +117,7 @@ class TestReducedNestedNachrichtenstruktur:
         expected_output = ReducedNestedNachrichtenstruktur(
             header_linie=None,
             segmente=[
-                NachrichtenstrukturZeile(
+                ReducedNestedNachrichtenstruktur(
                     zaehler="101",
                     bezeichnung="SG1",
                     bdew_status="D",
@@ -128,7 +128,7 @@ class TestReducedNestedNachrichtenstruktur:
                     standard_maximale_wiederholungen=1,
                     bdew_maximale_wiederholungen=1,
                 ),
-                NachrichtenstrukturZeile(
+                ReducedNestedNachrichtenstruktur(
                     zaehler="102",
                     bezeichnung="SG2",
                     bdew_status="S",
@@ -142,7 +142,7 @@ class TestReducedNestedNachrichtenstruktur:
             ],
             segmentgruppen=[
                 ReducedNestedNachrichtenstruktur(
-                    header_linie=NachrichtenstrukturZeile(
+                    header_linie=ReducedNestedNachrichtenstruktur(
                         zaehler="201",
                         bezeichnung="SG5",
                         bdew_status="D",
@@ -154,7 +154,7 @@ class TestReducedNestedNachrichtenstruktur:
                         bdew_maximale_wiederholungen=1,
                     ),
                     segmente=[
-                        NachrichtenstrukturZeile(
+                        ReducedNestedNachrichtenstruktur(
                             zaehler="103",
                             bezeichnung="SG3",
                             bdew_status="S",
@@ -165,7 +165,7 @@ class TestReducedNestedNachrichtenstruktur:
                             standard_maximale_wiederholungen=1,
                             bdew_maximale_wiederholungen=1,
                         ),
-                        NachrichtenstrukturZeile(
+                        ReducedNestedNachrichtenstruktur(
                             zaehler="107",
                             bezeichnung="SG7",
                             bdew_status="S",
