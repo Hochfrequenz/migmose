@@ -44,7 +44,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
             return total_segments
 
         # Function to process segments and remove duplicates within the same list.
-        def process_segments(segments: list[Optional[NachrichtenstrukturZeile]]):
+        def process_segments(segments: list[Optional[NachrichtenstrukturZeile]]) -> list[Optional[NachrichtenstrukturZeile]]:
             seen = set()
             unique_segments = []
             for segment in segments:
