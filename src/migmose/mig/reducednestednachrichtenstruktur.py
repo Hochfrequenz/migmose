@@ -63,7 +63,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
             segment_count_dict: dict,
             seen=None,
             depth: int = 0,
-        ) -> list[Optional[NestedNachrichtenstruktur]]:
+        ) -> list[Optional[ReducedNestedNachrichtenstruktur]]:
             """Recursively clean segment groups to avoid duplicates, keep largest,
             with debugging for circular references."""
             if seen is None:
@@ -89,10 +89,15 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
                 result = [seen[key] for key in seen]
             return result
 
-        def build_segment_count_dict(segment_groups: list[Optional[NestedNachrichtenstruktur]]) -> dict[tuple[str, str], tuple[int, NestedNachrichtenstruktur]]:
-            segment_count_dict: dict[tuple[str, str], tuple[int, NestedNachrichtenstruktur]] = {}
-            for sg in segment_groups:
-                if sg is not None:
+        def build_segment_count_dict(
+            segment_groups: list[Optional[NestedNachrichtenstruktur]],
+        ) -> dict[tuple[str, str], tuple[int, ReducedNestedNachrichtenstruktur]]:
+            segment_count_dict: dict[tuple[str, str], tuple[int, ReducedNestedNachrichtenstruktur]] = {}
+            for _sg in segment_groups:
+                if _sg is not None:
+                    sg = ReducedNestedNachrichtenstruktur(
+                        header_linie=_sg.header_linie, segmente=_sg.segmente, segmentgruppen=_sg.segmentgruppen
+                    )
                     name = get_identifier(sg.header_linie)
                     count = count_segments(sg)
 
