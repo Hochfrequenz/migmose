@@ -1,4 +1,5 @@
 from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile
+from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
 from migmose.mig.reducednestednachrichtenstruktur import ReducedNestedNachrichtenstruktur
 
 
