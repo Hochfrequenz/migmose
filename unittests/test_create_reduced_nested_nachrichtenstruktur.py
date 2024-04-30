@@ -5,7 +5,7 @@ from migmose.mig.reducednestednachrichtenstruktur import ReducedNestedNachrichte
 class TestReducedNestedNachrichtenstruktur:
     """test class for create_reduced_nested_nachrichtenstruktur"""
 
-    input_data = ReducedNestedNachrichtenstruktur(
+    input_data = NestedNachrichtenstruktur(
         header_linie=None,
         segmente=[
             NachrichtenstrukturZeile(
