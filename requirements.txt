@@ -32,7 +32,7 @@ pydantic-core==2.18.2
     # via pydantic
 python-docx==1.1.0
     # via migmose (pyproject.toml)
-typing-extensions==4.10.0
+typing-extensions==4.11.0
     # via
     #   pydantic
     #   pydantic-core
