@@ -63,7 +63,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
             segment_count_dict: dict,
             seen=None,
             depth: int = 0,
-        ):
+        ) -> list[Optional[NestedNachrichtenstruktur]]:
             """Recursively clean segment groups to avoid duplicates, keep largest,
             with debugging for circular references."""
             if seen is None:
