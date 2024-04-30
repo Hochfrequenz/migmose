@@ -28,7 +28,7 @@ packaging==24.0
     # via marshmallow
 pydantic==2.6.4
     # via migmose (pyproject.toml)
-pydantic-core==2.16.3
+pydantic-core==2.18.2
     # via pydantic
 python-docx==1.1.0
     # via migmose (pyproject.toml)
