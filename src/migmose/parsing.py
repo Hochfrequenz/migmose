@@ -13,7 +13,6 @@ import docx  # type: ignore[import]
 from docx.document import Document  # type: ignore[import]
 from docx.oxml import CT_Tbl  # type: ignore[import]
 from docx.table import Table, _Cell  # type: ignore[import]
-from docx.text.paragraph import Paragraph  # type: ignore[import]
 from loguru import logger
 from maus.edifact import EdifactFormat
 
@@ -96,7 +95,7 @@ def preliminary_output_as_json(table: list[str], message_format: EdifactFormat, 
     logger.info(f"Created and wrote to {file_path}")
 
 
-def get_paragraphs_up_to_diagram(parent: Union[Document, _Cell]) -> Generator[Union[Paragraph, Table], None, None]:
+def get_paragraphs_up_to_diagram(parent: Union[Document, _Cell]) -> Generator[Table, None, None]:
     """Goes through paragraphs and tables"""
     # pylint: disable=protected-access
     if isinstance(parent, Document):
@@ -116,7 +115,7 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
     parses raw nachrichtenstrukturzeile from a table. returns list of raw lines
     """
     # pylint: disable=protected-access
-    doc = docx.Document(input_path)
+    doc = docx.Document(str(input_path))
     docx_objects = get_paragraphs_up_to_diagram(doc)
     mig_tables = []
     nachrichtenstruktur_header = "Status\tMaxWdh\n\tZähler\tNr\tBez\tSta\tBDEW\tSta\tBDEW\tEbene\tInhalt"
