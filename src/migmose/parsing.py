@@ -9,10 +9,10 @@ from pathlib import Path
 from typing import Generator, Union
 
 import click
-import docx  # type: ignore[import]
-from docx.document import Document  # type: ignore[import]
-from docx.oxml import CT_Tbl  # type: ignore[import]
-from docx.table import Table, _Cell  # type: ignore[import]
+import docx
+from docx.document import Document
+from docx.oxml import CT_Tbl
+from docx.table import Table, _Cell
 from loguru import logger
 from maus.edifact import EdifactFormat
 
