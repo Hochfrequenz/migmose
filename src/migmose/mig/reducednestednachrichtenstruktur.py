@@ -53,7 +53,9 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
             segment_dict: dict,
             depth: int = 0,
         ) -> list[Optional[ReducedNestedNachrichtenstruktur]]:
-            """Recursively clean segment groups to ensure nested nachrichtenstruktur consisting only of a unique subset."""
+            """
+            Recursively clean segment groups to ensure nested nachrichtenstruktur consisting only of a unique subset.
+            """
             result: list[Optional[ReducedNestedNachrichtenstruktur]] = []
 
             for sg in sorted(segmentgruppen_identifiers):
