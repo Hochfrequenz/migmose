@@ -17,10 +17,13 @@ from loguru import logger
 from maus.edifact import EdifactFormat
 
 
-def find_file_to_format(message_formats: list[EdifactFormat], input_dir: Path) -> dict[EdifactFormat, Path]:
+def find_file_to_format(
+    message_formats: list[EdifactFormat], edi_energy_repo: Path, format_version
+) -> dict[EdifactFormat, Path]:
     """
     finds the file with the message type in the input directory
     """
+    input_dir = edi_energy_repo / Path("edi_energy_de") / Path(format_version)
     file_dict: dict[EdifactFormat, Path] = {}
     for message_format in message_formats:
         list_of_all_files: list[Path] = [
