@@ -33,16 +33,6 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
                 return ("0", "root")
             return (segment.zaehler, segment.bezeichnung)
 
-        def count_segments(segment_group: ReducedNestedNachrichtenstruktur | NestedNachrichtenstruktur) -> int:
-            # Start with counting segments directly under the current segment group
-            total_segments = len(segment_group.segmente)
-            # Recursively count segments in nested segment groups
-            for nested_sg in segment_group.segmentgruppen:
-                if nested_sg is not None:
-                    total_segments += count_segments(nested_sg)
-
-            return total_segments
-
         # Function to process segments and remove duplicates within the same list.
         def process_segments(
             segments: list[Optional[NachrichtenstrukturZeile]],
@@ -63,8 +53,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
             segment_dict: dict,
             depth: int = 0,
         ) -> list[Optional[ReducedNestedNachrichtenstruktur]]:
-            """Recursively clean segment groups to avoid duplicates, keep largest,
-            with debugging for circular references."""
+            """Recursively clean segment groups to ensure nested nachrichtenstruktur consisting only of a unique subset."""
             result: list[Optional[ReducedNestedNachrichtenstruktur]] = []
 
             for sg in sorted(segmentgruppen_identifiers):
@@ -80,12 +69,17 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
 
         def build_segment_dict(
             segment_groups: list[Optional[NestedNachrichtenstruktur]],
-            segment_dict: dict[
-                tuple[str, str],
-                tuple[
-                    list[Optional[NachrichtenstrukturZeile]], Optional[NachrichtenstrukturZeile], set[tuple[str, str]]
-                ],
-            ] = None,
+            segment_dict: (
+                dict[
+                    tuple[str, str],
+                    tuple[
+                        list[Optional[NachrichtenstrukturZeile]],
+                        Optional[NachrichtenstrukturZeile],
+                        set[tuple[str, str]],
+                    ],
+                ]
+                | None
+            ) = None,
         ) -> dict[
             tuple[str, str],
             tuple[list[Optional[NachrichtenstrukturZeile]], Optional[NachrichtenstrukturZeile], set[tuple[str, str]]],
@@ -108,7 +102,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
                     else:
                         segment_dict[name] = (process_segments(_sg.segmente), _sg.header_linie, set())
 
-                    # Iterate recursively through nested segment groups
+                    # Iterate recursively through nested segmentgroups
                     for segmentgruppe in _sg.segmentgruppen:
                         if segmentgruppe is not None:
                             sg_name = get_identifier(segmentgruppe.header_linie)

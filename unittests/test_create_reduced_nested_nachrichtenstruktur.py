@@ -120,7 +120,8 @@ class TestReducedNestedNachrichtenstruktur:
     def test_create_reduced_nested_nachrichtenstruktur(self, tmp_path):
         """test if the reduced nested nachrichtenstruktur is created correctly"""
         file_path = Path(
-            "unittests/test_data/IFTSTAMIG-informatorischeLesefassung2.0emitFehlerkorrekturenStand11.03.2024_99991231_20240311.docx"
+            "unittests/test_data/"
+            "IFTSTAMIG-informatorischeLesefassung2.0emitFehlerkorrekturenStand11.03.2024_99991231_20240311.docx"
         )
         raw_lines = parse_raw_nachrichtenstrukturzeile(file_path)
         nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.create_nachrichtenstruktur_tabelle(raw_lines)
