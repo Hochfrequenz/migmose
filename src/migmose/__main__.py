@@ -38,6 +38,7 @@ from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturze
     "--format-version",
     multiple=False,
     type=click.Choice([e.value for e in EdifactFormatVersion], case_sensitive=False),
+    default=EdifactFormatVersion.FV2404,
     required=True,
     help="Format version of the MIG documents, e.g. FV2310",
 )
@@ -52,8 +53,7 @@ from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturze
     "-ft",
     "--file-type",
     type=click.Choice(["csv", "nested_json", "reduced_nested_json"], case_sensitive=False),
-    default=["csv"],
-    prompt="Please specify how the output should be formatted.",
+    default=["csv", "nested_json", "reduced_nested_json"],
     help="Defines the output format. Choose between csv and nested_json and reduced_nested_json. Default is csv.",
     multiple=True,
 )
