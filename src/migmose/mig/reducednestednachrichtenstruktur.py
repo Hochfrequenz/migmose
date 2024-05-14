@@ -33,16 +33,6 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
                 return ("0", "root")
             return (segment.zaehler, segment.bezeichnung)
 
-        def count_segments(segment_group: ReducedNestedNachrichtenstruktur | NestedNachrichtenstruktur) -> int:
-            # Start with counting segments directly under the current segment group
-            total_segments = len(segment_group.segmente)
-            # Recursively count segments in nested segment groups
-            for nested_sg in segment_group.segmentgruppen:
-                if nested_sg is not None:
-                    total_segments += count_segments(nested_sg)
-
-            return total_segments
-
         # Function to process segments and remove duplicates within the same list.
         def process_segments(
             segments: list[Optional[NachrichtenstrukturZeile]],
@@ -59,73 +49,69 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
 
         # Recursive function to traverse and clean segment groups
         def process_segmentgruppen(
-            segmentgruppen: (
-                list[Optional[NestedNachrichtenstruktur]] | list[Optional[ReducedNestedNachrichtenstruktur]]
-            ),
-            segment_count_dict: dict,
-            seen=None,
+            segmentgruppen_identifiers: set[tuple[str, str]],
+            segment_dict: dict,
             depth: int = 0,
         ) -> list[Optional[ReducedNestedNachrichtenstruktur]]:
-            """Recursively clean segment groups to avoid duplicates, keep largest,
-            with debugging for circular references."""
-            if seen is None:
-                seen = {}
-            result = []
+            """
+            Recursively clean segment groups to ensure nested nachrichtenstruktur consisting only of a unique subset.
+            """
+            result: list[Optional[ReducedNestedNachrichtenstruktur]] = []
 
-            for sg in segmentgruppen:
+            for sg in sorted(segmentgruppen_identifiers):
                 if sg is not None:
-                    identifier = get_identifier(sg.header_linie)
-                    max_count, max_sg = segment_count_dict[identifier]
-
-                    if identifier not in seen:
-                        seen[identifier] = max_sg
-                        logger.info("Added {} with {} segments at depth {}.", identifier, max_count, depth)
-
-                    sg.segmente = process_segments(max_sg.segmente)
-                    sg.segmentgruppen = process_segmentgruppen(
-                        max_sg.segmentgruppen, segment_count_dict, seen, depth + 1
-                    )
-
-            # Compile the unique list from the seen dictionary after recursive processing to avoid circular reference
-            if depth == 0:  # Only compile on the initial call, not recursive ones
-                result = [seen[key] for key in seen]
+                    segmente, header_line, segmentgroups = segment_dict[sg]
+                    if segmente is not None:
+                        segmente = sorted(segmente, key=lambda x: x.zaehler)
+                    _new_sg = ReducedNestedNachrichtenstruktur(header_linie=header_line, segmente=segmente)
+                    _new_sg.segmentgruppen = process_segmentgruppen(segmentgroups, segment_dict, depth + 1)
+                    result.append(_new_sg)
+                    logger.info("Added {} with {} segments at depth {}.", sg, len(segmente), depth)
             return result
 
-        def build_segment_count_dict(
-            segment_groups: (
-                list[Optional[NestedNachrichtenstruktur]] | list[Optional[ReducedNestedNachrichtenstruktur]]
-            ),
-        ) -> dict[tuple[str, str], tuple[int, ReducedNestedNachrichtenstruktur]]:
-            segment_count_dict: dict[tuple[str, str], tuple[int, ReducedNestedNachrichtenstruktur]] = {}
+        def build_segment_dict(
+            segment_groups: list[Optional[NestedNachrichtenstruktur]],
+            segment_dict: (
+                dict[
+                    tuple[str, str],
+                    tuple[
+                        list[Optional[NachrichtenstrukturZeile]],
+                        Optional[NachrichtenstrukturZeile],
+                        set[tuple[str, str]],
+                    ],
+                ]
+                | None
+            ) = None,
+        ) -> dict[
+            tuple[str, str],
+            tuple[list[Optional[NachrichtenstrukturZeile]], Optional[NachrichtenstrukturZeile], set[tuple[str, str]]],
+        ]:
+            """Build a dictionary of segments and segment groups to find unique set."""
+            if segment_dict is None:
+                segment_dict = {}
             for _sg in segment_groups:
                 if _sg is not None:
-                    sg = ReducedNestedNachrichtenstruktur(
-                        header_linie=_sg.header_linie,
-                        segmente=_sg.segmente,
-                        segmentgruppen=_sg.segmentgruppen,  # type: ignore
-                    )
-                    name = get_identifier(sg.header_linie)
-                    count = count_segments(sg)
+                    name = get_identifier(_sg.header_linie)
 
-                    # Check if the current segment group's count is greater than the stored count
-                    if name in segment_count_dict:
-                        existing_count, _ = segment_count_dict[name]
-                        if count > existing_count:
-                            segment_count_dict[name] = (count, sg)
+                    # Check if the current segments are already known and complete by unknown segments
+                    if name in segment_dict:
+                        # make sure every possible segment is included
+                        segment_dict[name] = (
+                            process_segments(_sg.segmente + segment_dict[name][0]),
+                            segment_dict[name][1],
+                            segment_dict[name][2],
+                        )
                     else:
-                        segment_count_dict[name] = (count, sg)
+                        segment_dict[name] = (process_segments(_sg.segmente), _sg.header_linie, set())
 
-                    # Process nested segment groups recursively and update the dictionary
-                    nested_counts = build_segment_count_dict(sg.segmentgruppen)
-                    for nested_name, (nested_count, nested_sg) in nested_counts.items():
-                        if nested_name in segment_count_dict:
-                            existing_count, _ = segment_count_dict[nested_name]
-                            if nested_count > existing_count:
-                                segment_count_dict[nested_name] = (nested_count, nested_sg)
-                        else:
-                            segment_count_dict[nested_name] = (nested_count, nested_sg)
+                    # Iterate recursively through nested segmentgroups
+                    for segmentgruppe in _sg.segmentgruppen:
+                        if segmentgruppe is not None:
+                            sg_name = get_identifier(segmentgruppe.header_linie)
+                            segment_dict[name][2].add(sg_name)
+                            segment_dict = build_segment_dict([segmentgruppe], segment_dict)
 
-            return segment_count_dict
+            return segment_dict
 
         data = ReducedNestedNachrichtenstruktur()
         # Start processing the top-level segments
@@ -134,8 +120,11 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
 
         # Process segment groups recursively
         if nachrichten_struktur.segmentgruppen is not None:
-            segment_count_dict = build_segment_count_dict(nachrichten_struktur.segmentgruppen)
-            data.segmentgruppen = process_segmentgruppen(nachrichten_struktur.segmentgruppen, segment_count_dict)
+            segment_dict = build_segment_dict(nachrichten_struktur.segmentgruppen)
+            segmentgruppen_identifiers = set(
+                get_identifier(sg.header_linie) for sg in nachrichten_struktur.segmentgruppen if sg is not None
+            )
+            data.segmentgruppen = process_segmentgruppen(segmentgruppen_identifiers, segment_dict)
 
         return data
 

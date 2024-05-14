@@ -138,3 +138,15 @@ src/_your_package_version.py
 test_output
 
 src/_migmose_version.py
+
+# Word temporary
+~$*.doc*
+
+# Word Auto Backup File
+Backup of *.doc*
+
+# Excel temporary
+~$*.xls*
+
+# Excel Backup File
+*.xlk
