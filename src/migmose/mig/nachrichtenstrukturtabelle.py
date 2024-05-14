@@ -6,9 +6,9 @@ import csv
 from pathlib import Path
 
 from loguru import logger
-from maus.edifact import EdifactFormat
 from pydantic import BaseModel
 
+from migmose.edifactformat import ExtendedEdifactFormat
 from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile
 
 
@@ -30,7 +30,7 @@ class NachrichtenstrukturTabelle(BaseModel):
             collected_lines.append(NachrichtenstrukturZeile.init_raw_lines(raw_line))
         return cls(lines=collected_lines)
 
-    def to_csv(self, message_type: EdifactFormat, output_dir: Path) -> None:
+    def to_csv(self, message_type: ExtendedEdifactFormat, output_dir: Path) -> None:
         """
         writes the NestedNachrichtenstruktur as json
         """

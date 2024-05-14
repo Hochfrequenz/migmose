@@ -104,7 +104,7 @@ class NestedNachrichtenstruktur(BaseModel):
                     )
         return cls(header_linie=header_line, segmente=collected_segments, segmentgruppen=collected_segmentgroups), i
 
-    def to_json(self, message_type: EdifactFormat, output_dir: Path) -> dict[str, Any]:
+    def to_json(self, message_type: ExtendedEdifactFormat, output_dir: Path) -> dict[str, Any]:
         """
         writes the NestedNachrichtenstruktur as json
         """

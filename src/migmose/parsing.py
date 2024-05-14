@@ -15,10 +15,12 @@ from docx.table import Table, _Cell
 from loguru import logger
 from maus.edifact import EdifactFormat
 
+from migmose.edifactformat import ExtendedEdifactFormat
+
 
 def find_file_to_format(
     message_formats: list[EdifactFormat], edi_energy_repo: Path, format_version
-) -> dict[EdifactFormat, Path]:
+) -> dict[ExtendedEdifactFormat, Path]:
     """
     finds the file with the message type in the input directory
     """
@@ -30,7 +32,17 @@ def find_file_to_format(
             for file in input_dir.iterdir()
             if message_format in file.name and "MIG" in file.name and file.suffix == ".docx"
         ]
-
+        if (
+            message_format == EdifactFormat.UTILMD
+            and [file for file in list_of_all_files if "Gas" or "Strom" in file.name] is not None
+        ):
+            # filter UTILMD Gas files
+            files_utilmd_gas = [files for files in list_of_all_files if "Gas" in files.name]
+            file_dict[ExtendedEdifactFormat.UTILMDG] = get_latest_file(files_utilmd_gas)
+            # filter UTILMD Strom files
+            files_utilmd_strom = [files for files in list_of_all_files if "Strom" in files.name]
+            file_dict[ExtendedEdifactFormat.UTILMDS] = get_latest_file(files_utilmd_strom)
+            continue
         if len(list_of_all_files) == 1:
             file_dict[message_format] = list_of_all_files[0]
         elif len(list_of_all_files) > 1:
