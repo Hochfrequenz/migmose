@@ -1,11 +1,12 @@
 import json
 from pathlib import Path
 
-from maus.edifact import EdifactFormat
+from maus.edifact import EdifactFormat, EdifactFormatVersion
 
 from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
 from migmose.parsing import parse_raw_nachrichtenstrukturzeile
+from unittests import expected_output_dir, path_to_test_FV2310
 
 
 class TestNestedNachrichtenstruktur:
@@ -14,7 +15,7 @@ class TestNestedNachrichtenstruktur:
     """
 
     def test_create_nested_nachrichtenstruktur(self):
-        file_path = Path("unittests/test_data/ORDCHG_MIG_1_1_info_20230331_v2.docx")
+        file_path = path_to_test_FV2310 / "ORDCHGMIG-informatorischeLesefassung1.1_99991231_20231001.docx"
         raw_lines = parse_raw_nachrichtenstrukturzeile(file_path)
         nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.create_nachrichtenstruktur_tabelle(raw_lines)
         nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
@@ -24,9 +25,9 @@ class TestNestedNachrichtenstruktur:
         assert len(nested_nachrichtenstruktur.segmentgruppen[3].segmentgruppen) == 1
 
     def test_to_json(self, tmp_path):
-        input_file = Path("unittests/test_data/ORDCHG_MIG_1_1_info_20230331_v2.docx")
+        input_file = path_to_test_FV2310 / "ORDCHGMIG-informatorischeLesefassung1.1_99991231_20231001.docx"
         message_format = EdifactFormat.ORDCHG
-        output_dir = tmp_path / Path("output")
+        output_dir = tmp_path
         raw_lines = parse_raw_nachrichtenstrukturzeile(input_file)
         nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.create_nachrichtenstruktur_tabelle(raw_lines)
         nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
@@ -34,11 +35,13 @@ class TestNestedNachrichtenstruktur:
         )
         nested_nachrichtenstruktur.to_json(message_format, output_dir)
 
-        file_path = output_dir / Path(f"{message_format}_nested_nachrichtenstruktur.json")
+        file_path = output_dir / Path("nested_nachrichtenstruktur.json")
 
         assert file_path.exists()
 
-        reference_file = Path("unittests/test_data/ORDCHG_MIG_1_1_info_20230331_v2_nested_nachrichtenstruktur.json")
+        reference_file = (
+            expected_output_dir / EdifactFormatVersion.FV2310 / EdifactFormat.ORDCHG / "nested_nachrichtenstruktur.json"
+        )
 
         with open(file_path, "r", encoding="utf-8") as f:
             content = json.load(f)

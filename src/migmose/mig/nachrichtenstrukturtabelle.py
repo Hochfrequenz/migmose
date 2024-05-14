@@ -35,10 +35,10 @@ class NachrichtenstrukturTabelle(BaseModel):
         writes the NestedNachrichtenstruktur as json
         """
         output_dir.mkdir(parents=True, exist_ok=True)
-        file_path = output_dir.joinpath(f"{message_type}_nachrichtenstruktur.csv")
+        file_path = output_dir.joinpath("nachrichtenstruktur.csv")
         fieldnames = list(NachrichtenstrukturZeile.model_fields.keys())
-        with open(file_path, "w", encoding="utf-8") as csv_file:
-            writer = csv.DictWriter(csv_file, fieldnames=fieldnames, dialect="excel")
+        with open(file_path, "w", encoding="utf-8", newline="") as csv_file:
+            writer = csv.DictWriter(csv_file, fieldnames=fieldnames, dialect="excel", lineterminator="\n")
             writer.writeheader()
             for nachrichtenstruktur_zeile in self.lines:
                 writer.writerow(nachrichtenstruktur_zeile.model_dump())

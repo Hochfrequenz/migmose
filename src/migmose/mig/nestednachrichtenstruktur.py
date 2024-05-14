@@ -109,7 +109,7 @@ class NestedNachrichtenstruktur(BaseModel):
         writes the NestedNachrichtenstruktur as json
         """
         output_dir.mkdir(parents=True, exist_ok=True)
-        file_path = output_dir.joinpath(f"{message_type}_nested_nachrichtenstruktur.json")
+        file_path = output_dir.joinpath("nested_nachrichtenstruktur.json")
         structured_json = self.model_dump()
         with open(file_path, "w", encoding="utf-8") as json_file:
             json.dump(structured_json, json_file, indent=4)

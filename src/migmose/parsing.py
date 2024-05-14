@@ -2,7 +2,6 @@
 contains functions for file handling and parsing.
 """
 
-import json
 import re
 from datetime import datetime
 from pathlib import Path
@@ -17,10 +16,13 @@ from loguru import logger
 from maus.edifact import EdifactFormat
 
 
-def find_file_to_format(message_formats: list[EdifactFormat], input_dir: Path) -> dict[EdifactFormat, Path]:
+def find_file_to_format(
+    message_formats: list[EdifactFormat], edi_energy_repo: Path, format_version
+) -> dict[EdifactFormat, Path]:
     """
     finds the file with the message type in the input directory
     """
+    input_dir = edi_energy_repo / Path("edi_energy_de") / Path(format_version)
     file_dict: dict[EdifactFormat, Path] = {}
     for message_format in message_formats:
         list_of_all_files: list[Path] = [
@@ -80,19 +82,6 @@ def get_latest_file(file_list: list[Path]) -> Path:
 
     # Return the path of the file with the latest date
     return latest_file
-
-
-def preliminary_output_as_json(table: list[str], message_format: EdifactFormat, output_dir: Path) -> None:
-    """
-    Writes the preliminary output as json.
-    Serves only as a preliminary helper function until more precise class methods are implemented.
-    """
-    output_dir.mkdir(parents=True, exist_ok=True)
-    file_path = output_dir.joinpath(f"{message_format}_preliminary_output.json")
-    structured_json = {line: None for line in table}
-    with open(file_path, "w", encoding="utf-8") as json_file:
-        json.dump(structured_json, json_file, indent=4)
-    logger.info(f"Created and wrote to {file_path}")
 
 
 def get_paragraphs_up_to_diagram(parent: Union[Document, _Cell]) -> Generator[Table, None, None]:

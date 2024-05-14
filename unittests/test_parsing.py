@@ -2,14 +2,13 @@
 Test parsing routines.
 """
 
-import json
 import logging
-from pathlib import Path
 
-from maus.edifact import EdifactFormat
+from maus.edifact import EdifactFormat, EdifactFormatVersion
 from pytest_loguru.plugin import caplog  # type: ignore[import] # pylint: disable=unused-import
 
-from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturzeile, preliminary_output_as_json
+from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturzeile
+from unittests import expected_output_dir, path_to_test_edi_energy_mirror_repo, path_to_test_FV2310
 
 
 class TestParsing:
@@ -22,54 +21,56 @@ class TestParsing:
         Test find_file_to_format function. Tests whether the MIG to edifact format ORDCHG is found in the test folder.
         """
         message_format = [EdifactFormat.ORDCHG]
-        input_dir = Path("unittests/test_data/")
-        file_dict = find_file_to_format(message_format, input_dir)
-        assert file_dict[EdifactFormat.ORDCHG] == input_dir / Path("ORDCHG_MIG_1_1_info_20230331_v2.docx")
+        file_dict = find_file_to_format(
+            message_format, path_to_test_edi_energy_mirror_repo, EdifactFormatVersion.FV2310
+        )
+        assert (
+            file_dict[EdifactFormat.ORDCHG]
+            == path_to_test_FV2310 / "ORDCHGMIG-informatorischeLesefassung1.1_99991231_20231001.docx"
+        )
 
     def test_find_only_one_file(self, caplog):
         """
         Tests to find multiple formats when one is not present.
         """
         message_formats = [EdifactFormat.ORDCHG, EdifactFormat.ORDRSP]
-        input_dir = Path("unittests/test_data/")
         with caplog.at_level(logging.WARNING):
-            file_dict = find_file_to_format(message_formats, input_dir)
+            file_dict = find_file_to_format(
+                message_formats, path_to_test_edi_energy_mirror_repo, EdifactFormatVersion.FV2310
+            )
             assert f"No file found for {EdifactFormat.ORDRSP}." in caplog.text
-            assert file_dict[EdifactFormat.ORDCHG] == input_dir / Path("ORDCHG_MIG_1_1_info_20230331_v2.docx")
+            assert (
+                file_dict[EdifactFormat.ORDCHG]
+                == path_to_test_FV2310 / "ORDCHGMIG-informatorischeLesefassung1.1_99991231_20231001.docx"
+            )
 
     def test_find_only_one_file_multiple_docx(self):
         """
         Tests to find multiple docx files with the same message_format.
         """
         message_formats = [EdifactFormat.IFTSTA]
-        input_dir = Path("unittests/test_data/")
-        file_dict = find_file_to_format(message_formats, input_dir)
-        assert file_dict[EdifactFormat.IFTSTA] == input_dir / Path(
-            "IFTSTAMIG-informatorischeLesefassung2.0emitFehlerkorrekturenStand11.03.2024_99991231_20240311.docx"
+        file_dict = find_file_to_format(
+            message_formats, path_to_test_edi_energy_mirror_repo, EdifactFormatVersion.FV2310
+        )
+        assert (
+            file_dict[EdifactFormat.IFTSTA]
+            == path_to_test_FV2310
+            / "IFTSTAMIG-informatorischeLesefassung2.0emitFehlerkorrekturenStand11.03.2024_99991231_20240311.docx"
         )
 
     def test_parse_raw_nachrichtenstrukturzeile(self):
         """
         Test to parse the raw nachrichtenstrukturzeile from a docx file.
         """
-        input_file = Path("unittests/test_data/ORDCHG_MIG_1_1_info_20230331_v2.docx")
+        input_file = path_to_test_FV2310 / "ORDCHGMIG-informatorischeLesefassung1.1_99991231_20231001.docx"
         mig_table = parse_raw_nachrichtenstrukturzeile(input_file)
-        assert len(mig_table) == 18
-        assert "Nachrichten-Kopfsegment" in mig_table[0]
-        assert "Nachrichten-Endesegment" in mig_table[-1]
-
-    def test_preliminary_output_as_json(self, tmp_path):
-        """Tests the preliminary output as json function.
-        Asserts that the outputfile exists and has the correct content."""
-        table = ["line1", "line2", "line3"]
-        message_format = EdifactFormat.ORDCHG
-        output_dir = tmp_path / Path("output")
-
-        preliminary_output_as_json(table, message_format, output_dir)
-
-        file_path = output_dir / f"{message_format}_preliminary_output.json"
-        assert file_path.exists()
-
-        with open(file_path, "r", encoding="utf-8") as json_file:
-            content = json.load(json_file)
-            assert content == {"line1": None, "line2": None, "line3": None}
+        expected_csv_file = (
+            expected_output_dir / EdifactFormatVersion.FV2310 / EdifactFormat.ORDCHG / "nachrichtenstruktur.csv"
+        )
+        with open(expected_csv_file, encoding="utf-8") as csvfile:
+            number_of_lines_in_csv = sum(1 for _ in csvfile) - 1  # excl. header
+            assert len(mig_table) == number_of_lines_in_csv
+            csvfile.seek(0)
+            next(csvfile)
+            for actual_line, expected_line in zip(mig_table, csvfile):
+                assert actual_line.replace("\t", "") == expected_line.strip().replace(",", "")
