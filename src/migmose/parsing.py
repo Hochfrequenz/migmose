@@ -13,36 +13,31 @@ from docx.document import Document
 from docx.oxml import CT_Tbl
 from docx.table import Table, _Cell
 from loguru import logger
-from maus.edifact import EdifactFormat
+from maus.edifact import EdifactFormatVersion
 
 from migmose.edifactformat import ExtendedEdifactFormat
 
 
 def find_file_to_format(
-    message_formats: list[EdifactFormat], edi_energy_repo: Path, format_version
+    message_formats: list[ExtendedEdifactFormat], edi_energy_repo: Path, format_version
 ) -> dict[ExtendedEdifactFormat, Path]:
     """
     finds the file with the message type in the input directory
     """
     input_dir = edi_energy_repo / Path("edi_energy_de") / Path(format_version)
-    file_dict: dict[EdifactFormat, Path] = {}
+    file_dict: dict[ExtendedEdifactFormat, Path] = {}
     for message_format in message_formats:
+        if message_format == "UTILMDG":
+            keywords = ["UTILMD", "MIG", "Gas"]
+        elif message_format == "UTILMDS":
+            keywords = ["UTILMD", "MIG", "Strom"]
+        else:
+            keywords = [message_format, "MIG"]
         list_of_all_files: list[Path] = [
             file
             for file in input_dir.iterdir()
-            if message_format in file.name and "MIG" in file.name and file.suffix == ".docx"
+            if all(keyword in file.name for keyword in keywords) and file.suffix == ".docx"
         ]
-        if (
-            message_format == EdifactFormat.UTILMD
-            and [file for file in list_of_all_files if "Gas" or "Strom" in file.name] is not None
-        ):
-            # filter UTILMD Gas files
-            files_utilmd_gas = [files for files in list_of_all_files if "Gas" in files.name]
-            file_dict[ExtendedEdifactFormat.UTILMDG] = get_latest_file(files_utilmd_gas)
-            # filter UTILMD Strom files
-            files_utilmd_strom = [files for files in list_of_all_files if "Strom" in files.name]
-            file_dict[ExtendedEdifactFormat.UTILMDS] = get_latest_file(files_utilmd_strom)
-            continue
         if len(list_of_all_files) == 1:
             file_dict[message_format] = list_of_all_files[0]
         elif len(list_of_all_files) > 1:
@@ -129,3 +124,22 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
     # filter empty rows and headers
     mig_tables = [row for row in mig_tables if row not in ("", "\n", nachrichtenstruktur_header)]
     return mig_tables
+
+
+def sanitize_message_format(
+    message_format: list[ExtendedEdifactFormat], format_version: EdifactFormatVersion
+) -> list[ExtendedEdifactFormat]:
+    """repair for the usage of UTILMD, UTILMDG and UTILMDS"""
+    is_format_version_later_than_2304 = int(str(format_version)[-4:]) > 2304
+    if ExtendedEdifactFormat.UTILMD in message_format and is_format_version_later_than_2304:
+        message_format.remove(ExtendedEdifactFormat.UTILMD)
+        message_format.extend([ExtendedEdifactFormat.UTILMDS, ExtendedEdifactFormat.UTILMDG])
+    if not is_format_version_later_than_2304:
+        if ExtendedEdifactFormat.UTILMDS in message_format:
+            message_format.append(ExtendedEdifactFormat.UTILMD)
+            message_format.remove(ExtendedEdifactFormat.UTILMDS)
+        if ExtendedEdifactFormat.UTILMDG in message_format:
+            message_format.append(ExtendedEdifactFormat.UTILMD)
+            message_format.remove(ExtendedEdifactFormat.UTILMDG)
+
+    return list(set(message_format))

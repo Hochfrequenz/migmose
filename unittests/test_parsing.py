@@ -4,10 +4,12 @@ Test parsing routines.
 
 import logging
 
+import pytest
 from maus.edifact import EdifactFormat, EdifactFormatVersion
 from pytest_loguru.plugin import caplog  # type: ignore[import] # pylint: disable=unused-import
 
-from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturzeile
+from migmose.edifactformat import ExtendedEdifactFormat
+from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturzeile, sanitize_message_format
 from unittests import expected_output_dir, path_to_test_edi_energy_mirror_repo, path_to_test_FV2310
 
 
@@ -74,3 +76,44 @@ class TestParsing:
             next(csvfile)
             for actual_line, expected_line in zip(mig_table, csvfile):
                 assert actual_line.replace("\t", "") == expected_line.strip().replace(",", "")
+
+    @pytest.mark.parametrize(
+        "message_format, format_version, expected_output",
+        [
+            pytest.param(
+                [
+                    ExtendedEdifactFormat.UTILMD,
+                    ExtendedEdifactFormat.UTILMDS,
+                ],
+                EdifactFormatVersion.FV2310,
+                [ExtendedEdifactFormat.UTILMDG, ExtendedEdifactFormat.UTILMDS],
+                id="FV2310",
+            ),
+            pytest.param(
+                [ExtendedEdifactFormat.UTILMD, ExtendedEdifactFormat.UTILMDG, ExtendedEdifactFormat.UTILMDS],
+                EdifactFormatVersion.FV2304,
+                [ExtendedEdifactFormat.UTILMD],
+                id="FV2304",
+            ),
+            pytest.param(
+                [ExtendedEdifactFormat.IFTSTA],
+                EdifactFormatVersion.FV2310,
+                [ExtendedEdifactFormat.IFTSTA],
+                id="FV2310 no UTILMD",
+            ),
+            pytest.param(
+                [ExtendedEdifactFormat.IFTSTA],
+                EdifactFormatVersion.FV2304,
+                [ExtendedEdifactFormat.IFTSTA],
+                id="FV2304 no UTILMD",
+            ),
+        ],
+    )
+    def test_sanitize_message_format(
+        self,
+        message_format: list[ExtendedEdifactFormat],
+        format_version: EdifactFormatVersion,
+        expected_output: list[ExtendedEdifactFormat],
+    ):
+        message_format = sanitize_message_format(message_format, format_version)
+        assert message_format == expected_output

@@ -6,12 +6,13 @@ from pathlib import Path
 
 import click
 from loguru import logger
-from maus.edifact import EdifactFormat, EdifactFormatVersion
+from maus.edifact import EdifactFormatVersion
 
+from migmose.edifactformat import ExtendedEdifactFormat
 from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
 from migmose.mig.reducednestednachrichtenstruktur import ReducedNestedNachrichtenstruktur
-from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturzeile
+from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturzeile, sanitize_message_format
 
 
 # add CLI logic
@@ -27,9 +28,9 @@ from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturze
 @click.option(
     "-mf",
     "--message-format",
-    type=click.Choice(list(map(lambda x: x.name, EdifactFormat)), case_sensitive=False),
+    type=click.Choice(list(map(lambda x: x.name, ExtendedEdifactFormat)), case_sensitive=False),
     # Taken from https://github.com/pallets/click/issues/605#issuecomment-889462570
-    default=list(map(lambda x: x.name, EdifactFormat)),
+    default=list(map(lambda x: x.name, ExtendedEdifactFormat)),
     help="Defines the set of message formats to be parsed. If no format is specified, all formats are parsed.",
     multiple=True,
 )
@@ -61,7 +62,7 @@ def main(
     edi_energy_mirror_path: Path,
     output_dir,
     format_version: EdifactFormatVersion | str,
-    message_format: list[EdifactFormat],
+    message_format: list[ExtendedEdifactFormat],
     file_type: list[str],
 ) -> None:
     """
@@ -79,7 +80,7 @@ def main(
         raise click.Abort()
     if isinstance(format_version, str):
         format_version = EdifactFormatVersion(format_version)
-
+    message_format = sanitize_message_format(message_format, format_version)
     dict_files = find_file_to_format(message_format, edi_energy_mirror_path, format_version)
     for m_format, file in dict_files.items():
         output_dir_for_format = output_dir / format_version / m_format

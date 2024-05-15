@@ -8,9 +8,9 @@ from types import NoneType
 from typing import Any, Optional, Tuple
 
 from loguru import logger
-from maus.edifact import EdifactFormat
 from pydantic import BaseModel
 
+from migmose.edifactformat import ExtendedEdifactFormat
 from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
 from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile
 

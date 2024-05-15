@@ -1,2 +1,21 @@
 # contains 1 lower case word per line which are ignored in the spell_check
 segmente
+aperak
+comdis
+contrl
+iftsta
+insrpt
+invoic
+mscons
+ordchg
+orders
+ordrsp
+pricat
+quotes
+remadv
+reqote
+partin
+utilmd
+utilmds
+utilmdg
+utilts
