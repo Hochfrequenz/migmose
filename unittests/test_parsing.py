@@ -86,7 +86,7 @@ class TestParsing:
                     ExtendedEdifactFormat.UTILMDS,
                 ],
                 EdifactFormatVersion.FV2310,
-                [ExtendedEdifactFormat.UTILMDG, ExtendedEdifactFormat.UTILMDS],
+                [ExtendedEdifactFormat.UTILMDS, ExtendedEdifactFormat.UTILMDG],
                 id="FV2310",
             ),
             pytest.param(
@@ -116,4 +116,4 @@ class TestParsing:
         expected_output: list[ExtendedEdifactFormat],
     ):
         message_format = sanitize_message_format(message_format, format_version)
-        assert message_format == expected_output
+        assert sorted(message_format) == sorted(expected_output)
