@@ -7,9 +7,9 @@ from pathlib import Path
 from typing import Any, Optional
 
 from loguru import logger
-from maus.edifact import EdifactFormat
 from pydantic import BaseModel
 
+from migmose.edifactformat import ExtendedEdifactFormat
 from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
 
@@ -128,7 +128,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
 
         return data
 
-    def to_json(self, message_type: EdifactFormat, output_dir: Path) -> dict[str, Any]:
+    def to_json(self, message_type: ExtendedEdifactFormat, output_dir: Path) -> dict[str, Any]:
         """
         writes the reduced NestedNachrichtenstruktur as json
         """

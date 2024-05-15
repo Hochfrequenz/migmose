@@ -1,8 +1,9 @@
 import json
 
 import pytest
-from maus.edifact import EdifactFormat, EdifactFormatVersion
+from maus.edifact import EdifactFormatVersion
 
+from migmose.edifactformat import ExtendedEdifactFormat
 from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
 from migmose.mig.reducednestednachrichtenstruktur import ReducedNestedNachrichtenstruktur
@@ -16,12 +17,12 @@ class TestReducedNestedNachrichtenstruktur:
     @pytest.mark.parametrize(
         "message_format",
         [
-            pytest.param(EdifactFormat.ORDCHG, id="ORDCHG"),
-            pytest.param(EdifactFormat.UTILMD, id="UTILMD"),
-            pytest.param(EdifactFormat.IFTSTA, id="IFTSTA"),
+            pytest.param(ExtendedEdifactFormat.ORDCHG, id="ORDCHG"),
+            pytest.param(ExtendedEdifactFormat.UTILMDS, id="UTILMDS"),
+            pytest.param(ExtendedEdifactFormat.IFTSTA, id="IFTSTA"),
         ],
     )
-    def test_create_reduced_nested_nachrichtenstruktur(self, message_format: EdifactFormat, tmp_path):
+    def test_create_reduced_nested_nachrichtenstruktur(self, message_format: ExtendedEdifactFormat, tmp_path):
         """test if the reduced nested nachrichtenstruktur is created correctly"""
         file_path_dict = find_file_to_format(
             [message_format], path_to_test_edi_energy_mirror_repo, EdifactFormatVersion.FV2310
