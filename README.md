@@ -2,6 +2,9 @@
 
 # MIG_mose
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Python Versions (officially) supported](https://img.shields.io/pypi/pyversions/migmose.svg)
+![Pypi status badge](https://img.shields.io/pypi/v/migmose)
 ![Unittests status badge](https://github.com/Hochfrequenz/migmose/workflows/Unittests/badge.svg)
 ![Coverage status badge](https://github.com/Hochfrequenz/migmose/workflows/Coverage/badge.svg)
 ![Linting status badge](https://github.com/Hochfrequenz/migmose/workflows/Linting/badge.svg)
@@ -19,10 +22,10 @@ This is at the moment a MWE (Minimum Working Example) and will be extended in th
 See below for an overview of its features.
 
 ## Installation
-MIG_mose is a Python based tool.
-Therefore you have to make sure, that Python is running on your machine.
+MIG_mose is a Python-based tool.
+Therefore, you have to make sure, that Python is running on your machine.
 
-We recommend to use virtual environments to keep your system clean.
+We recommend using virtual environments to keep your system clean.
 
 Create a new virtual environment with
 ```bash
@@ -44,6 +47,7 @@ Finally, install the package with
 ```bash
 pip install migmose
 ```
+
 ## Features And How To Use Them
 
 At this point, MIG_mose works as a command-line interface tool (CLI).
