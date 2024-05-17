@@ -59,7 +59,7 @@ from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturze
 )
 def main(
     edi_energy_mirror_path: Path,
-    output_dir,
+    output_dir: Path,
     format_version: EdifactFormatVersion | str,
     message_format: list[EdifactFormat],
     file_type: list[str],

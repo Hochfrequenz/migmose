@@ -10,14 +10,14 @@ from typing import Generator, Union
 import click
 import docx
 from docx.document import Document
-from docx.oxml import CT_Tbl
+from docx.oxml import CT_Tbl  # type:ignore[attr-defined]
 from docx.table import Table, _Cell
 from loguru import logger
-from maus.edifact import EdifactFormat
+from maus.edifact import EdifactFormat, EdifactFormatVersion
 
 
 def find_file_to_format(
-    message_formats: list[EdifactFormat], edi_energy_repo: Path, format_version
+    message_formats: list[EdifactFormat], edi_energy_repo: Path, format_version: EdifactFormatVersion
 ) -> dict[EdifactFormat, Path]:
     """
     finds the file with the message type in the input directory
