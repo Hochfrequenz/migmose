@@ -4,7 +4,7 @@ contains class for trees consisting of segments of mig tables
 
 import json
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Optional, TypeAlias
 
 from loguru import logger
 from maus.edifact import EdifactFormat
@@ -12,6 +12,18 @@ from pydantic import BaseModel
 
 from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
+
+_SegmentDict: TypeAlias = (
+    dict[
+        tuple[str, str],
+        tuple[
+            list[Optional[NachrichtenstrukturZeile]],
+            Optional[NachrichtenstrukturZeile],
+            set[tuple[str, str]],
+        ],
+    ]
+    | None
+)
 
 
 class ReducedNestedNachrichtenstruktur(BaseModel):
@@ -50,7 +62,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
         # Recursive function to traverse and clean segment groups
         def process_segmentgruppen(
             segmentgruppen_identifiers: set[tuple[str, str]],
-            segment_dict: dict,
+            segment_dict: _SegmentDict,
             depth: int = 0,
         ) -> list[Optional[ReducedNestedNachrichtenstruktur]]:
             """
@@ -60,7 +72,11 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
 
             for sg in sorted(segmentgruppen_identifiers):
                 if sg is not None:
-                    segmente, header_line, segmentgroups = segment_dict[sg]
+                    # not sure about those type hints... they please mypy but I'm not the dev of this code
+                    segmente: list[Optional[NachrichtenstrukturZeile]]
+                    header_line: Optional[NachrichtenstrukturZeile]
+                    segmentgroups: set[tuple[str, str]]
+                    segmente, header_line, segmentgroups = segment_dict[sg]  # type:ignore[index]
                     if segmente is not None:
                         segmente = sorted(segmente, key=lambda x: x.zaehler)
                     _new_sg = ReducedNestedNachrichtenstruktur(header_linie=header_line, segmente=segmente)
@@ -71,17 +87,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
 
         def build_segment_dict(
             segment_groups: list[Optional[NestedNachrichtenstruktur]],
-            segment_dict: (
-                dict[
-                    tuple[str, str],
-                    tuple[
-                        list[Optional[NachrichtenstrukturZeile]],
-                        Optional[NachrichtenstrukturZeile],
-                        set[tuple[str, str]],
-                    ],
-                ]
-                | None
-            ) = None,
+            segment_dict: _SegmentDict = None,
         ) -> dict[
             tuple[str, str],
             tuple[list[Optional[NachrichtenstrukturZeile]], Optional[NachrichtenstrukturZeile], set[tuple[str, str]]],
