@@ -22,6 +22,7 @@ class TestNestedNachrichtenstruktur:
             nachrichtenstrukturtabelle
         )
         assert len(nested_nachrichtenstruktur.segmente) == 5
+        # pylint: disable=unsubscriptable-object
         assert len(nested_nachrichtenstruktur.segmentgruppen[3].segmentgruppen) == 1
 
     def test_to_json(self, tmp_path):
