@@ -5,7 +5,7 @@ Test parsing routines.
 import logging
 
 from maus.edifact import EdifactFormat, EdifactFormatVersion
-from pytest_loguru.plugin import caplog  # type: ignore[import] # pylint: disable=unused-import
+from pytest_loguru.plugin import caplog  # type: ignore[import-untyped] # pylint: disable=unused-import
 
 from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturzeile
 from unittests import expected_output_dir, path_to_test_edi_energy_mirror_repo, path_to_test_FV2310
