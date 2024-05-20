@@ -102,7 +102,7 @@ def get_paragraphs_up_to_diagram(parent: Union[Document, _Cell]) -> Generator[Ta
 
 _row_regex = re.compile(r"^(?P<left>\t\d+\t)(?P<nr>\d{0,5})(?P<right>\t.*)$")
 """
-https://regex101.com/r/vtF07B/1
+https://regex101.com/r/vtF07B/2
 """
 
 
