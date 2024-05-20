@@ -8,7 +8,7 @@ from typing import Any, Optional, TypeAlias
 
 from loguru import logger
 from maus.edifact import EdifactFormat
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
@@ -114,8 +114,8 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
     """will contain the tree structure of nachrichtenstruktur tables"""
 
     header_linie: Optional[NachrichtenstrukturZeile] = None
-    segmente: list[Optional[NachrichtenstrukturZeile]] = []
-    segmentgruppen: list[Optional["ReducedNestedNachrichtenstruktur"]] = []
+    segmente: list[Optional[NachrichtenstrukturZeile]] = Field(default_factory=list)
+    segmentgruppen: list[Optional["ReducedNestedNachrichtenstruktur"]] = Field(default_factory=list)
 
     @classmethod
     def create_reduced_nested_nachrichtenstruktur(
