@@ -23,7 +23,7 @@ class NestedNachrichtenstruktur(BaseModel):
     "segmente": [
         {
         "zaehler": "0160",
-        "nr": "7",
+        "nr": "00007",
         "bezeichnung": "NAD",
         "standard_status": "M",
         "bdew_status": "M",
@@ -38,7 +38,7 @@ class NestedNachrichtenstruktur(BaseModel):
         "segmente": [
         {
             "zaehler": "0260",
-            "nr": "8",
+            "nr": "00008",
             "bezeichnung": "CTA",
             "standard_status": "M",
             "bdew_status": "M",
@@ -49,7 +49,7 @@ class NestedNachrichtenstruktur(BaseModel):
             },
             {
             "zaehler": "0270",
-            "nr": "9",
+            "nr": "00009",
             "bezeichnung": "COM",
             "standard_status": "C",
             "bdew_status": "R",

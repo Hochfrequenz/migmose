@@ -4,7 +4,7 @@ contains class for lines in mig tables
 
 from typing import Any
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class NachrichtenstrukturZeile(BaseModel):
@@ -12,7 +12,7 @@ class NachrichtenstrukturZeile(BaseModel):
     class for lines in mig tables, e.g. (ORDCHG):
     {
         "zaehler": "0010",
-        "nr": "1",
+        "nr": "00001",
         "bezeichnung": "UNH",
         "standard_status": "M",
         "bdew_status": "M",
@@ -24,7 +24,7 @@ class NachrichtenstrukturZeile(BaseModel):
     """
 
     zaehler: str
-    nr: str | None = None
+    nr: str | None = Field(default=None, pattern=r"^\d{5}$")  #: the segment ID (can be used to match with AHBs)
     bezeichnung: str
     standard_status: str
     bdew_status: str
@@ -58,4 +58,6 @@ class NachrichtenstrukturZeile(BaseModel):
         if is_line_incomplete:
             raise ValueError(f"Expected 8 or 9 fields, got {len(fields)}, line: {raw_line}")
         field_dict: dict[str, Any] = dict(zip(field_names, fields))
+        if "nr" in field_dict and len(field_dict["nr"]) < 5:
+            field_dict["nr"] = field_dict["nr"].zfill(5)
         return cls(**field_dict)
