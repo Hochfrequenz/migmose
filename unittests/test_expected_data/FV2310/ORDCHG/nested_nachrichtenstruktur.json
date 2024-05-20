@@ -3,7 +3,7 @@
     "segmente": [
         {
             "zaehler": "0010",
-            "nr": "1",
+            "nr": "00001",
             "bezeichnung": "UNH",
             "standard_status": "M",
             "bdew_status": "M",
@@ -14,7 +14,7 @@
         },
         {
             "zaehler": "0020",
-            "nr": "2",
+            "nr": "00002",
             "bezeichnung": "BGM",
             "standard_status": "M",
             "bdew_status": "M",
@@ -25,7 +25,7 @@
         },
         {
             "zaehler": "0030",
-            "nr": "3",
+            "nr": "00003",
             "bezeichnung": "DTM",
             "standard_status": "M",
             "bdew_status": "M",
@@ -36,7 +36,7 @@
         },
         {
             "zaehler": "2380",
-            "nr": "11",
+            "nr": "00011",
             "bezeichnung": "UNS",
             "standard_status": "M",
             "bdew_status": "M",
@@ -47,7 +47,7 @@
         },
         {
             "zaehler": "2450",
-            "nr": "12",
+            "nr": "00012",
             "bezeichnung": "UNT",
             "standard_status": "M",
             "bdew_status": "M",
@@ -73,7 +73,7 @@
             "segmente": [
                 {
                     "zaehler": "0100",
-                    "nr": "4",
+                    "nr": "00004",
                     "bezeichnung": "RFF",
                     "standard_status": "M",
                     "bdew_status": "M",
@@ -100,7 +100,7 @@
             "segmente": [
                 {
                     "zaehler": "0100",
-                    "nr": "5",
+                    "nr": "00005",
                     "bezeichnung": "RFF",
                     "standard_status": "M",
                     "bdew_status": "M",
@@ -127,7 +127,7 @@
             "segmente": [
                 {
                     "zaehler": "0100",
-                    "nr": "6",
+                    "nr": "00006",
                     "bezeichnung": "RFF",
                     "standard_status": "M",
                     "bdew_status": "M",
@@ -154,7 +154,7 @@
             "segmente": [
                 {
                     "zaehler": "0160",
-                    "nr": "7",
+                    "nr": "00007",
                     "bezeichnung": "NAD",
                     "standard_status": "M",
                     "bdew_status": "M",
@@ -180,7 +180,7 @@
                     "segmente": [
                         {
                             "zaehler": "0260",
-                            "nr": "8",
+                            "nr": "00008",
                             "bezeichnung": "CTA",
                             "standard_status": "M",
                             "bdew_status": "M",
@@ -191,7 +191,7 @@
                         },
                         {
                             "zaehler": "0270",
-                            "nr": "9",
+                            "nr": "00009",
                             "bezeichnung": "COM",
                             "standard_status": "C",
                             "bdew_status": "R",
@@ -220,7 +220,7 @@
             "segmente": [
                 {
                     "zaehler": "0160",
-                    "nr": "10",
+                    "nr": "00010",
                     "bezeichnung": "NAD",
                     "standard_status": "M",
                     "bdew_status": "M",

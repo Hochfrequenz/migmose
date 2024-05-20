@@ -100,6 +100,22 @@ def get_paragraphs_up_to_diagram(parent: Union[Document, _Cell]) -> Generator[Ta
             yield Table(child, parent)
 
 
+_row_regex = re.compile(r"^(?P<left>\t\d+\t)(?P<nr>\d{0,5})(?P<right>\t.*)$")
+"""
+https://regex101.com/r/vtF07B/1
+"""
+
+
+def _zfill_nr(row_str: str) -> str:
+    match = _row_regex.match(row_str)
+    if not match:
+        return row_str
+    left = match.group("left")
+    nr = match.group("nr")
+    right = match.group("right")
+    return f"{left}{nr.zfill(5)}{right}"
+
+
 def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
     """
     parses raw nachrichtenstrukturzeile from a table. returns list of raw lines
@@ -116,5 +132,5 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
                 mig_tables.extend([row.text for row in docx_object._cells[ind + 1 :]])
             break
     # filter empty rows and headers
-    mig_tables = [row for row in mig_tables if row not in ("", "\n", nachrichtenstruktur_header)]
+    mig_tables = [_zfill_nr(row) for row in mig_tables if row not in ("", "\n", nachrichtenstruktur_header)]
     return mig_tables
