@@ -43,6 +43,21 @@ def find_file_to_format(
     raise click.Abort()
 
 
+def _extract_date(file_path: Path) -> tuple[datetime, Path]:
+    # Regex to extract the date format YYYYMMDD from the filename as a string
+    match = re.search(r"(\d{8})\.docx$", file_path.name)
+    if match:
+        # Return the date as a datetime object for comparison and the path for use
+        return datetime.strptime(match.group(1), "%Y%m%d"), file_path
+    logger.warning(
+        f"⚠️ No timestamp in filename found in {file_path}."
+        + "in case of multiple docx files in this path, it must be a "
+        + "timestamp with format 'yyyyMMdd.docx' in filename.",
+        fg="red",
+    )
+    raise click.Abort()
+
+
 def get_latest_file(file_list: list[Path]) -> Path:
     """
     This function takes a list of docx files Path
@@ -56,26 +71,12 @@ def get_latest_file(file_list: list[Path]) -> Path:
         Path: The path of the latest file. Returns None if no valid date is found.
     """
 
-    def extract_date(file_path: Path) -> tuple[datetime, Path]:
-        # Regex to extract the date format YYYYMMDD from the filename as a string
-        match = re.search(r"(\d{8})\.docx$", file_path.name)
-        if match:
-            # Return the date as a datetime object for comparison and the path for use
-            return datetime.strptime(match.group(1), "%Y%m%d"), file_path
-        logger.warning(
-            f"⚠️ No timestamp in filename found in {file_path}."
-            + "in case of multiple docx files in this path, it must be a "
-            + "timestamp with format 'yyyyMMdd.docx' in filename.",
-            fg="red",
-        )
-        raise click.Abort()
-
     # Initialize variables to keep track of the latest file and date
     latest_file: Path
     latest_date: datetime | None = None
 
     for file_path in file_list:
-        date, path = extract_date(file_path)
+        date, path = _extract_date(file_path)
         if latest_date is None or date > latest_date:
             latest_file = path
             latest_date = date
