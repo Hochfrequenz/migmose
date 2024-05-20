@@ -3,7 +3,7 @@
     "segmente": [
         {
             "zaehler": "0010",
-            "nr": "3",
+            "nr": "00003",
             "bezeichnung": "UNH",
             "standard_status": "M",
             "bdew_status": "M",
@@ -14,7 +14,7 @@
         },
         {
             "zaehler": "0020",
-            "nr": "4",
+            "nr": "00004",
             "bezeichnung": "BGM",
             "standard_status": "M",
             "bdew_status": "M",
@@ -25,7 +25,7 @@
         },
         {
             "zaehler": "0030",
-            "nr": "5",
+            "nr": "00005",
             "bezeichnung": "DTM",
             "standard_status": "M",
             "bdew_status": "M",
@@ -36,7 +36,7 @@
         },
         {
             "zaehler": "0670",
-            "nr": "534",
+            "nr": "00534",
             "bezeichnung": "UNT",
             "standard_status": "M",
             "bdew_status": "M",
@@ -62,7 +62,7 @@
             "segmente": [
                 {
                     "zaehler": "0080",
-                    "nr": "7",
+                    "nr": "00007",
                     "bezeichnung": "RFF",
                     "standard_status": "M",
                     "bdew_status": "M",
@@ -89,7 +89,7 @@
             "segmente": [
                 {
                     "zaehler": "0110",
-                    "nr": "11",
+                    "nr": "00011",
                     "bezeichnung": "NAD",
                     "standard_status": "M",
                     "bdew_status": "M",
@@ -115,7 +115,7 @@
                     "segmente": [
                         {
                             "zaehler": "0160",
-                            "nr": "9",
+                            "nr": "00009",
                             "bezeichnung": "CTA",
                             "standard_status": "M",
                             "bdew_status": "M",
@@ -126,7 +126,7 @@
                         },
                         {
                             "zaehler": "0170",
-                            "nr": "10",
+                            "nr": "00010",
                             "bezeichnung": "COM",
                             "standard_status": "C",
                             "bdew_status": "R",
@@ -155,7 +155,7 @@
             "segmente": [
                 {
                     "zaehler": "0190",
-                    "nr": "20",
+                    "nr": "00020",
                     "bezeichnung": "IDE",
                     "standard_status": "M",
                     "bdew_status": "M",
@@ -166,7 +166,7 @@
                 },
                 {
                     "zaehler": "0220",
-                    "nr": "21",
+                    "nr": "00021",
                     "bezeichnung": "IMD",
                     "standard_status": "C",
                     "bdew_status": "D",
@@ -177,7 +177,7 @@
                 },
                 {
                     "zaehler": "0230",
-                    "nr": "22",
+                    "nr": "00022",
                     "bezeichnung": "DTM",
                     "standard_status": "C",
                     "bdew_status": "D",
@@ -188,7 +188,7 @@
                 },
                 {
                     "zaehler": "0250",
-                    "nr": "37",
+                    "nr": "00037",
                     "bezeichnung": "STS",
                     "standard_status": "C",
                     "bdew_status": "D",
@@ -199,7 +199,7 @@
                 },
                 {
                     "zaehler": "0270",
-                    "nr": "42",
+                    "nr": "00042",
                     "bezeichnung": "PTY",
                     "standard_status": "C",
                     "bdew_status": "D",
@@ -210,7 +210,7 @@
                 },
                 {
                     "zaehler": "0280",
-                    "nr": "43",
+                    "nr": "00043",
                     "bezeichnung": "FTX",
                     "standard_status": "C",
                     "bdew_status": "D",
@@ -221,7 +221,7 @@
                 },
                 {
                     "zaehler": "0290",
-                    "nr": "49",
+                    "nr": "00049",
                     "bezeichnung": "AGR",
                     "standard_status": "C",
                     "bdew_status": "D",
@@ -247,7 +247,7 @@
                     "segmente": [
                         {
                             "zaehler": "0330",
-                            "nr": "56",
+                            "nr": "00056",
                             "bezeichnung": "LOC",
                             "standard_status": "M",
                             "bdew_status": "M",
@@ -274,7 +274,7 @@
                     "segmente": [
                         {
                             "zaehler": "0360",
-                            "nr": "71",
+                            "nr": "00071",
                             "bezeichnung": "RFF",
                             "standard_status": "M",
                             "bdew_status": "M",
@@ -285,7 +285,7 @@
                         },
                         {
                             "zaehler": "0370",
-                            "nr": "67",
+                            "nr": "00067",
                             "bezeichnung": "DTM",
                             "standard_status": "C",
                             "bdew_status": "D",
@@ -312,7 +312,7 @@
                     "segmente": [
                         {
                             "zaehler": "0420",
-                            "nr": "509",
+                            "nr": "00509",
                             "bezeichnung": "SEQ",
                             "standard_status": "M",
                             "bdew_status": "M",
@@ -323,7 +323,7 @@
                         },
                         {
                             "zaehler": "0430",
-                            "nr": "498",
+                            "nr": "00498",
                             "bezeichnung": "RFF",
                             "standard_status": "C",
                             "bdew_status": "D",
@@ -334,7 +334,7 @@
                         },
                         {
                             "zaehler": "0440",
-                            "nr": "451",
+                            "nr": "00451",
                             "bezeichnung": "PIA",
                             "standard_status": "C",
                             "bdew_status": "R",
@@ -360,7 +360,7 @@
                             "segmente": [
                                 {
                                     "zaehler": "0460",
-                                    "nr": "501",
+                                    "nr": "00501",
                                     "bezeichnung": "QTY",
                                     "standard_status": "M",
                                     "bdew_status": "M",
@@ -371,7 +371,7 @@
                                 },
                                 {
                                     "zaehler": "0470",
-                                    "nr": "502",
+                                    "nr": "00502",
                                     "bezeichnung": "DTM",
                                     "standard_status": "C",
                                     "bdew_status": "R",
@@ -398,7 +398,7 @@
                             "segmente": [
                                 {
                                     "zaehler": "0510",
-                                    "nr": "510",
+                                    "nr": "00510",
                                     "bezeichnung": "CCI",
                                     "standard_status": "M",
                                     "bdew_status": "M",
@@ -409,7 +409,7 @@
                                 },
                                 {
                                     "zaehler": "0520",
-                                    "nr": "511",
+                                    "nr": "00511",
                                     "bezeichnung": "CAV",
                                     "standard_status": "C",
                                     "bdew_status": "D",
@@ -438,7 +438,7 @@
                     "segmente": [
                         {
                             "zaehler": "0580",
-                            "nr": "532",
+                            "nr": "00532",
                             "bezeichnung": "NAD",
                             "standard_status": "M",
                             "bdew_status": "M",
@@ -449,7 +449,7 @@
                         },
                         {
                             "zaehler": "0590",
-                            "nr": "533",
+                            "nr": "00533",
                             "bezeichnung": "RFF",
                             "standard_status": "C",
                             "bdew_status": "D",
