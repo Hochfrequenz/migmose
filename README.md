@@ -65,7 +65,7 @@ Below the available options are listed:
 - **Output File Type (`-ft`, `--file-type`):**
     - Description: Defines the output format. Choose between csv for flat Nachrichtenstruktur tables, nested_json for json files of the nested Nachrichtenstruktur tables and reduced_nested_json for a reduced nested Nachrichtenstruktur. Default is csv.
     - Example: `--file-type "csv"
-- - **Format Version (`-fv`, `--format-version`):**
+- **Format Version (`-fv`, `--format-version`):**
     - Description: Defines the format version.
     - Example: `--format-version "FV2310"
 
