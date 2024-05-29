@@ -10,8 +10,10 @@
 ![Linting status badge](https://github.com/Hochfrequenz/migmose/workflows/Linting/badge.svg)
 ![Black status badge](https://github.com/Hochfrequenz/migmose/workflows/Formatting/badge.svg)
 
-MIG_mose generates machine-readable files from MIG documents ([edi-energy](https://www.edi-energy.de/index.php?id=38)).
+MIG_mose generates machine-readable files from MIG `.docx` documents ([edi-energy](https://www.edi-energy.de/index.php?id=38)).
 MIG_mose is the sister of [kohlrahbi](https://github.com/Hochfrequenz/kohlrahbi).
+
+If you're looking for a tool to process the **official** BDEW XMLs for MIGs (available since 2024), checkout [fundamend](https://github.com/Hochfrequenz/xml-fundamend-python).
 
 ## Tech-Stack
 - MIG_mose is a Python(3.11,3.12) project.
