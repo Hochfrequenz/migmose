@@ -4,7 +4,7 @@ contains class for trees consisting of segments of mig tables
 
 import json
 from pathlib import Path
-from typing import Any, Optional
+from typing import Optional
 
 from loguru import logger
 from maus.edifact import EdifactFormat
@@ -48,7 +48,7 @@ class SegmentGroupHierarchy(BaseModel):
             segment_group=segment_group, opening_segment=opening_segment, sub_hierarchy=sub_hierarchy
         )
 
-    def to_json(self, message_type: EdifactFormat, output_dir: Path) -> dict[str, Any]:
+    def to_json(self, message_type: EdifactFormat, output_dir: Path) -> None:
         """
         writes the reduced NestedNachrichtenstruktur as json
         """
@@ -58,4 +58,3 @@ class SegmentGroupHierarchy(BaseModel):
         with open(file_path, "w", encoding="utf-8") as json_file:
             json.dump(structured_json, json_file, indent=4)
         logger.info("Wrote segmentgroup hierarchy (sgh.json) for {} to {}", message_type, file_path)
-        return structured_json
