@@ -110,6 +110,28 @@ def _build_segment_dict(
     return segment_dict
 
 
+def _build_tree_dict(
+    reduced_nestednachrichtenstruktur: "ReducedNestedNachrichtenstruktur", tree_dict: dict[str, str]
+) -> dict[str, str]:
+    """
+    Build a dictionary to compose the .tree files in the MAUS library.
+    """
+    if reduced_nestednachrichtenstruktur.header_linie is None:
+        tree_dict["/"] = "UNG[],UNH[]"  # root node
+        tree_dict[reduced_nestednachrichtenstruktur.segmente[0].bezeichnung] = ""
+        for segment in reduced_nestednachrichtenstruktur.segmente[1:]:
+            tree_dict[reduced_nestednachrichtenstruktur.segmente[0].bezeichnung] += f"{segment.bezeichnung}[],"
+        for segmentgruppe in reduced_nestednachrichtenstruktur.segmentgruppen:
+            tree_dict = _build_tree_dict(segmentgruppe, tree_dict)
+    else:
+        tree_dict[reduced_nestednachrichtenstruktur.header_linie.bezeichnung] = ""
+        for segment in reduced_nestednachrichtenstruktur.segmente:
+            tree_dict[reduced_nestednachrichtenstruktur.header_linie.bezeichnung] += f"{segment.bezeichnung}[],"
+        for segmentgruppe in reduced_nestednachrichtenstruktur.segmentgruppen:
+            tree_dict = _build_tree_dict(segmentgruppe, tree_dict)
+    return tree_dict
+
+
 class ReducedNestedNachrichtenstruktur(BaseModel):
     """will contain the tree structure of nachrichtenstruktur tables"""
 
@@ -149,3 +171,15 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
             json.dump(structured_json, json_file, indent=4)
         logger.info("Wrote reduced nested Nachrichtenstruktur for {} to {}", message_type, file_path)
         return structured_json
+
+    def to_tree(self, message_type: EdifactFormat, output_dir: Path) -> None:
+        """Writes reduced NestedNachrichtenstruktur in the .tree grammar of the MAUS."""
+        # generate tree dict
+        tree_dict: dict[str, str] = {}
+        tree_dict = _build_tree_dict(self, tree_dict)
+        # write tree file
+        output_dir.mkdir(parents=True, exist_ok=True)
+        file_path = output_dir.joinpath("tree.tree")
+        with open(file_path, "w", encoding="utf-8") as tree_file:
+            for key, value in tree_dict.items():
+                tree_file.write(f"{key}:{value}\n")
