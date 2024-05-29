@@ -2,6 +2,8 @@ import json
 
 import pytest
 from maus.edifact import EdifactFormat, EdifactFormatVersion
+from maus.models.message_implementation_guide import SegmentGroupHierarchy as MausSGH
+from maus.models.message_implementation_guide import SegmentGroupHierarchySchema
 
 from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
@@ -39,11 +41,14 @@ class TestSegmentGroupHierarchy:
         sgh = SegmentGroupHierarchy.create_segmentgroup_hierarchy(reduced_nested_nachrichtenstruktur)
         sgh.to_json(message_format, tmp_path)
         with open(tmp_path / "sgh.json", "r", encoding="utf-8") as file1:
-            actual_reduced_nested_json = json.load(file1)
+            actual_sgh_json = json.load(file1)
             with open(
                 expected_output_dir / EdifactFormatVersion.FV2310 / message_format / "sgh.json",
                 "r",
                 encoding="utf-8",
-            ) as file2:
-                expected_reduced_nested_json = json.load(file2)
-                assert actual_reduced_nested_json == expected_reduced_nested_json
+            ) as sgh_file:
+                expected_sgh_json = json.load(sgh_file)
+                assert actual_sgh_json == expected_sgh_json
+        with open(tmp_path / "sgh.json", "r", encoding="utf-8") as sgh_file:
+            sgh = SegmentGroupHierarchySchema().loads(sgh_file.read())
+            assert isinstance(sgh, MausSGH)
