@@ -14,7 +14,12 @@ from migmose.mig.reducednestednachrichtenstruktur import ReducedNestedNachrichte
 
 
 class SegmentGroupHierarchy(BaseModel):
-    """Contains the model for a segment group hierarchy used by the MAUS library."""
+    """
+    This module contains the same model for a segment group hierarchy as used by the MAUS library,
+    which can be found here:
+    (https://github.com/Hochfrequenz/mig_ahb_utility_stack/blob/eae2d84d600f42257cf364190da486aa011a5882/src/maus/models/message_implementation_guide.py#L17).
+    However, instead of using the attrs class, we are creating a Pydantic class.
+    """
 
     opening_segment: Optional[str] = None
     segment_group: Optional[str] = None
@@ -29,7 +34,10 @@ class SegmentGroupHierarchy(BaseModel):
         opening_segment: Optional[str] = None
         if reduced_nested_nachrichtenstruktur.header_linie is not None:
             segment_group = reduced_nested_nachrichtenstruktur.header_linie.bezeichnung
-        if any(reduced_nested_nachrichtenstruktur.segmente) and reduced_nested_nachrichtenstruktur.segmente[0] is not None:
+        if (
+            any(reduced_nested_nachrichtenstruktur.segmente)
+            and reduced_nested_nachrichtenstruktur.segmente[0] is not None
+        ):
             opening_segment = reduced_nested_nachrichtenstruktur.segmente[0].bezeichnung
         sub_hierarchy: list[Optional["SegmentGroupHierarchy"]] = []
         for sub_segmentgroup in reduced_nested_nachrichtenstruktur.segmentgruppen:
