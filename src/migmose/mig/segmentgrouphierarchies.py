@@ -46,7 +46,7 @@ class SegmentGroupHierarchy(BaseModel):
         """
         output_dir.mkdir(parents=True, exist_ok=True)
         file_path = output_dir.joinpath("sgh.json")
-        structured_json = self.model_dump()
+        structured_json = self.model_dump(mode="json")
         with open(file_path, "w", encoding="utf-8") as json_file:
             json.dump(structured_json, json_file, indent=4)
         logger.info("Wrote segmentgroup hierarchy (sgh.json) for {} to {}", message_type, file_path)
