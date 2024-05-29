@@ -17,7 +17,7 @@ class SegmentGroupHierarchy(BaseModel):
     """
     This module contains the same model for a segment group hierarchy as used by the MAUS library,
     which can be found here:
-    (https://github.com/Hochfrequenz/mig_ahb_utility_stack/blob/eae2d84d600f42257cf364190da486aa011a5882/src/maus/models/message_implementation_guide.py#L17).
+    (https://github.com/Hochfrequenz/mig_ahb_utility_stack/blob/eae2d84d600f42257cf364190da486aa011a5882/src/maus/models/message_implementation_guide.py#L17). # pylint: disable=line-too-long
     However, instead of using the attrs class, we are creating a Pydantic class.
     """
 
