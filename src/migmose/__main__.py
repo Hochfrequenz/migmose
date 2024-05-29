@@ -11,6 +11,7 @@ from maus.edifact import EdifactFormat, EdifactFormatVersion
 from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
 from migmose.mig.reducednestednachrichtenstruktur import ReducedNestedNachrichtenstruktur
+from migmose.mig.segmentgrouphierarchies import SegmentGroupHierarchy
 from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturzeile
 
 
@@ -52,8 +53,8 @@ from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturze
 @click.option(
     "-ft",
     "--file-type",
-    type=click.Choice(["csv", "nested_json", "reduced_nested_json"], case_sensitive=False),
-    default=["csv", "nested_json", "reduced_nested_json"],
+    type=click.Choice(["csv", "nested_json", "reduced_nested_json", "sgh_json"], case_sensitive=False),
+    default=["csv", "nested_json", "reduced_nested_json", "sgh_json"],
     help="Defines the output format. Choose between csv and nested_json and reduced_nested_json. Default is csv.",
     multiple=True,
 )
@@ -121,6 +122,22 @@ def main(
                 output_dir_for_format,
             )
             reduced_nested_nachrichtenstruktur.to_json(m_format, output_dir_for_format)
+        if "sgh_json" in file_type:
+            nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
+                nachrichtenstrukturtabelle
+            )
+            reduced_nested_nachrichtenstruktur = (
+                ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(nested_nachrichtenstruktur)
+            )
+            sgh = SegmentGroupHierarchy.create_segmentgroup_hierarchy(reduced_nested_nachrichtenstruktur)
+            # Save the reduced nested Nachrichtenstruktur as json
+            logger.info(
+                "💾 Saving reduced nested Nachrichtenstruktur for {} and {} as json to {}.",
+                m_format,
+                format_version,
+                output_dir_for_format,
+            )
+            sgh.to_json(m_format, output_dir_for_format)
 
 
 if __name__ == "__main__":
