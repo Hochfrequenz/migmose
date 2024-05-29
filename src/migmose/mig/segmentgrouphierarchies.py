@@ -29,7 +29,7 @@ class SegmentGroupHierarchy(BaseModel):
         opening_segment: Optional[str] = None
         if reduced_nested_nachrichtenstruktur.header_linie is not None:
             segment_group = reduced_nested_nachrichtenstruktur.header_linie.bezeichnung
-        if reduced_nested_nachrichtenstruktur.segmente and reduced_nested_nachrichtenstruktur.segmente[0] is not None:
+        if any(reduced_nested_nachrichtenstruktur.segmente) and reduced_nested_nachrichtenstruktur.segmente[0] is not None:
             opening_segment = reduced_nested_nachrichtenstruktur.segmente[0].bezeichnung
         sub_hierarchy: list[Optional["SegmentGroupHierarchy"]] = []
         for sub_segmentgroup in reduced_nested_nachrichtenstruktur.segmentgruppen:
