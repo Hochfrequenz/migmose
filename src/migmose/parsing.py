@@ -15,6 +15,8 @@ from docx.table import Table, _Cell
 from loguru import logger
 from maus.edifact import EdifactFormat, EdifactFormatVersion
 
+from migmose.mig.segmentlayout import SegmentLayout, SegmentLayoutLine
+
 
 def find_file_to_format(
     message_formats: list[EdifactFormat], edi_energy_repo: Path, format_version: EdifactFormatVersion
@@ -125,12 +127,94 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
     docx_objects = get_paragraphs_up_to_diagram(doc)
     mig_tables = []
     nachrichtenstruktur_header = "Status\tMaxWdh\n\tZähler\tNr\tBez\tSta\tBDEW\tSta\tBDEW\tEbene\tInhalt"
+    segmentlayout_header = "\tStandard\tBDEW\n\tZähler\tNr\tBez\tSt\tMaxWdh\tSt\tMaxWdh\tEbene\tName"
+    segmentlayout_tables = []
     for docx_object in docx_objects:
+        segmentlayout_table = []
         for ind, line in enumerate(docx_object._cells):
             # marks the beginning of the complete nachrichtentruktur table
             if line.text == nachrichtenstruktur_header:
                 mig_tables.extend([row.text for row in docx_object._cells[ind + 1 :]])
-            break
+                break
+
+        is_segmentlayout_table = docx_object._cells[0].text == segmentlayout_header
+        if is_segmentlayout_table:
+            for row in docx_object.rows:
+                for cell in iter_visual_cells(row):
+                    segmentlayout_table.append(cell.text)
+        if segmentlayout_table:
+            segmentlayout_tables.append(segmentlayout_table)
+        test = 1
     # filter empty rows and headers
     mig_tables = [_zfill_nr(row) for row in mig_tables if row not in ("", "\n", nachrichtenstruktur_header)]
+    segmentlayouts = process_segmentlayouts(segmentlayout_tables)
     return mig_tables
+
+
+def iter_visual_cells(row: Table) -> Generator[_Cell, None, None]:
+    """
+    Iterate over visual cells in one row. Taken from https://github.com/python-openxml/python-docx/issues/344.
+    """
+    prior_tc = None
+    for cell in row.cells:
+        this_tc = cell._tc
+        if this_tc is prior_tc:  # skip cells pointing to same `<w:tc>` element
+            continue
+        yield cell
+        prior_tc = this_tc
+
+
+def process_segmentlayouts(segmentlayout_tables: list[_Cell]) -> list[SegmentLayout]:
+    """
+    Create Segmentlayouts from list of _Cell objects
+    """
+    segment_layouts = []
+    for segmentlayout_table in segmentlayout_tables:
+        start_index_annotations = 0
+        start_index_example = 0
+        ignore_cells = []
+        for index, cell in enumerate(segmentlayout_table):
+            if cell == "Bez":
+                ignore_cells.append(index)
+            if cell == "Bemerkung:":
+                ignore_cells.append(index)
+                start_index_annotations = index + 1
+            if cell == "Beispiel":
+                start_index_example = index + 1
+                break
+        assert len(ignore_cells) != 0
+
+        cell_index = []
+        for index, header_ind in enumerate(ignore_cells[:-1]):
+            cell_index.extend([i for i in range(header_ind + 7, ignore_cells[index + 1] - 6, 7)])
+
+        raw_lines = []
+        for i in cell_index:
+            if segmentlayout_table[i] != "":
+                raw_lines.append(
+                    SegmentLayoutLine(
+                        bezeichnung=segmentlayout_table[i],
+                        name=segmentlayout_table[i + 1],
+                        standard_status=segmentlayout_table[i + 2],
+                        bdew_status=segmentlayout_table[i + 3],
+                        standard_format=segmentlayout_table[i + 4],
+                        bdew_format=segmentlayout_table[i + 5],
+                        anwendung=segmentlayout_table[i + 6],
+                    )
+                )
+            else:
+                raw_lines[-1].bezeichnung += segmentlayout_table[i]
+                raw_lines[-1].name += segmentlayout_table[i + 1]
+                raw_lines[-1].standard_status += segmentlayout_table[i + 2]
+                raw_lines[-1].bdew_status += segmentlayout_table[i + 3]
+                raw_lines[-1].standard_format += segmentlayout_table[i + 4]
+                raw_lines[-1].bdew_format += segmentlayout_table[i + 5]
+                raw_lines[-1].anwendung += segmentlayout_table[i + 6]
+        segment_layouts.append(
+            SegmentLayout(
+                structure=raw_lines,
+                bemerkung="".join(segmentlayout_table[start_index_annotations : start_index_example - 1]),
+                Beispiel="".join(segmentlayout_table[start_index_example:]),
+            )
+        )
+    return segment_layouts
