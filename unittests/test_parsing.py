@@ -63,7 +63,7 @@ class TestParsing:
         Test to parse the raw nachrichtenstrukturzeile from a docx file.
         """
         input_file = path_to_test_FV2310 / "ORDCHGMIG-informatorischeLesefassung1.1_99991231_20231001.docx"
-        mig_table = parse_raw_nachrichtenstrukturzeile(input_file)
+        (mig_table, _) = parse_raw_nachrichtenstrukturzeile(input_file)
         expected_csv_file = (
             expected_output_dir / EdifactFormatVersion.FV2310 / EdifactFormat.ORDCHG / "nachrichtenstruktur.csv"
         )

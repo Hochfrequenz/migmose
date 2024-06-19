@@ -116,19 +116,28 @@ def _build_tree_dict(
     """
     Build a dictionary to compose the .tree files in the MAUS library.
     """
-    if reduced_nestednachrichtenstruktur.header_linie is None:
+    if (
+        reduced_nestednachrichtenstruktur.header_linie is None
+        and reduced_nestednachrichtenstruktur.segmente[0] is not None
+    ):
         tree_dict["/"] = "UNG[],UNH[]"  # root node
         tree_dict[reduced_nestednachrichtenstruktur.segmente[0].bezeichnung] = ""
         for segment in reduced_nestednachrichtenstruktur.segmente[1:]:
-            tree_dict[reduced_nestednachrichtenstruktur.segmente[0].bezeichnung] += f"{segment.bezeichnung}[],"
+            if segment is not None:
+                tree_dict[reduced_nestednachrichtenstruktur.segmente[0].bezeichnung] += f"{segment.bezeichnung}[],"
         for segmentgruppe in reduced_nestednachrichtenstruktur.segmentgruppen:
-            tree_dict = _build_tree_dict(segmentgruppe, tree_dict)
-    else:
+            if segmentgruppe is not None:
+                tree_dict = _build_tree_dict(segmentgruppe, tree_dict)
+    elif reduced_nestednachrichtenstruktur.header_linie is not None:
         tree_dict[reduced_nestednachrichtenstruktur.header_linie.bezeichnung] = ""
         for segment in reduced_nestednachrichtenstruktur.segmente:
-            tree_dict[reduced_nestednachrichtenstruktur.header_linie.bezeichnung] += f"{segment.bezeichnung}[],"
+            if segment is not None:
+                tree_dict[reduced_nestednachrichtenstruktur.header_linie.bezeichnung] += f"{segment.bezeichnung}[],"
         for segmentgruppe in reduced_nestednachrichtenstruktur.segmentgruppen:
-            tree_dict = _build_tree_dict(segmentgruppe, tree_dict)
+            if segmentgruppe is not None:
+                tree_dict = _build_tree_dict(segmentgruppe, tree_dict)
+    else:
+        raise ValueError("No header line or segment found.")
     return tree_dict
 
 
@@ -183,3 +192,4 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
         with open(file_path, "w", encoding="utf-8") as tree_file:
             for key, value in tree_dict.items():
                 tree_file.write(f"{key}:{value}\n")
+        logger.info("Wrote reduced .tree file for {} to {}", message_type, file_path)

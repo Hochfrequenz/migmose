@@ -118,7 +118,7 @@ def _zfill_nr(row_str: str) -> str:
     return f"{left}{nr.zfill(5)}{right}"
 
 
-def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
+def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> tuple[list[str], list[SegmentLayout]]:
     """
     parses raw nachrichtenstrukturzeile from a table. returns list of raw lines
     """
@@ -144,11 +144,10 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
                     segmentlayout_table.append(cell.text)
         if segmentlayout_table:
             segmentlayout_tables.append(segmentlayout_table)
-        test = 1
     # filter empty rows and headers
     mig_tables = [_zfill_nr(row) for row in mig_tables if row not in ("", "\n", nachrichtenstruktur_header)]
     segmentlayouts = process_segmentlayouts(segmentlayout_tables)
-    return mig_tables
+    return mig_tables, segmentlayouts
 
 
 def iter_visual_cells(row: Table) -> Generator[_Cell, None, None]:
@@ -156,15 +155,15 @@ def iter_visual_cells(row: Table) -> Generator[_Cell, None, None]:
     Iterate over visual cells in one row. Taken from https://github.com/python-openxml/python-docx/issues/344.
     """
     prior_tc = None
-    for cell in row.cells:
-        this_tc = cell._tc
+    for cell in row.cells:  # type:ignore [attr-defined]
+        this_tc = cell._tc  # pylint: disable=protected-access
         if this_tc is prior_tc:  # skip cells pointing to same `<w:tc>` element
             continue
         yield cell
         prior_tc = this_tc
 
 
-def process_segmentlayouts(segmentlayout_tables: list[_Cell]) -> list[SegmentLayout]:
+def process_segmentlayouts(segmentlayout_tables: list[list[str]]) -> list[SegmentLayout]:
     """
     Create Segmentlayouts from list of _Cell objects
     """
@@ -186,7 +185,8 @@ def process_segmentlayouts(segmentlayout_tables: list[_Cell]) -> list[SegmentLay
 
         cell_index = []
         for index, header_ind in enumerate(ignore_cells[:-1]):
-            cell_index.extend([i for i in range(header_ind + 7, ignore_cells[index + 1] - 6, 7)])
+            cell_index.extend(list(range(header_ind + 7, ignore_cells[index + 1] - 6, 7)))
+            # [i for i in range(header_ind + 7, ignore_cells[index + 1] - 6, 7)])
 
         raw_lines = []
         for i in cell_index:
@@ -212,9 +212,9 @@ def process_segmentlayouts(segmentlayout_tables: list[_Cell]) -> list[SegmentLay
                 raw_lines[-1].anwendung += segmentlayout_table[i + 6]
         segment_layouts.append(
             SegmentLayout(
-                structure=raw_lines,
+                struktur=raw_lines,
                 bemerkung="".join(segmentlayout_table[start_index_annotations : start_index_example - 1]),
-                Beispiel="".join(segmentlayout_table[start_index_example:]),
+                beispiel="".join(segmentlayout_table[start_index_example:]),
             )
         )
     return segment_layouts

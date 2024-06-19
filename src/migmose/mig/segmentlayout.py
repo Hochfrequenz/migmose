@@ -24,6 +24,6 @@ class SegmentLayout(BaseModel):
     Class to capture the layout of a segment.
     """
 
-    structure: list["SegmentLayoutLine"]
+    struktur: list["SegmentLayoutLine"]
     bemerkung: Optional[str] = None
-    Beispiel: Optional[str] = None
+    beispiel: Optional[str] = None

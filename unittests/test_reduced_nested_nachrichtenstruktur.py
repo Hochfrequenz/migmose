@@ -27,7 +27,7 @@ class TestReducedNestedNachrichtenstruktur:
             [message_format], path_to_test_edi_energy_mirror_repo, EdifactFormatVersion.FV2310
         )
         file_path = file_path_dict[message_format]
-        raw_lines = parse_raw_nachrichtenstrukturzeile(file_path)
+        (raw_lines, _) = parse_raw_nachrichtenstrukturzeile(file_path)
         nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.create_nachrichtenstruktur_tabelle(raw_lines)
         nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
             nachrichtenstrukturtabelle
