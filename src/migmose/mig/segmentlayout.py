@@ -17,6 +17,7 @@ class SegmentLayoutLine(BaseModel):
     standard_format: str
     bdew_format: str
     anwendung: str
+    indent: int
 
 
 class SegmentLayout(BaseModel):
@@ -27,3 +28,7 @@ class SegmentLayout(BaseModel):
     struktur: list["SegmentLayoutLine"]
     bemerkung: Optional[str] = None
     beispiel: Optional[str] = None
+
+
+class SegmentLayoutCollection(BaseModel):
+    """Class to capture the complete collection of all segment layouts of a format"""

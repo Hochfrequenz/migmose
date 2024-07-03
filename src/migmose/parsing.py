@@ -3,6 +3,7 @@ contains functions for file handling and parsing.
 """
 
 import re
+from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 from typing import Generator, Union
@@ -141,7 +142,7 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> tuple[list[str], lis
         if is_segmentlayout_table:
             for row in docx_object.rows:
                 for cell in iter_visual_cells(row):
-                    segmentlayout_table.append(cell.text)
+                    segmentlayout_table.append(cell)
         if segmentlayout_table:
             segmentlayout_tables.append(segmentlayout_table)
     # filter empty rows and headers
@@ -163,58 +164,71 @@ def iter_visual_cells(row: Table) -> Generator[_Cell, None, None]:
         prior_tc = this_tc
 
 
-def process_segmentlayouts(segmentlayout_tables: list[list[str]]) -> list[SegmentLayout]:
+def process_segmentlayouts(segmentlayout_tables: list[list[_Cell]]) -> dict[str, list[SegmentLayout]]:
     """
     Create Segmentlayouts from list of _Cell objects
     """
+    segment_layouts_dict: defaultdict[str, list[SegmentLayout]] = defaultdict(list)
     segment_layouts = []
     for segmentlayout_table in segmentlayout_tables:
         start_index_annotations = 0
         start_index_example = 0
         ignore_cells = []
         for index, cell in enumerate(segmentlayout_table):
-            if cell == "Bez":
+            cell_text = cell.text
+            if cell_text == "Bez":
                 ignore_cells.append(index)
-            if cell == "Bemerkung:":
+            if cell_text == "Bemerkung:":
                 ignore_cells.append(index)
-                start_index_annotations = index + 1
-            if cell == "Beispiel":
+                start_index_annotations = index
+            if cell_text == "Beispiel:":
                 start_index_example = index + 1
                 break
         assert len(ignore_cells) != 0
+
+        segment_zaehler = segmentlayout_table[ignore_cells[0] - 6].text.split("\t")[1]
 
         cell_index = []
         for index, header_ind in enumerate(ignore_cells[:-1]):
             cell_index.extend(list(range(header_ind + 7, ignore_cells[index + 1] - 6, 7)))
             # [i for i in range(header_ind + 7, ignore_cells[index + 1] - 6, 7)])
-
+        unique_indentations = {
+            segmentlayout_table[index].paragraphs[0].paragraph_format.left_indent
+            for index in cell_index
+            if segmentlayout_table[index].text != ""
+        }
+        indentations = {indentation: index for index, indentation in enumerate(sorted(unique_indentations))}
         raw_lines = []
         for i in cell_index:
-            if segmentlayout_table[i] != "":
+            if segmentlayout_table[i].text != "":
                 raw_lines.append(
                     SegmentLayoutLine(
-                        bezeichnung=segmentlayout_table[i],
-                        name=segmentlayout_table[i + 1],
-                        standard_status=segmentlayout_table[i + 2],
-                        bdew_status=segmentlayout_table[i + 3],
-                        standard_format=segmentlayout_table[i + 4],
-                        bdew_format=segmentlayout_table[i + 5],
-                        anwendung=segmentlayout_table[i + 6],
+                        bezeichnung=segmentlayout_table[i].text,
+                        name=segmentlayout_table[i + 1].text,
+                        standard_status=segmentlayout_table[i + 2].text,
+                        standard_format=segmentlayout_table[i + 3].text,
+                        bdew_status=segmentlayout_table[i + 4].text.replace("\t", ""),
+                        bdew_format=segmentlayout_table[i + 5].text.replace("\t", ""),
+                        anwendung=segmentlayout_table[i + 6].text,
+                        indent=indentations[segmentlayout_table[i].paragraphs[0].paragraph_format.left_indent],
                     )
                 )
             else:
-                raw_lines[-1].bezeichnung += segmentlayout_table[i]
-                raw_lines[-1].name += segmentlayout_table[i + 1]
-                raw_lines[-1].standard_status += segmentlayout_table[i + 2]
-                raw_lines[-1].bdew_status += segmentlayout_table[i + 3]
-                raw_lines[-1].standard_format += segmentlayout_table[i + 4]
-                raw_lines[-1].bdew_format += segmentlayout_table[i + 5]
-                raw_lines[-1].anwendung += segmentlayout_table[i + 6]
-        segment_layouts.append(
+                raw_lines[-1].bezeichnung += segmentlayout_table[i].text
+                raw_lines[-1].name += segmentlayout_table[i + 1].text
+                raw_lines[-1].standard_status += segmentlayout_table[i + 2].text
+                raw_lines[-1].bdew_status += segmentlayout_table[i + 3].text
+                raw_lines[-1].standard_format += segmentlayout_table[i + 4].text
+                raw_lines[-1].bdew_format += segmentlayout_table[i + 5].text
+                raw_lines[-1].anwendung += segmentlayout_table[i + 6].text
+        segment_layouts_dict[segment_zaehler].append(
+            # segment_layouts.append(
             SegmentLayout(
                 struktur=raw_lines,
-                bemerkung="".join(segmentlayout_table[start_index_annotations : start_index_example - 1]),
-                beispiel="".join(segmentlayout_table[start_index_example:]),
+                bemerkung="".join(
+                    cell.text for cell in segmentlayout_table[start_index_annotations : start_index_example - 1]
+                ),
+                beispiel="".join(cell.text for cell in segmentlayout_table[start_index_example:]),
             )
         )
-    return segment_layouts
+    return segment_layouts_dict

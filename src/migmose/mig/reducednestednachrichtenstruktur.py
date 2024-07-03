@@ -3,15 +3,19 @@ contains class for trees consisting of segments of mig tables
 """
 
 import json
+import re
 from pathlib import Path
 from typing import Any, Optional, TypeAlias
 
+from jinja2 import Template
 from loguru import logger
 from maus.edifact import EdifactFormat
+from more_itertools import split_at, split_when
 from pydantic import BaseModel, Field
 
 from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
+from migmose.mig.segmentlayout import SegmentLayout
 
 _SegmentDict: TypeAlias = (
     dict[
@@ -110,8 +114,113 @@ def _build_segment_dict(
     return segment_dict
 
 
+def _format_formatter(status: str) -> str:
+    if status == "":
+        return ""
+    # some regex pattern
+    pattern = r"(\w+)\.\.(\w+)"
+    # Use re.match to find the pattern in the string
+    match = re.match(pattern, status)
+    assert match is not None
+    x, y = match.groups()
+    if x == "an":
+        return x + y
+    elif x == "a":
+        return "aa" + y
+    elif x == "n":
+        return "nn" + y
+
+
+def _anwendung_str_to_list(anwendung: str) -> list[str]:
+    pattern = r"\t(\w+)\t"
+    matches = re.findall(pattern, anwendung)
+    return matches
+
+
+def _segmentlayout_to_tree_text(segment: NachrichtenstrukturZeile, segment_layout: SegmentLayout) -> str:
+    tuple_chain_standard = []
+    tuple_chain_bdew = []
+    all_anwendungen = []
+    is_first_line_element_of_main_segment = segment_layout.struktur[1].indent == 1
+    for group in split_when(segment_layout.struktur[1:], lambda x, y: x.indent > y.indent):
+        group_tuple_chain_std = []
+        group_tuple_chain_bdew = []
+        anwendungen = []
+        for line in group:  # skip first line as it only contains segment name
+            # if line.indent == 0:
+            if is_first_line_element_of_main_segment and line.name == "":
+                group_tuple_chain_std.append(segment.header_linie.standard_status)
+                group_tuple_chain_bdew.append(segment.header_linie.bdew_status)
+            elif line.indent == 0:
+                group_tuple_chain_std.append(line.standard_status)
+                group_tuple_chain_bdew.append(line.bdew_status)
+            else:
+                group_tuple_chain_std.append(line.standard_status + _format_formatter(line.standard_format))
+                group_tuple_chain_bdew.append(line.bdew_status + _format_formatter(line.bdew_format))
+            anwendungen.append(_anwendung_str_to_list(line.anwendung))
+        tuple_chain_standard.append(group_tuple_chain_std)
+        tuple_chain_bdew.append(group_tuple_chain_bdew)
+        all_anwendungen.append(anwendungen)
+    template_str = """
+    {{-seg}}[{{seg_std}};{{seg_std}};{%- for inner_list in chain_std -%}
+            {{ inner_list | join('*') }}
+            {%- if not loop.last -%}+{%- endif -%}
+        {%- endfor -%}{{-';'-}}
+        {%- for inner_list in chain_bdew -%}
+            {%- for bdew,app_list in inner_list -%}
+                {{bdew}}
+                {%- if app_list-%}
+                {{'{'-}}
+                    {{ app_list | join('*') }}
+                {{-'}'}}
+                {%- endif -%}
+                {%- if not loop.last -%}*{%- endif -%}
+            {%- endfor -%}
+            {%- if not loop.last -%}+{%- endif -%}
+        {%- endfor -%}{{']'-}}
+    """
+    template = Template(template_str)
+    test = template.render(
+        chain_std=tuple_chain_standard,
+        chain_bdew=[
+            [(bdew, app) for bdew, app in zip(tuple_chain_bdew[i], all_anwendungen[i])]
+            for i in range(len(all_anwendungen))
+        ],
+        # anwendungen=anwendungen,
+        seg=segment.bezeichnung,
+        seg_std=segment.standard_status,
+        seg_bdew=segment.bdew_status,
+    )
+    # test2
+    return test
+
+
+def _zaehler_to_tree_text(segment: NachrichtenstrukturZeile, segment_layouts: dict[list[SegmentLayout]]) -> str:
+    tree_text = ""
+    if segment.zaehler not in segment_layouts:
+        raise ValueError(f"Segment {segment.zaehler} not found in segment layouts.")
+    if len(segment_layouts[segment.zaehler]) == 1:
+        return _segmentlayout_to_tree_text(segment, segment_layouts[segment.zaehler][0])
+    else:
+        return f"{segment.bezeichnung}[TBA]"
+        # tree_text += segment.bezeichnung + "[" + segment.standard_status + ";" + segment.bdew_status + ";"
+        # for line in segment_layouts[segment.zaehler][0].struktur:
+        #    if line.name != "":
+        #        tree_text += line.standard_status + "*" + line.standard_format + "+"
+        # tree_text += ";"
+        # for line in segment_layouts[segment.zaehler][0].struktur:
+        #    if line.name != "":
+        #        tree_text += line.bdew_status + "*" + line.bdew_format + "+"
+        # tree_text += "]"
+
+
+# return tree_text.replace("..", "").replace("\t", "")
+
+
 def _build_tree_dict(
-    reduced_nestednachrichtenstruktur: "ReducedNestedNachrichtenstruktur", tree_dict: dict[str, str]
+    reduced_nestednachrichtenstruktur: "ReducedNestedNachrichtenstruktur",
+    tree_dict: dict[str, str],
+    segment_layouts: dict[str, list[SegmentLayout]],
 ) -> dict[str, str]:
     """
     Build a dictionary to compose the .tree files in the MAUS library.
@@ -124,18 +233,28 @@ def _build_tree_dict(
         tree_dict[reduced_nestednachrichtenstruktur.segmente[0].bezeichnung] = ""
         for segment in reduced_nestednachrichtenstruktur.segmente[1:]:
             if segment is not None:
-                tree_dict[reduced_nestednachrichtenstruktur.segmente[0].bezeichnung] += f"{segment.bezeichnung}[],"
+                tree_dict[reduced_nestednachrichtenstruktur.segmente[0].bezeichnung] += _zaehler_to_tree_text(
+                    segment, segment_layouts
+                )
         for segmentgruppe in reduced_nestednachrichtenstruktur.segmentgruppen:
             if segmentgruppe is not None:
-                tree_dict = _build_tree_dict(segmentgruppe, tree_dict)
+                tree_dict[
+                    reduced_nestednachrichtenstruktur.segmente[0].bezeichnung
+                ] += f"{segmentgruppe.header_linie.bezeichnung}[{segmentgruppe.header_linie.standard_status};{segmentgruppe.header_linie.bdew_status}],"
+                tree_dict = _build_tree_dict(segmentgruppe, tree_dict, segment_layouts)
     elif reduced_nestednachrichtenstruktur.header_linie is not None:
         tree_dict[reduced_nestednachrichtenstruktur.header_linie.bezeichnung] = ""
         for segment in reduced_nestednachrichtenstruktur.segmente:
             if segment is not None:
-                tree_dict[reduced_nestednachrichtenstruktur.header_linie.bezeichnung] += f"{segment.bezeichnung}[],"
+                tree_dict[reduced_nestednachrichtenstruktur.header_linie.bezeichnung] += _zaehler_to_tree_text(
+                    segment, segment_layouts
+                )
         for segmentgruppe in reduced_nestednachrichtenstruktur.segmentgruppen:
             if segmentgruppe is not None:
-                tree_dict = _build_tree_dict(segmentgruppe, tree_dict)
+                tree_dict[
+                    reduced_nestednachrichtenstruktur.header_linie.bezeichnung
+                ] += f"{segmentgruppe.header_linie.bezeichnung}[{segmentgruppe.header_linie.standard_status};{segmentgruppe.header_linie.bdew_status}],"
+                tree_dict = _build_tree_dict(segmentgruppe, tree_dict, segment_layouts)
     else:
         raise ValueError("No header line or segment found.")
     return tree_dict
@@ -181,11 +300,13 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
         logger.info("Wrote reduced nested Nachrichtenstruktur for {} to {}", message_type, file_path)
         return structured_json
 
-    def to_tree(self, message_type: EdifactFormat, output_dir: Path) -> None:
+    def to_tree(
+        self, message_type: EdifactFormat, output_dir: Path, segment_layouts: dict[str, list[SegmentLayout]]
+    ) -> None:
         """Writes reduced NestedNachrichtenstruktur in the .tree grammar of the MAUS."""
         # generate tree dict
         tree_dict: dict[str, str] = {}
-        tree_dict = _build_tree_dict(self, tree_dict)
+        tree_dict = _build_tree_dict(self, tree_dict, segment_layouts)
         # write tree file
         output_dir.mkdir(parents=True, exist_ok=True)
         file_path = output_dir.joinpath("tree.tree")
