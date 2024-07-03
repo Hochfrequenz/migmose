@@ -26,7 +26,7 @@ more-itertools==10.2.0
     # via maus
 packaging==24.0
     # via marshmallow
-pydantic==2.7.1
+pydantic==2.8.0
     # via migmose (pyproject.toml)
 pydantic-core==2.18.2
     # via pydantic
