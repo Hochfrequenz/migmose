@@ -3,7 +3,6 @@ contains class for trees consisting of segments of mig tables
 """
 
 import json
-import re
 from collections import defaultdict
 from pathlib import Path
 from typing import Any, DefaultDict, Optional, TypeAlias
@@ -11,7 +10,6 @@ from typing import Any, DefaultDict, Optional, TypeAlias
 from jinja2 import Template
 from loguru import logger
 from maus.edifact import EdifactFormat
-from more_itertools import split_at, split_when
 from pydantic import BaseModel, Field
 
 from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile
@@ -168,20 +166,28 @@ def _build_tree_dict(
             [
                 segment
                 for segment in reduced_nestednachrichtenstruktur.segmente
-                if segment.bezeichnung not in ["UNH", "UNT"]
+                if segment and segment.bezeichnung not in ["UNH", "UNT"]
             ]
         )
-        tree_dict["UNH"].extend([sg.header_linie for sg in reduced_nestednachrichtenstruktur.segmentgruppen])
         tree_dict["UNH"].extend(
-            [segment for segment in reduced_nestednachrichtenstruktur.segmente if segment.bezeichnung in ["UNT"]]
+            [sg.header_linie for sg in reduced_nestednachrichtenstruktur.segmentgruppen if sg and sg.header_linie]
+        )
+        tree_dict["UNH"].extend(
+            [
+                segment
+                for segment in reduced_nestednachrichtenstruktur.segmente
+                if segment and segment.bezeichnung in ["UNT"]
+            ]
         )
     elif reduced_nestednachrichtenstruktur.header_linie is not None:
-        tree_dict[reduced_nestednachrichtenstruktur.header_linie.bezeichnung].extend(
-            [segment for segment in reduced_nestednachrichtenstruktur.segmente]
-        )
-        tree_dict[reduced_nestednachrichtenstruktur.header_linie.bezeichnung].extend(
-            [sg.header_linie for sg in reduced_nestednachrichtenstruktur.segmentgruppen]
-        )
+        if reduced_nestednachrichtenstruktur.segmente not in [[], [None]]:
+            tree_dict[reduced_nestednachrichtenstruktur.header_linie.bezeichnung].extend(
+                [segment for segment in reduced_nestednachrichtenstruktur.segmente if segment]
+            )
+        if reduced_nestednachrichtenstruktur.segmentgruppen:
+            tree_dict[reduced_nestednachrichtenstruktur.header_linie.bezeichnung].extend(
+                [sg.header_linie for sg in reduced_nestednachrichtenstruktur.segmentgruppen if sg and sg.header_linie]
+            )
     else:
         raise ValueError("No header line or segment found.")
     for segmentgruppe in reduced_nestednachrichtenstruktur.segmentgruppen:

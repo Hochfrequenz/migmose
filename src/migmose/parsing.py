@@ -119,7 +119,7 @@ def _zfill_nr(row_str: str) -> str:
     return f"{left}{nr.zfill(5)}{right}"
 
 
-def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> tuple[list[str], list[SegmentLayout]]:
+def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> tuple[list[str], dict[str, list[SegmentLayout]]]:
     """
     parses raw nachrichtenstrukturzeile from a table. returns list of raw lines
     """
@@ -164,12 +164,12 @@ def iter_visual_cells(row: Table) -> Generator[_Cell, None, None]:
         prior_tc = this_tc
 
 
+# pylint: disable=too-many-locals
 def process_segmentlayouts(segmentlayout_tables: list[list[_Cell]]) -> dict[str, list[SegmentLayout]]:
     """
     Create Segmentlayouts from list of _Cell objects
     """
     segment_layouts_dict: defaultdict[str, list[SegmentLayout]] = defaultdict(list)
-    segment_layouts = []
     for segmentlayout_table in segmentlayout_tables:
         start_index_annotations = 0
         start_index_example = 0
@@ -191,7 +191,6 @@ def process_segmentlayouts(segmentlayout_tables: list[list[_Cell]]) -> dict[str,
         cell_index = []
         for index, header_ind in enumerate(ignore_cells[:-1]):
             cell_index.extend(list(range(header_ind + 7, ignore_cells[index + 1] - 6, 7)))
-            # [i for i in range(header_ind + 7, ignore_cells[index + 1] - 6, 7)])
         unique_indentations = {
             segmentlayout_table[index].paragraphs[0].paragraph_format.left_indent
             for index in cell_index
@@ -222,7 +221,6 @@ def process_segmentlayouts(segmentlayout_tables: list[list[_Cell]]) -> dict[str,
                 raw_lines[-1].bdew_format += segmentlayout_table[i + 5].text
                 raw_lines[-1].anwendung += segmentlayout_table[i + 6].text
         segment_layouts_dict[segment_zaehler].append(
-            # segment_layouts.append(
             SegmentLayout(
                 struktur=raw_lines,
                 bemerkung="".join(
