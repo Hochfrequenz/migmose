@@ -14,7 +14,6 @@ from pydantic import BaseModel, Field
 
 from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
-from migmose.mig.segmentlayout import SegmentLayout
 
 _SegmentDict: TypeAlias = (
     dict[
@@ -128,7 +127,6 @@ def _dict_to_tree_str(tree: DefaultDict[str, list[NachrichtenstrukturZeile]]) ->
 def _build_tree_dict(
     reduced_nestednachrichtenstruktur: "ReducedNestedNachrichtenstruktur",
     tree_dict: DefaultDict[str, list[NachrichtenstrukturZeile]],
-    segment_layouts: dict[str, list[SegmentLayout]],
 ) -> DefaultDict[str, list[NachrichtenstrukturZeile]]:
     """
     Build a dictionary to compose the .tree files in the MAUS library.
@@ -192,7 +190,7 @@ def _build_tree_dict(
         raise ValueError("No header line or segment found.")
     for segmentgruppe in reduced_nestednachrichtenstruktur.segmentgruppen:
         if segmentgruppe is not None:
-            tree_dict = _build_tree_dict(segmentgruppe, tree_dict, segment_layouts)
+            tree_dict = _build_tree_dict(segmentgruppe, tree_dict)
     return tree_dict
 
 
@@ -236,13 +234,11 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
         logger.info("Wrote reduced nested Nachrichtenstruktur for {} to {}", message_type, file_path)
         return structured_json
 
-    def to_tree(
-        self, message_type: EdifactFormat, output_dir: Path, segment_layouts: dict[str, list[SegmentLayout]]
-    ) -> None:
+    def to_tree(self, message_type: EdifactFormat, output_dir: Path) -> None:
         """Writes reduced NestedNachrichtenstruktur in the .tree grammar of the MAUS."""
         # generate tree dict
         tree_dict: DefaultDict[str, list[NachrichtenstrukturZeile]] = defaultdict(list)
-        tree_dict = _build_tree_dict(self, tree_dict, segment_layouts)
+        tree_dict = _build_tree_dict(self, tree_dict)
         # write tree file
         output_dir.mkdir(parents=True, exist_ok=True)
         file_path = output_dir.joinpath(f"{message_type}.tree")
