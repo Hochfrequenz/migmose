@@ -2,6 +2,7 @@ import json
 
 import pytest
 from maus.edifact import EdifactFormat, EdifactFormatVersion
+from maus.reader.tree_to_sgh import check_file_can_be_parsed_as_tree
 
 from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
@@ -48,3 +49,41 @@ class TestReducedNestedNachrichtenstruktur:
             ) as file2:
                 expected_reduced_nested_json = json.load(file2)
                 assert actual_reduced_nested_json == expected_reduced_nested_json
+
+    @pytest.mark.parametrize(
+        "message_format",
+        [
+            pytest.param(EdifactFormat.ORDCHG, id="ORDCHG"),
+            pytest.param(EdifactFormat.UTILMD, id="UTILMD"),
+            pytest.param(EdifactFormat.IFTSTA, id="IFTSTA"),
+        ],
+    )
+    def test_to_tree(self, message_format: EdifactFormat, tmp_path):
+        """test if the reduced nested nachrichtenstruktur is created correctly"""
+        file_path_dict = find_file_to_format(
+            [message_format], path_to_test_edi_energy_mirror_repo, EdifactFormatVersion.FV2310
+        )
+        file_path_dict = find_file_to_format(
+            [message_format], path_to_test_edi_energy_mirror_repo, EdifactFormatVersion.FV2310
+        )
+        file_path = file_path_dict[message_format]
+        raw_lines = parse_raw_nachrichtenstrukturzeile(file_path)
+        nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.create_nachrichtenstruktur_tabelle(raw_lines)
+        nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
+            nachrichtenstrukturtabelle
+        )
+        reduced_nested_nachrichtenstruktur = ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(
+            nested_nachrichtenstruktur
+        )
+        reduced_nested_nachrichtenstruktur.to_tree(message_format, tmp_path)
+        with open(tmp_path / f"{message_format}.tree", "r", encoding="utf-8") as actual_file:
+            with open(
+                expected_output_dir / EdifactFormatVersion.FV2310 / message_format / f"{message_format}.tree",
+                "r",
+                encoding="utf-8",
+            ) as expected_file:
+                assert actual_file.read() == expected_file.read()
+        try:
+            check_file_can_be_parsed_as_tree(tmp_path / f"{message_format}.tree")
+        except ValueError as e:
+            assert False, f"maus exception: {e}"

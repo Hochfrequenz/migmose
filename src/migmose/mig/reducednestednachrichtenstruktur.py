@@ -235,7 +235,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
         return structured_json
 
     def to_tree(self, message_type: EdifactFormat, output_dir: Path) -> None:
-        """Writes reduced NestedNachrichtenstruktur in the .tree grammar of the MAUS."""
+        """Writes reduced NestedNachrichtenstruktur in the .tree grammar of MAUS."""
         # generate tree dict
         tree_dict: DefaultDict[str, list[NachrichtenstrukturZeile]] = defaultdict(list)
         tree_dict = _build_tree_dict(self, tree_dict)
