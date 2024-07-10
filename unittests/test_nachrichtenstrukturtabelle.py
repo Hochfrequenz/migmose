@@ -24,7 +24,7 @@ class TestNachrichtenstrukturTabelle:
 
     def test_parse(self):
         input_file = path_to_test_FV2310 / "ORDCHGMIG-informatorischeLesefassung1.1_99991231_20231001.docx"
-        (raw_lines, _) = parse_raw_nachrichtenstrukturzeile(input_file)
+        raw_lines = parse_raw_nachrichtenstrukturzeile(input_file)
         nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.create_nachrichtenstruktur_tabelle(raw_lines)
         expected_csv_file = (
             expected_output_dir / EdifactFormatVersion.FV2310 / EdifactFormat.ORDCHG / "nachrichtenstruktur.csv"
@@ -48,7 +48,7 @@ class TestNachrichtenstrukturTabelle:
         input_file = path_to_test_FV2310 / "ORDCHGMIG-informatorischeLesefassung1.1_99991231_20231001.docx"
         message_format = EdifactFormat.ORDCHG
         output_dir = tmp_path
-        (raw_lines, _) = parse_raw_nachrichtenstrukturzeile(input_file)
+        raw_lines = parse_raw_nachrichtenstrukturzeile(input_file)
         nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.create_nachrichtenstruktur_tabelle(raw_lines)
         nachrichtenstrukturtabelle.to_csv(message_format, output_dir)
 

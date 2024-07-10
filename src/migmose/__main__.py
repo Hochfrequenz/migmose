@@ -83,7 +83,7 @@ def main(
     dict_files = find_file_to_format(message_format, edi_energy_mirror_path, format_version)
     for m_format, file in dict_files.items():
         output_dir_for_format = output_dir / format_version / m_format
-        (raw_lines, _) = parse_raw_nachrichtenstrukturzeile(file)
+        raw_lines = parse_raw_nachrichtenstrukturzeile(file)
         nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.create_nachrichtenstruktur_tabelle(raw_lines)
         if "csv" in file_type:
             logger.info(

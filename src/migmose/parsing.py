@@ -3,7 +3,6 @@ contains functions for file handling and parsing.
 """
 
 import re
-from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 from typing import Generator, Union
@@ -15,8 +14,6 @@ from docx.oxml import CT_Tbl  # type:ignore[attr-defined]
 from docx.table import Table, _Cell
 from loguru import logger
 from maus.edifact import EdifactFormat, EdifactFormatVersion
-
-from migmose.mig.segmentlayout import SegmentLayout, SegmentLayoutLine
 
 
 def find_file_to_format(
@@ -119,7 +116,7 @@ def _zfill_nr(row_str: str) -> str:
     return f"{left}{nr.zfill(5)}{right}"
 
 
-def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> tuple[list[str], dict[str, list[SegmentLayout]]]:
+def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
     """
     parses raw nachrichtenstrukturzeile from a table. returns list of raw lines
     """
@@ -128,105 +125,13 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> tuple[list[str], dic
     docx_objects = get_paragraphs_up_to_diagram(doc)
     mig_tables = []
     nachrichtenstruktur_header = "Status\tMaxWdh\n\tZähler\tNr\tBez\tSta\tBDEW\tSta\tBDEW\tEbene\tInhalt"
-    segmentlayout_header = "\tStandard\tBDEW\n\tZähler\tNr\tBez\tSt\tMaxWdh\tSt\tMaxWdh\tEbene\tName"
-    segmentlayout_tables = []
     for docx_object in docx_objects:
-        segmentlayout_table = []
         for ind, line in enumerate(docx_object._cells):
             # marks the beginning of the complete nachrichtentruktur table
             if line.text == nachrichtenstruktur_header:
                 mig_tables.extend([row.text for row in docx_object._cells[ind + 1 :]])
                 break
 
-        is_segmentlayout_table = docx_object._cells[0].text == segmentlayout_header
-        if is_segmentlayout_table:
-            for row in docx_object.rows:
-                for cell in iter_visual_cells(row):
-                    segmentlayout_table.append(cell)
-        if segmentlayout_table:
-            segmentlayout_tables.append(segmentlayout_table)
     # filter empty rows and headers
     mig_tables = [_zfill_nr(row) for row in mig_tables if row not in ("", "\n", nachrichtenstruktur_header)]
-    segmentlayouts = process_segmentlayouts(segmentlayout_tables)
-    return mig_tables, segmentlayouts
-
-
-def iter_visual_cells(row: Table) -> Generator[_Cell, None, None]:
-    """
-    Iterate over visual cells in one row. Taken from https://github.com/python-openxml/python-docx/issues/344.
-    """
-    prior_tc = None
-    for cell in row.cells:  # type:ignore [attr-defined]
-        this_tc = cell._tc  # pylint: disable=protected-access
-        if this_tc is prior_tc:  # skip cells pointing to same `<w:tc>` element
-            continue
-        yield cell
-        prior_tc = this_tc
-
-
-# pylint: disable=too-many-locals
-def process_segmentlayouts(segmentlayout_tables: list[list[_Cell]]) -> dict[str, list[SegmentLayout]]:
-    """
-    Create Segmentlayouts from list of _Cell objects
-    """
-    segment_layouts_dict: defaultdict[str, list[SegmentLayout]] = defaultdict(list)
-    for segmentlayout_table in segmentlayout_tables:
-        start_index_annotations = 0
-        start_index_example = 0
-        ignore_cells = []
-        for index, cell in enumerate(segmentlayout_table):
-            cell_text = cell.text
-            if cell_text == "Bez":
-                ignore_cells.append(index)
-            if cell_text == "Bemerkung:":
-                ignore_cells.append(index)
-                start_index_annotations = index
-            if cell_text == "Beispiel:":
-                start_index_example = index + 1
-                break
-        assert len(ignore_cells) != 0
-
-        segment_zaehler = segmentlayout_table[ignore_cells[0] - 6].text.split("\t")[1]
-
-        cell_index = []
-        for index, header_ind in enumerate(ignore_cells[:-1]):
-            cell_index.extend(list(range(header_ind + 7, ignore_cells[index + 1] - 6, 7)))
-        unique_indentations = {
-            segmentlayout_table[index].paragraphs[0].paragraph_format.left_indent
-            for index in cell_index
-            if segmentlayout_table[index].text != ""
-        }
-        indentations = {indentation: index for index, indentation in enumerate(sorted(unique_indentations))}
-        raw_lines = []
-        for i in cell_index:
-            if segmentlayout_table[i].text != "":
-                raw_lines.append(
-                    SegmentLayoutLine(
-                        bezeichnung=segmentlayout_table[i].text,
-                        name=segmentlayout_table[i + 1].text,
-                        standard_status=segmentlayout_table[i + 2].text,
-                        standard_format=segmentlayout_table[i + 3].text,
-                        bdew_status=segmentlayout_table[i + 4].text.replace("\t", ""),
-                        bdew_format=segmentlayout_table[i + 5].text.replace("\t", ""),
-                        anwendung=segmentlayout_table[i + 6].text,
-                        indent=indentations[segmentlayout_table[i].paragraphs[0].paragraph_format.left_indent],
-                    )
-                )
-            else:
-                raw_lines[-1].bezeichnung += segmentlayout_table[i].text
-                raw_lines[-1].name += segmentlayout_table[i + 1].text
-                raw_lines[-1].standard_status += segmentlayout_table[i + 2].text
-                raw_lines[-1].bdew_status += segmentlayout_table[i + 3].text
-                raw_lines[-1].standard_format += segmentlayout_table[i + 4].text
-                raw_lines[-1].bdew_format += segmentlayout_table[i + 5].text
-                raw_lines[-1].anwendung += segmentlayout_table[i + 6].text
-        segment_layouts_dict[segment_zaehler].append(
-            SegmentLayout(
-                struktur=raw_lines,
-                bemerkung="".join(
-                    cell.text for cell in segmentlayout_table[start_index_annotations : start_index_example - 1]
-                ),
-                beispiel="".join(cell.text for cell in segmentlayout_table[start_index_example:]),
-            )
-        )
-    return segment_layouts_dict
+    return mig_tables
