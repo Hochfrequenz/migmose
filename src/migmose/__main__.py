@@ -11,6 +11,7 @@ from maus.edifact import EdifactFormat, EdifactFormatVersion
 from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
 from migmose.mig.reducednestednachrichtenstruktur import ReducedNestedNachrichtenstruktur
+from migmose.mig.segmentgrouphierarchies import SegmentGroupHierarchy
 from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturzeile
 
 
