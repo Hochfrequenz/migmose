@@ -122,6 +122,22 @@ def main(
                 output_dir_for_format,
             )
             reduced_nested_nachrichtenstruktur.to_json(m_format, output_dir_for_format)
+        if "sgh_json" in file_type:
+            nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
+                nachrichtenstrukturtabelle
+            )
+            reduced_nested_nachrichtenstruktur = (
+                ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(nested_nachrichtenstruktur)
+            )
+            sgh = SegmentGroupHierarchy.create_segmentgroup_hierarchy(reduced_nested_nachrichtenstruktur)
+            # Save the reduced nested Nachrichtenstruktur as json
+            logger.info(
+                "💾 Saving reduced nested Nachrichtenstruktur for {} and {} as json to {}.",
+                m_format,
+                format_version,
+                output_dir_for_format,
+            )
+            sgh.to_json(m_format, output_dir_for_format)
         if "tree" in file_type:
             nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
                 nachrichtenstrukturtabelle
