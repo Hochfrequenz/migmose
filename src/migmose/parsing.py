@@ -3,9 +3,10 @@ contains functions for file handling and parsing.
 """
 
 import re
+from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
-from typing import Generator, Union
+from typing import DefaultDict, Generator, Optional, Union
 
 import click
 import docx
@@ -23,20 +24,27 @@ def find_file_to_format(
     finds the file with the message type in the input directory
     """
     input_dir = edi_energy_repo / Path("edi_energy_de") / Path(format_version)
-    file_dict: dict[EdifactFormat, Path] = {}
-    for message_format in message_formats:
-        list_of_all_files: list[Path] = [
-            file
-            for file in input_dir.iterdir()
-            if message_format in file.name and "MIG" in file.name and file.suffix == ".docx"
-        ]
-
-        if len(list_of_all_files) == 1:
-            file_dict[message_format] = list_of_all_files[0]
-        elif len(list_of_all_files) > 1:
-            file_dict[message_format] = get_latest_file(list_of_all_files)
-        else:
-            logger.warning(f"⚠️ No file found for {message_format}.", fg="red")
+    all_file_dict: DefaultDict[EdifactFormat, list[Path]] = defaultdict(list)
+    for file in input_dir.iterdir():
+        if "MIG" not in file.name or file.suffix != ".docx":
+            continue
+        for message_format in message_formats:
+            if (
+                message_format == EdifactFormat.UTILMD
+                and "UTILMD" in file.name
+                and "Strom" not in file.name
+                and "Gas" not in file.name
+            ):
+                all_file_dict[EdifactFormat.UTILMD].append(file)
+            elif message_format in [EdifactFormat.UTILMD, EdifactFormat.UTILMDG] and "Gas" in file.name:
+                all_file_dict[EdifactFormat.UTILMDG].append(file)
+            elif message_format in [EdifactFormat.UTILMD, EdifactFormat.UTILMDS] and "Strom" in file.name:
+                all_file_dict[EdifactFormat.UTILMDS].append(file)
+            elif message_format in file.name:
+                all_file_dict[message_format].append(file)
+    file_dict: dict[EdifactFormat, Path] = {
+        fmt: get_latest_file(files) for fmt, files in all_file_dict.items() if get_latest_file(files)
+    }
     if file_dict:
         return file_dict
     logger.error("❌ No files found in the input directory.", fg="red")
@@ -58,7 +66,7 @@ def _extract_date(file_path: Path) -> tuple[datetime, Path]:
     raise click.Abort()
 
 
-def get_latest_file(file_list: list[Path]) -> Path:
+def get_latest_file(file_list: list[Path]) -> Optional[Path]:
     """
     This function takes a list of docx files Path
     and returns the Path of the latest MIG docx file based on the timestamp in its name.
@@ -70,7 +78,9 @@ def get_latest_file(file_list: list[Path]) -> Path:
     Returns:
         Path: The path of the latest file. Returns None if no valid date is found.
     """
-
+    if len(file_list) == 0:
+        logger.warning(f"⚠️ No file found for {message_format}.", fg="red")
+        return None
     # Initialize variables to keep track of the latest file and date
     latest_file: Path
     latest_date: datetime | None = None
