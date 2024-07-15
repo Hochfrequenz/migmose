@@ -1,0 +1,1370 @@
+# serializer version: 1
+# name: TestReducedNestedNachrichtenstruktur.test_build_tree_dict_and_generate_str[IFTSTA]
+  defaultdict({
+    '/': list([
+      NachrichtenstrukturZeile(zaehler='0', nr='00000', bezeichnung='UNB', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=0, bdew_maximale_wiederholungen=0, ebene=0, inhalt='0'),
+      NachrichtenstrukturZeile(zaehler='0010', nr='00001', bezeichnung='UNH', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=0, inhalt='Nachrichten-Kopfsegment'),
+      NachrichtenstrukturZeile(zaehler='0', nr='00000', bezeichnung='UNZ', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=0, bdew_maximale_wiederholungen=0, ebene=0, inhalt='0'),
+    ]),
+    'SG1': list([
+      NachrichtenstrukturZeile(zaehler='0060', nr='00005', bezeichnung='NAD', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=1, inhalt='MP-ID Absender'),
+      NachrichtenstrukturZeile(zaehler='0070', nr=None, bezeichnung='SG2', standard_status='C', bdew_status='O', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Ansprechpartner'),
+    ]),
+    'SG14': list([
+      NachrichtenstrukturZeile(zaehler='0570', nr='00019', bezeichnung='CNI', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=1, inhalt='Sendungsdaten'),
+      NachrichtenstrukturZeile(zaehler='0580', nr='00020', bezeichnung='LOC', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Meldepunkt'),
+      NachrichtenstrukturZeile(zaehler='0600', nr=None, bezeichnung='SG15', standard_status='M', bdew_status='D', standard_maximale_wiederholungen=99, bdew_maximale_wiederholungen=1, ebene=2, inhalt='MSB-Wechselstatus'),
+    ]),
+    'SG15': list([
+      NachrichtenstrukturZeile(zaehler='0610', nr='00116', bezeichnung='STS', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Grund der Privilegierung nach EnFG'),
+      NachrichtenstrukturZeile(zaehler='0620', nr='00117', bezeichnung='RFF', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=999, bdew_maximale_wiederholungen=1, ebene=3, inhalt='Prüfidentifikator'),
+      NachrichtenstrukturZeile(zaehler='0630', nr='00118', bezeichnung='DTM', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=3, inhalt='Datum/Uhrzeit/Zeitspanne'),
+      NachrichtenstrukturZeile(zaehler='0660', nr=None, bezeichnung='SG16', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=99, bdew_maximale_wiederholungen=99, ebene=3, inhalt='Ansicht des Senders'),
+      NachrichtenstrukturZeile(zaehler='0730', nr=None, bezeichnung='SG17', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=3, inhalt='Messstellenbetreiber an der Messlokation'),
+      NachrichtenstrukturZeile(zaehler='1040', nr=None, bezeichnung='SG25', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=9999, bdew_maximale_wiederholungen=1, ebene=3, inhalt='Sendungspositionseinzelheiten'),
+    ]),
+    'SG16': list([
+      NachrichtenstrukturZeile(zaehler='0670', nr='00119', bezeichnung='EFI', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=3, inhalt='Privilegierte Energiemenge'),
+      NachrichtenstrukturZeile(zaehler='0710', nr='00120', bezeichnung='DTM', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=4, inhalt='Beginn des Zeitraums'),
+      NachrichtenstrukturZeile(zaehler='0720', nr='00122', bezeichnung='QTY', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=4, inhalt='Menge'),
+    ]),
+    'SG17': list([
+      NachrichtenstrukturZeile(zaehler='0740', nr='00123', bezeichnung='NAD', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=3, inhalt='Name und Anschrift'),
+      NachrichtenstrukturZeile(zaehler='0750', nr=None, bezeichnung='SG18', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=4, inhalt='Ansprechpartner'),
+    ]),
+    'SG18': list([
+      NachrichtenstrukturZeile(zaehler='0760', nr='00099', bezeichnung='CTA', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=4, inhalt='Ansprechpartner'),
+      NachrichtenstrukturZeile(zaehler='0770', nr='00100', bezeichnung='COM', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=4, ebene=5, inhalt='Kommunikationsverbindung'),
+    ]),
+    'SG2': list([
+      NachrichtenstrukturZeile(zaehler='0080', nr='00006', bezeichnung='CTA', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Ansprechpartner'),
+      NachrichtenstrukturZeile(zaehler='0090', nr='00007', bezeichnung='COM', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=5, ebene=3, inhalt='Kommunikationsverbindung'),
+    ]),
+    'SG25': list([
+      NachrichtenstrukturZeile(zaehler='1050', nr='00124', bezeichnung='GID', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=3, inhalt='Sendungspositionseinzelheiten'),
+      NachrichtenstrukturZeile(zaehler='1090', nr='00125', bezeichnung='FTX', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=4, inhalt='Freier Text'),
+    ]),
+    'SG4': list([
+      NachrichtenstrukturZeile(zaehler='0170', nr='00008', bezeichnung='EQD', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=1, inhalt='Einzelheiten zu Equipment'),
+      NachrichtenstrukturZeile(zaehler='0240', nr='00009', bezeichnung='RFF', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=999, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Prüfidentifikator'),
+      NachrichtenstrukturZeile(zaehler='0300', nr=None, bezeichnung='SG6', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=2, inhalt='LOC-DTM-DTM'),
+      NachrichtenstrukturZeile(zaehler='0330', nr=None, bezeichnung='SG7', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=99, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Prüfstatus Antwort auf Summenzeitreihen'),
+    ]),
+    'SG6': list([
+      NachrichtenstrukturZeile(zaehler='0310', nr='00011', bezeichnung='LOC', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Meldepunkt'),
+      NachrichtenstrukturZeile(zaehler='0320', nr='00012', bezeichnung='DTM', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=3, inhalt='Betrachtungszeitintervall'),
+    ]),
+    'SG7': list([
+      NachrichtenstrukturZeile(zaehler='0340', nr='00018', bezeichnung='STS', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Abweisung Statusmeldung/-änderung'),
+    ]),
+    'UNH': list([
+      NachrichtenstrukturZeile(zaehler='0020', nr='00002', bezeichnung='BGM', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=0, inhalt='Beginn der Nachricht'),
+      NachrichtenstrukturZeile(zaehler='0030', nr='00003', bezeichnung='DTM', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=1, inhalt='Dokumentendatum'),
+      NachrichtenstrukturZeile(zaehler='0050', nr=None, bezeichnung='SG1', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=1, inhalt='MP-ID Empfänger'),
+      NachrichtenstrukturZeile(zaehler='0160', nr=None, bezeichnung='SG4', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=99999, bdew_maximale_wiederholungen=99999, ebene=1, inhalt='EQD-RFF-RFF-SG6-SG7-SG7-SG7-SG7-SG7'),
+      NachrichtenstrukturZeile(zaehler='0560', nr=None, bezeichnung='SG14', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=99999, bdew_maximale_wiederholungen=99999, ebene=1, inhalt='CNI-LOC-SG15-SG15-SG15-SG15-SG15-SG15-SG15-\nSG15-SG15-SG15-SG15-SG15-SG15-SG15-SG15-SG15-\nSG15'),
+      NachrichtenstrukturZeile(zaehler='1250', nr='00126', bezeichnung='UNT', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=0, inhalt='Nachrichten-Endesegment'),
+    ]),
+  })
+# ---
+# name: TestReducedNestedNachrichtenstruktur.test_build_tree_dict_and_generate_str[IFTSTA].1
+  '''
+  /:UNB[M;M],UNH[M;M],UNZ[M;M]
+  UNH:BGM[M;M],DTM[C;R],SG1[C;R],SG4[C;D],SG14[C;D],UNT[M;M]
+  SG1:NAD[M;M],SG2[C;O]
+  SG2:CTA[M;M],COM[C;R]
+  SG4:EQD[M;M],RFF[C;R],SG6[C;R],SG7[C;D]
+  SG6:LOC[M;M],DTM[C;R]
+  SG7:STS[M;M]
+  SG14:CNI[M;M],LOC[C;D],SG15[M;D]
+  SG15:STS[M;M],RFF[C;R],DTM[C;R],SG16[C;D],SG17[C;D],SG25[C;D]
+  SG16:EFI[M;M],DTM[C;R],QTY[C;R]
+  SG17:NAD[M;M],SG18[C;R]
+  SG18:CTA[M;M],COM[C;R]
+  SG25:GID[M;M],FTX[C;R]
+
+  '''
+# ---
+# name: TestReducedNestedNachrichtenstruktur.test_build_tree_dict_and_generate_str[ORDCHG]
+  defaultdict({
+    '/': list([
+      NachrichtenstrukturZeile(zaehler='0', nr='00000', bezeichnung='UNB', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=0, bdew_maximale_wiederholungen=0, ebene=0, inhalt='0'),
+      NachrichtenstrukturZeile(zaehler='0010', nr='00001', bezeichnung='UNH', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=0, inhalt='Nachrichten-Kopfsegment'),
+      NachrichtenstrukturZeile(zaehler='0', nr='00000', bezeichnung='UNZ', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=0, bdew_maximale_wiederholungen=0, ebene=0, inhalt='0'),
+    ]),
+    'SG1': list([
+      NachrichtenstrukturZeile(zaehler='0100', nr='00006', bezeichnung='RFF', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=1, inhalt='Prüfidentifikator'),
+    ]),
+    'SG3': list([
+      NachrichtenstrukturZeile(zaehler='0160', nr='00010', bezeichnung='NAD', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=1, inhalt='MP-ID Empfänger'),
+      NachrichtenstrukturZeile(zaehler='0250', nr=None, bezeichnung='SG6', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=5, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Kontaktinformationen'),
+    ]),
+    'SG6': list([
+      NachrichtenstrukturZeile(zaehler='0260', nr='00008', bezeichnung='CTA', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Ansprechpartner'),
+      NachrichtenstrukturZeile(zaehler='0270', nr='00009', bezeichnung='COM', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=5, bdew_maximale_wiederholungen=5, ebene=3, inhalt='Kommunikationsverbindung'),
+    ]),
+    'UNH': list([
+      NachrichtenstrukturZeile(zaehler='0020', nr='00002', bezeichnung='BGM', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=0, inhalt='Beginn der Nachricht'),
+      NachrichtenstrukturZeile(zaehler='0030', nr='00003', bezeichnung='DTM', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=35, bdew_maximale_wiederholungen=1, ebene=1, inhalt='Nachrichtendatum'),
+      NachrichtenstrukturZeile(zaehler='2380', nr='00011', bezeichnung='UNS', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=0, inhalt='Abschnitts-Kontrollsegment'),
+      NachrichtenstrukturZeile(zaehler='0090', nr=None, bezeichnung='SG1', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=9999, bdew_maximale_wiederholungen=1, ebene=1, inhalt='Referenz der Anfrage/Bestellung'),
+      NachrichtenstrukturZeile(zaehler='0150', nr=None, bezeichnung='SG3', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=99, bdew_maximale_wiederholungen=1, ebene=1, inhalt='MP-ID Absender'),
+      NachrichtenstrukturZeile(zaehler='2450', nr='00012', bezeichnung='UNT', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=0, inhalt='Nachrichten-Endesegment'),
+    ]),
+  })
+# ---
+# name: TestReducedNestedNachrichtenstruktur.test_build_tree_dict_and_generate_str[ORDCHG].1
+  '''
+  /:UNB[M;M],UNH[M;M],UNZ[M;M]
+  UNH:BGM[M;M],DTM[M;M],UNS[M;M],SG1[C;D],SG3[C;R],UNT[M;M]
+  SG1:RFF[M;M]
+  SG3:NAD[M;M],SG6[C;D]
+  SG6:CTA[M;M],COM[C;R]
+
+  '''
+# ---
+# name: TestReducedNestedNachrichtenstruktur.test_build_tree_dict_and_generate_str[UTILMD]
+  defaultdict({
+    '/': list([
+      NachrichtenstrukturZeile(zaehler='0', nr='00000', bezeichnung='UNB', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=0, bdew_maximale_wiederholungen=0, ebene=0, inhalt='0'),
+      NachrichtenstrukturZeile(zaehler='0010', nr='00003', bezeichnung='UNH', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=0, inhalt='Nachrichten-Kopfsegment'),
+      NachrichtenstrukturZeile(zaehler='0', nr='00000', bezeichnung='UNZ', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=0, bdew_maximale_wiederholungen=0, ebene=0, inhalt='0'),
+    ]),
+    'SG1': list([
+      NachrichtenstrukturZeile(zaehler='0080', nr='00007', bezeichnung='RFF', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=1, inhalt='Referenz auf eine vorangegangene Anfrage'),
+    ]),
+    'SG10': list([
+      NachrichtenstrukturZeile(zaehler='0510', nr='00510', bezeichnung='CCI', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=3, inhalt='Grundlage zur Verringerung der Umlagen nach EnFG'),
+      NachrichtenstrukturZeile(zaehler='0520', nr='00511', bezeichnung='CAV', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=99, bdew_maximale_wiederholungen=5, ebene=4, inhalt='Grund der Privilegierung nach EnFG'),
+    ]),
+    'SG12': list([
+      NachrichtenstrukturZeile(zaehler='0580', nr='00532', bezeichnung='NAD', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Name und Adresse für die Ablesekarte'),
+      NachrichtenstrukturZeile(zaehler='0590', nr='00533', bezeichnung='RFF', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=9, ebene=3, inhalt='Referenz auf die ID einer Messlokation'),
+    ]),
+    'SG2': list([
+      NachrichtenstrukturZeile(zaehler='0110', nr='00011', bezeichnung='NAD', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=1, inhalt='MP-ID Empfänger'),
+      NachrichtenstrukturZeile(zaehler='0150', nr=None, bezeichnung='SG3', standard_status='C', bdew_status='O', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Kontaktinformationen'),
+    ]),
+    'SG3': list([
+      NachrichtenstrukturZeile(zaehler='0160', nr='00009', bezeichnung='CTA', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Ansprechpartner'),
+      NachrichtenstrukturZeile(zaehler='0170', nr='00010', bezeichnung='COM', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=5, ebene=3, inhalt='Kommunikationsverbindung'),
+    ]),
+    'SG4': list([
+      NachrichtenstrukturZeile(zaehler='0190', nr='00020', bezeichnung='IDE', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=1, inhalt='Vorgang'),
+      NachrichtenstrukturZeile(zaehler='0220', nr='00021', bezeichnung='IMD', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Identifikationslogik'),
+      NachrichtenstrukturZeile(zaehler='0230', nr='00022', bezeichnung='DTM', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=99, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Datum zum geplanten Leistungsbeginn'),
+      NachrichtenstrukturZeile(zaehler='0250', nr='00037', bezeichnung='STS', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Transaktionsgrund'),
+      NachrichtenstrukturZeile(zaehler='0270', nr='00042', bezeichnung='PTY', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Vorgegebene Verarbeitungsreihenfolge des NB'),
+      NachrichtenstrukturZeile(zaehler='0280', nr='00043', bezeichnung='FTX', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Bemerkung (Feld für allgemeine Hinweise)'),
+      NachrichtenstrukturZeile(zaehler='0290', nr='00049', bezeichnung='AGR', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=2, ebene=2, inhalt='Beauftragung oder Beendigung liegt vor'),
+      NachrichtenstrukturZeile(zaehler='0320', nr=None, bezeichnung='SG5', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=999999, bdew_maximale_wiederholungen=1, ebene=2, inhalt='MaBiS-Zählpunkt'),
+      NachrichtenstrukturZeile(zaehler='0350', nr=None, bezeichnung='SG6', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=99, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Prüfidentifikator'),
+      NachrichtenstrukturZeile(zaehler='0410', nr=None, bezeichnung='SG8', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=99999, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Daten der Summenzeitreihe'),
+      NachrichtenstrukturZeile(zaehler='0570', nr=None, bezeichnung='SG12', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=99, bdew_maximale_wiederholungen=99, ebene=2, inhalt='Kunde des Lieferanten'),
+    ]),
+    'SG5': list([
+      NachrichtenstrukturZeile(zaehler='0330', nr='00056', bezeichnung='LOC', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=2, inhalt='MaBiS-Zählpunkt'),
+    ]),
+    'SG6': list([
+      NachrichtenstrukturZeile(zaehler='0360', nr='00071', bezeichnung='RFF', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Referenz auf die Lokationsbündelstruktur'),
+      NachrichtenstrukturZeile(zaehler='0370', nr='00067', bezeichnung='DTM', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=3, inhalt='Turnusablesung des MSB'),
+    ]),
+    'SG8': list([
+      NachrichtenstrukturZeile(zaehler='0420', nr='00509', bezeichnung='SEQ', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=2, inhalt='Daten des Kunden des Lieferanten'),
+      NachrichtenstrukturZeile(zaehler='0430', nr='00498', bezeichnung='RFF', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=3, inhalt='Referenz auf die ID der\nBilanzierungsgebietssummenzeitreihe'),
+      NachrichtenstrukturZeile(zaehler='0440', nr='00451', bezeichnung='PIA', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=3, inhalt='Produktidentifikation der Überführungszeitreihe'),
+      NachrichtenstrukturZeile(zaehler='0450', nr=None, bezeichnung='SG9', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=99, bdew_maximale_wiederholungen=1, ebene=3, inhalt='Arbeit / Leistung für tagesparameterabhängige\nMarktlokation'),
+      NachrichtenstrukturZeile(zaehler='0500', nr=None, bezeichnung='SG10', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=99, bdew_maximale_wiederholungen=1, ebene=3, inhalt='Bilanzkreis'),
+    ]),
+    'SG9': list([
+      NachrichtenstrukturZeile(zaehler='0460', nr='00501', bezeichnung='QTY', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=3, inhalt='Tatsächlich bilanzierte Energiemenge'),
+      NachrichtenstrukturZeile(zaehler='0470', nr='00502', bezeichnung='DTM', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=4, inhalt='Bilanzierungsbeginn'),
+    ]),
+    'UNH': list([
+      NachrichtenstrukturZeile(zaehler='0020', nr='00004', bezeichnung='BGM', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=0, inhalt='Beginn der Nachricht'),
+      NachrichtenstrukturZeile(zaehler='0030', nr='00005', bezeichnung='DTM', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=1, inhalt='Nachrichtendatum'),
+      NachrichtenstrukturZeile(zaehler='0070', nr=None, bezeichnung='SG1', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=9, bdew_maximale_wiederholungen=1, ebene=1, inhalt='Referenz auf eine vorangegangene Anfrage'),
+      NachrichtenstrukturZeile(zaehler='0100', nr=None, bezeichnung='SG2', standard_status='C', bdew_status='R', standard_maximale_wiederholungen=99, bdew_maximale_wiederholungen=1, ebene=1, inhalt='MP-ID Absender'),
+      NachrichtenstrukturZeile(zaehler='0180', nr=None, bezeichnung='SG4', standard_status='C', bdew_status='D', standard_maximale_wiederholungen=99999, bdew_maximale_wiederholungen=1, ebene=1, inhalt='Identifikation einer Liste'),
+      NachrichtenstrukturZeile(zaehler='0670', nr='00534', bezeichnung='UNT', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=1, bdew_maximale_wiederholungen=1, ebene=0, inhalt='Nachrichten-Endesegment'),
+    ]),
+  })
+# ---
+# name: TestReducedNestedNachrichtenstruktur.test_build_tree_dict_and_generate_str[UTILMD].1
+  '''
+  /:UNB[M;M],UNH[M;M],UNZ[M;M]
+  UNH:BGM[M;M],DTM[M;M],SG1[C;D],SG2[C;R],SG4[C;D],UNT[M;M]
+  SG1:RFF[M;M]
+  SG2:NAD[M;M],SG3[C;O]
+  SG3:CTA[M;M],COM[C;R]
+  SG4:IDE[M;M],IMD[C;D],DTM[C;D],STS[C;D],PTY[C;D],FTX[C;D],AGR[C;D],SG5[C;D],SG6[C;R],SG8[C;D],SG12[C;D]
+  SG5:LOC[M;M]
+  SG6:RFF[M;M],DTM[C;D]
+  SG8:SEQ[M;M],RFF[C;D],PIA[C;R],SG9[C;D],SG10[C;D]
+  SG9:QTY[M;M],DTM[C;R]
+  SG10:CCI[M;M],CAV[C;D]
+  SG12:NAD[M;M],RFF[C;D]
+
+  '''
+# ---
+# name: TestReducedNestedNachrichtenstruktur.test_create_reduced_nested_nachrichtenstruktur[IFTSTA]
+  dict({
+    'header_linie': None,
+    'segmente': list([
+      dict({
+        'bdew_maximale_wiederholungen': 1,
+        'bdew_status': 'M',
+        'bezeichnung': 'UNH',
+        'ebene': 0,
+        'inhalt': 'Nachrichten-Kopfsegment',
+        'nr': '00001',
+        'standard_maximale_wiederholungen': 1,
+        'standard_status': 'M',
+        'zaehler': '0010',
+      }),
+      dict({
+        'bdew_maximale_wiederholungen': 1,
+        'bdew_status': 'M',
+        'bezeichnung': 'BGM',
+        'ebene': 0,
+        'inhalt': 'Beginn der Nachricht',
+        'nr': '00002',
+        'standard_maximale_wiederholungen': 1,
+        'standard_status': 'M',
+        'zaehler': '0020',
+      }),
+      dict({
+        'bdew_maximale_wiederholungen': 1,
+        'bdew_status': 'R',
+        'bezeichnung': 'DTM',
+        'ebene': 1,
+        'inhalt': 'Dokumentendatum',
+        'nr': '00003',
+        'standard_maximale_wiederholungen': 9,
+        'standard_status': 'C',
+        'zaehler': '0030',
+      }),
+      dict({
+        'bdew_maximale_wiederholungen': 1,
+        'bdew_status': 'M',
+        'bezeichnung': 'UNT',
+        'ebene': 0,
+        'inhalt': 'Nachrichten-Endesegment',
+        'nr': '00126',
+        'standard_maximale_wiederholungen': 1,
+        'standard_status': 'M',
+        'zaehler': '1250',
+      }),
+    ]),
+    'segmentgruppen': list([
+      dict({
+        'header_linie': dict({
+          'bdew_maximale_wiederholungen': 1,
+          'bdew_status': 'R',
+          'bezeichnung': 'SG1',
+          'ebene': 1,
+          'inhalt': 'MP-ID Empfänger',
+          'nr': None,
+          'standard_maximale_wiederholungen': 9,
+          'standard_status': 'C',
+          'zaehler': '0050',
+        }),
+        'segmente': list([
+          dict({
+            'bdew_maximale_wiederholungen': 1,
+            'bdew_status': 'M',
+            'bezeichnung': 'NAD',
+            'ebene': 1,
+            'inhalt': 'MP-ID Absender',
+            'nr': '00005',
+            'standard_maximale_wiederholungen': 1,
+            'standard_status': 'M',
+            'zaehler': '0060',
+          }),
+        ]),
+        'segmentgruppen': list([
+          dict({
+            'header_linie': dict({
+              'bdew_maximale_wiederholungen': 1,
+              'bdew_status': 'O',
+              'bezeichnung': 'SG2',
+              'ebene': 2,
+              'inhalt': 'Ansprechpartner',
+              'nr': None,
+              'standard_maximale_wiederholungen': 9,
+              'standard_status': 'C',
+              'zaehler': '0070',
+            }),
+            'segmente': list([
+              dict({
+                'bdew_maximale_wiederholungen': 1,
+                'bdew_status': 'M',
+                'bezeichnung': 'CTA',
+                'ebene': 2,
+                'inhalt': 'Ansprechpartner',
+                'nr': '00006',
+                'standard_maximale_wiederholungen': 1,
+                'standard_status': 'M',
+                'zaehler': '0080',
+              }),
+              dict({
+                'bdew_maximale_wiederholungen': 5,
+                'bdew_status': 'R',
+                'bezeichnung': 'COM',
+                'ebene': 3,
+                'inhalt': 'Kommunikationsverbindung',
+                'nr': '00007',
+                'standard_maximale_wiederholungen': 9,
+                'standard_status': 'C',
+                'zaehler': '0090',
+              }),
+            ]),
+            'segmentgruppen': list([
+            ]),
+          }),
+        ]),
+      }),
+      dict({
+        'header_linie': dict({
+          'bdew_maximale_wiederholungen': 99999,
+          'bdew_status': 'D',
+          'bezeichnung': 'SG4',
+          'ebene': 1,
+          'inhalt': 'EQD-RFF-RFF-SG6-SG7-SG7-SG7-SG7-SG7',
+          'nr': None,
+          'standard_maximale_wiederholungen': 99999,
+          'standard_status': 'C',
+          'zaehler': '0160',
+        }),
+        'segmente': list([
+          dict({
+            'bdew_maximale_wiederholungen': 1,
+            'bdew_status': 'M',
+            'bezeichnung': 'EQD',
+            'ebene': 1,
+            'inhalt': 'Einzelheiten zu Equipment',
+            'nr': '00008',
+            'standard_maximale_wiederholungen': 1,
+            'standard_status': 'M',
+            'zaehler': '0170',
+          }),
+          dict({
+            'bdew_maximale_wiederholungen': 1,
+            'bdew_status': 'R',
+            'bezeichnung': 'RFF',
+            'ebene': 2,
+            'inhalt': 'Prüfidentifikator',
+            'nr': '00009',
+            'standard_maximale_wiederholungen': 999,
+            'standard_status': 'C',
+            'zaehler': '0240',
+          }),
+        ]),
+        'segmentgruppen': list([
+          dict({
+            'header_linie': dict({
+              'bdew_maximale_wiederholungen': 1,
+              'bdew_status': 'R',
+              'bezeichnung': 'SG6',
+              'ebene': 2,
+              'inhalt': 'LOC-DTM-DTM',
+              'nr': None,
+              'standard_maximale_wiederholungen': 9,
+              'standard_status': 'C',
+              'zaehler': '0300',
+            }),
+            'segmente': list([
+              dict({
+                'bdew_maximale_wiederholungen': 1,
+                'bdew_status': 'M',
+                'bezeichnung': 'LOC',
+                'ebene': 2,
+                'inhalt': 'Meldepunkt',
+                'nr': '00011',
+                'standard_maximale_wiederholungen': 1,
+                'standard_status': 'M',
+                'zaehler': '0310',
+              }),
+              dict({
+                'bdew_maximale_wiederholungen': 1,
+                'bdew_status': 'R',
+                'bezeichnung': 'DTM',
+                'ebene': 3,
+                'inhalt': 'Betrachtungszeitintervall',
+                'nr': '00012',
+                'standard_maximale_wiederholungen': 9,
+                'standard_status': 'C',
+                'zaehler': '0320',
+              }),
+            ]),
+            'segmentgruppen': list([
+            ]),
+          }),
+          dict({
+            'header_linie': dict({
+              'bdew_maximale_wiederholungen': 1,
+              'bdew_status': 'D',
+              'bezeichnung': 'SG7',
+              'ebene': 2,
+              'inhalt': 'Prüfstatus Antwort auf Summenzeitreihen',
+              'nr': None,
+              'standard_maximale_wiederholungen': 99,
+              'standard_status': 'C',
+              'zaehler': '0330',
+            }),
+            'segmente': list([
+              dict({
+                'bdew_maximale_wiederholungen': 1,
+                'bdew_status': 'M',
+                'bezeichnung': 'STS',
+                'ebene': 2,
+                'inhalt': 'Abweisung Statusmeldung/-änderung',
+                'nr': '00018',
+                'standard_maximale_wiederholungen': 1,
+                'standard_status': 'M',
+                'zaehler': '0340',
+              }),
+            ]),
+            'segmentgruppen': list([
+            ]),
+          }),
+        ]),
+      }),
+      dict({
+        'header_linie': dict({
+          'bdew_maximale_wiederholungen': 99999,
+          'bdew_status': 'D',
+          'bezeichnung': 'SG14',
+          'ebene': 1,
+          'inhalt': '''
+            CNI-LOC-SG15-SG15-SG15-SG15-SG15-SG15-SG15-
+            SG15-SG15-SG15-SG15-SG15-SG15-SG15-SG15-SG15-
+            SG15
+          ''',
+          'nr': None,
+          'standard_maximale_wiederholungen': 99999,
+          'standard_status': 'C',
+          'zaehler': '0560',
+        }),
+        'segmente': list([
+          dict({
+            'bdew_maximale_wiederholungen': 1,
+            'bdew_status': 'M',
+            'bezeichnung': 'CNI',
+            'ebene': 1,
+            'inhalt': 'Sendungsdaten',
+            'nr': '00019',
+            'standard_maximale_wiederholungen': 1,
+            'standard_status': 'M',
+            'zaehler': '0570',
+          }),
+          dict({
+            'bdew_maximale_wiederholungen': 1,
+            'bdew_status': 'D',
+            'bezeichnung': 'LOC',
+            'ebene': 2,
+            'inhalt': 'Meldepunkt',
+            'nr': '00020',
+            'standard_maximale_wiederholungen': 9,
+            'standard_status': 'C',
+            'zaehler': '0580',
+          }),
+        ]),
+        'segmentgruppen': list([
+          dict({
+            'header_linie': dict({
+              'bdew_maximale_wiederholungen': 1,
+              'bdew_status': 'D',
+              'bezeichnung': 'SG15',
+              'ebene': 2,
+              'inhalt': 'MSB-Wechselstatus',
+              'nr': None,
+              'standard_maximale_wiederholungen': 99,
+              'standard_status': 'M',
+              'zaehler': '0600',
+            }),
+            'segmente': list([
+              dict({
+                'bdew_maximale_wiederholungen': 1,
+                'bdew_status': 'M',
+                'bezeichnung': 'STS',
+                'ebene': 2,
+                'inhalt': 'Grund der Privilegierung nach EnFG',
+                'nr': '00116',
+                'standard_maximale_wiederholungen': 1,
+                'standard_status': 'M',
+                'zaehler': '0610',
+              }),
+              dict({
+                'bdew_maximale_wiederholungen': 1,
+                'bdew_status': 'R',
+                'bezeichnung': 'RFF',
+                'ebene': 3,
+                'inhalt': 'Prüfidentifikator',
+                'nr': '00117',
+                'standard_maximale_wiederholungen': 999,
+                'standard_status': 'C',
+                'zaehler': '0620',
+              }),
+              dict({
+                'bdew_maximale_wiederholungen': 1,
+                'bdew_status': 'R',
+                'bezeichnung': 'DTM',
+                'ebene': 3,
+                'inhalt': 'Datum/Uhrzeit/Zeitspanne',
+                'nr': '00118',
+                'standard_maximale_wiederholungen': 9,
+                'standard_status': 'C',
+                'zaehler': '0630',
+              }),
+            ]),
+            'segmentgruppen': list([
+              dict({
+                'header_linie': dict({
+                  'bdew_maximale_wiederholungen': 99,
+                  'bdew_status': 'D',
+                  'bezeichnung': 'SG16',
+                  'ebene': 3,
+                  'inhalt': 'Ansicht des Senders',
+                  'nr': None,
+                  'standard_maximale_wiederholungen': 99,
+                  'standard_status': 'C',
+                  'zaehler': '0660',
+                }),
+                'segmente': list([
+                  dict({
+                    'bdew_maximale_wiederholungen': 1,
+                    'bdew_status': 'M',
+                    'bezeichnung': 'EFI',
+                    'ebene': 3,
+                    'inhalt': 'Privilegierte Energiemenge',
+                    'nr': '00119',
+                    'standard_maximale_wiederholungen': 1,
+                    'standard_status': 'M',
+                    'zaehler': '0670',
+                  }),
+                  dict({
+                    'bdew_maximale_wiederholungen': 1,
+                    'bdew_status': 'R',
+                    'bezeichnung': 'DTM',
+                    'ebene': 4,
+                    'inhalt': 'Beginn des Zeitraums',
+                    'nr': '00120',
+                    'standard_maximale_wiederholungen': 9,
+                    'standard_status': 'C',
+                    'zaehler': '0710',
+                  }),
+                  dict({
+                    'bdew_maximale_wiederholungen': 1,
+                    'bdew_status': 'R',
+                    'bezeichnung': 'QTY',
+                    'ebene': 4,
+                    'inhalt': 'Menge',
+                    'nr': '00122',
+                    'standard_maximale_wiederholungen': 9,
+                    'standard_status': 'C',
+                    'zaehler': '0720',
+                  }),
+                ]),
+                'segmentgruppen': list([
+                ]),
+              }),
+              dict({
+                'header_linie': dict({
+                  'bdew_maximale_wiederholungen': 1,
+                  'bdew_status': 'D',
+                  'bezeichnung': 'SG17',
+                  'ebene': 3,
+                  'inhalt': 'Messstellenbetreiber an der Messlokation',
+                  'nr': None,
+                  'standard_maximale_wiederholungen': 9,
+                  'standard_status': 'C',
+                  'zaehler': '0730',
+                }),
+                'segmente': list([
+                  dict({
+                    'bdew_maximale_wiederholungen': 1,
+                    'bdew_status': 'M',
+                    'bezeichnung': 'NAD',
+                    'ebene': 3,
+                    'inhalt': 'Name und Anschrift',
+                    'nr': '00123',
+                    'standard_maximale_wiederholungen': 1,
+                    'standard_status': 'M',
+                    'zaehler': '0740',
+                  }),
+                ]),
+                'segmentgruppen': list([
+                  dict({
+                    'header_linie': dict({
+                      'bdew_maximale_wiederholungen': 1,
+                      'bdew_status': 'R',
+                      'bezeichnung': 'SG18',
+                      'ebene': 4,
+                      'inhalt': 'Ansprechpartner',
+                      'nr': None,
+                      'standard_maximale_wiederholungen': 9,
+                      'standard_status': 'C',
+                      'zaehler': '0750',
+                    }),
+                    'segmente': list([
+                      dict({
+                        'bdew_maximale_wiederholungen': 1,
+                        'bdew_status': 'M',
+                        'bezeichnung': 'CTA',
+                        'ebene': 4,
+                        'inhalt': 'Ansprechpartner',
+                        'nr': '00099',
+                        'standard_maximale_wiederholungen': 1,
+                        'standard_status': 'M',
+                        'zaehler': '0760',
+                      }),
+                      dict({
+                        'bdew_maximale_wiederholungen': 4,
+                        'bdew_status': 'R',
+                        'bezeichnung': 'COM',
+                        'ebene': 5,
+                        'inhalt': 'Kommunikationsverbindung',
+                        'nr': '00100',
+                        'standard_maximale_wiederholungen': 9,
+                        'standard_status': 'C',
+                        'zaehler': '0770',
+                      }),
+                    ]),
+                    'segmentgruppen': list([
+                    ]),
+                  }),
+                ]),
+              }),
+              dict({
+                'header_linie': dict({
+                  'bdew_maximale_wiederholungen': 1,
+                  'bdew_status': 'D',
+                  'bezeichnung': 'SG25',
+                  'ebene': 3,
+                  'inhalt': 'Sendungspositionseinzelheiten',
+                  'nr': None,
+                  'standard_maximale_wiederholungen': 9999,
+                  'standard_status': 'C',
+                  'zaehler': '1040',
+                }),
+                'segmente': list([
+                  dict({
+                    'bdew_maximale_wiederholungen': 1,
+                    'bdew_status': 'M',
+                    'bezeichnung': 'GID',
+                    'ebene': 3,
+                    'inhalt': 'Sendungspositionseinzelheiten',
+                    'nr': '00124',
+                    'standard_maximale_wiederholungen': 1,
+                    'standard_status': 'M',
+                    'zaehler': '1050',
+                  }),
+                  dict({
+                    'bdew_maximale_wiederholungen': 1,
+                    'bdew_status': 'R',
+                    'bezeichnung': 'FTX',
+                    'ebene': 4,
+                    'inhalt': 'Freier Text',
+                    'nr': '00125',
+                    'standard_maximale_wiederholungen': 9,
+                    'standard_status': 'C',
+                    'zaehler': '1090',
+                  }),
+                ]),
+                'segmentgruppen': list([
+                ]),
+              }),
+            ]),
+          }),
+        ]),
+      }),
+    ]),
+  })
+# ---
+# name: TestReducedNestedNachrichtenstruktur.test_create_reduced_nested_nachrichtenstruktur[ORDCHG]
+  dict({
+    'header_linie': None,
+    'segmente': list([
+      dict({
+        'bdew_maximale_wiederholungen': 1,
+        'bdew_status': 'M',
+        'bezeichnung': 'UNH',
+        'ebene': 0,
+        'inhalt': 'Nachrichten-Kopfsegment',
+        'nr': '00001',
+        'standard_maximale_wiederholungen': 1,
+        'standard_status': 'M',
+        'zaehler': '0010',
+      }),
+      dict({
+        'bdew_maximale_wiederholungen': 1,
+        'bdew_status': 'M',
+        'bezeichnung': 'BGM',
+        'ebene': 0,
+        'inhalt': 'Beginn der Nachricht',
+        'nr': '00002',
+        'standard_maximale_wiederholungen': 1,
+        'standard_status': 'M',
+        'zaehler': '0020',
+      }),
+      dict({
+        'bdew_maximale_wiederholungen': 1,
+        'bdew_status': 'M',
+        'bezeichnung': 'DTM',
+        'ebene': 1,
+        'inhalt': 'Nachrichtendatum',
+        'nr': '00003',
+        'standard_maximale_wiederholungen': 35,
+        'standard_status': 'M',
+        'zaehler': '0030',
+      }),
+      dict({
+        'bdew_maximale_wiederholungen': 1,
+        'bdew_status': 'M',
+        'bezeichnung': 'UNS',
+        'ebene': 0,
+        'inhalt': 'Abschnitts-Kontrollsegment',
+        'nr': '00011',
+        'standard_maximale_wiederholungen': 1,
+        'standard_status': 'M',
+        'zaehler': '2380',
+      }),
+      dict({
+        'bdew_maximale_wiederholungen': 1,
+        'bdew_status': 'M',
+        'bezeichnung': 'UNT',
+        'ebene': 0,
+        'inhalt': 'Nachrichten-Endesegment',
+        'nr': '00012',
+        'standard_maximale_wiederholungen': 1,
+        'standard_status': 'M',
+        'zaehler': '2450',
+      }),
+    ]),
+    'segmentgruppen': list([
+      dict({
+        'header_linie': dict({
+          'bdew_maximale_wiederholungen': 1,
+          'bdew_status': 'D',
+          'bezeichnung': 'SG1',
+          'ebene': 1,
+          'inhalt': 'Referenz der Anfrage/Bestellung',
+          'nr': None,
+          'standard_maximale_wiederholungen': 9999,
+          'standard_status': 'C',
+          'zaehler': '0090',
+        }),
+        'segmente': list([
+          dict({
+            'bdew_maximale_wiederholungen': 1,
+            'bdew_status': 'M',
+            'bezeichnung': 'RFF',
+            'ebene': 1,
+            'inhalt': 'Prüfidentifikator',
+            'nr': '00006',
+            'standard_maximale_wiederholungen': 1,
+            'standard_status': 'M',
+            'zaehler': '0100',
+          }),
+        ]),
+        'segmentgruppen': list([
+        ]),
+      }),
+      dict({
+        'header_linie': dict({
+          'bdew_maximale_wiederholungen': 1,
+          'bdew_status': 'R',
+          'bezeichnung': 'SG3',
+          'ebene': 1,
+          'inhalt': 'MP-ID Absender',
+          'nr': None,
+          'standard_maximale_wiederholungen': 99,
+          'standard_status': 'C',
+          'zaehler': '0150',
+        }),
+        'segmente': list([
+          dict({
+            'bdew_maximale_wiederholungen': 1,
+            'bdew_status': 'M',
+            'bezeichnung': 'NAD',
+            'ebene': 1,
+            'inhalt': 'MP-ID Empfänger',
+            'nr': '00010',
+            'standard_maximale_wiederholungen': 1,
+            'standard_status': 'M',
+            'zaehler': '0160',
+          }),
+        ]),
+        'segmentgruppen': list([
+          dict({
+            'header_linie': dict({
+              'bdew_maximale_wiederholungen': 1,
+              'bdew_status': 'D',
+              'bezeichnung': 'SG6',
+              'ebene': 2,
+              'inhalt': 'Kontaktinformationen',
+              'nr': None,
+              'standard_maximale_wiederholungen': 5,
+              'standard_status': 'C',
+              'zaehler': '0250',
+            }),
+            'segmente': list([
+              dict({
+                'bdew_maximale_wiederholungen': 1,
+                'bdew_status': 'M',
+                'bezeichnung': 'CTA',
+                'ebene': 2,
+                'inhalt': 'Ansprechpartner',
+                'nr': '00008',
+                'standard_maximale_wiederholungen': 1,
+                'standard_status': 'M',
+                'zaehler': '0260',
+              }),
+              dict({
+                'bdew_maximale_wiederholungen': 5,
+                'bdew_status': 'R',
+                'bezeichnung': 'COM',
+                'ebene': 3,
+                'inhalt': 'Kommunikationsverbindung',
+                'nr': '00009',
+                'standard_maximale_wiederholungen': 5,
+                'standard_status': 'C',
+                'zaehler': '0270',
+              }),
+            ]),
+            'segmentgruppen': list([
+            ]),
+          }),
+        ]),
+      }),
+    ]),
+  })
+# ---
+# name: TestReducedNestedNachrichtenstruktur.test_create_reduced_nested_nachrichtenstruktur[UTILMD]
+  dict({
+    'header_linie': None,
+    'segmente': list([
+      dict({
+        'bdew_maximale_wiederholungen': 1,
+        'bdew_status': 'M',
+        'bezeichnung': 'UNH',
+        'ebene': 0,
+        'inhalt': 'Nachrichten-Kopfsegment',
+        'nr': '00003',
+        'standard_maximale_wiederholungen': 1,
+        'standard_status': 'M',
+        'zaehler': '0010',
+      }),
+      dict({
+        'bdew_maximale_wiederholungen': 1,
+        'bdew_status': 'M',
+        'bezeichnung': 'BGM',
+        'ebene': 0,
+        'inhalt': 'Beginn der Nachricht',
+        'nr': '00004',
+        'standard_maximale_wiederholungen': 1,
+        'standard_status': 'M',
+        'zaehler': '0020',
+      }),
+      dict({
+        'bdew_maximale_wiederholungen': 1,
+        'bdew_status': 'M',
+        'bezeichnung': 'DTM',
+        'ebene': 1,
+        'inhalt': 'Nachrichtendatum',
+        'nr': '00005',
+        'standard_maximale_wiederholungen': 9,
+        'standard_status': 'M',
+        'zaehler': '0030',
+      }),
+      dict({
+        'bdew_maximale_wiederholungen': 1,
+        'bdew_status': 'M',
+        'bezeichnung': 'UNT',
+        'ebene': 0,
+        'inhalt': 'Nachrichten-Endesegment',
+        'nr': '00534',
+        'standard_maximale_wiederholungen': 1,
+        'standard_status': 'M',
+        'zaehler': '0670',
+      }),
+    ]),
+    'segmentgruppen': list([
+      dict({
+        'header_linie': dict({
+          'bdew_maximale_wiederholungen': 1,
+          'bdew_status': 'D',
+          'bezeichnung': 'SG1',
+          'ebene': 1,
+          'inhalt': 'Referenz auf eine vorangegangene Anfrage',
+          'nr': None,
+          'standard_maximale_wiederholungen': 9,
+          'standard_status': 'C',
+          'zaehler': '0070',
+        }),
+        'segmente': list([
+          dict({
+            'bdew_maximale_wiederholungen': 1,
+            'bdew_status': 'M',
+            'bezeichnung': 'RFF',
+            'ebene': 1,
+            'inhalt': 'Referenz auf eine vorangegangene Anfrage',
+            'nr': '00007',
+            'standard_maximale_wiederholungen': 1,
+            'standard_status': 'M',
+            'zaehler': '0080',
+          }),
+        ]),
+        'segmentgruppen': list([
+        ]),
+      }),
+      dict({
+        'header_linie': dict({
+          'bdew_maximale_wiederholungen': 1,
+          'bdew_status': 'R',
+          'bezeichnung': 'SG2',
+          'ebene': 1,
+          'inhalt': 'MP-ID Absender',
+          'nr': None,
+          'standard_maximale_wiederholungen': 99,
+          'standard_status': 'C',
+          'zaehler': '0100',
+        }),
+        'segmente': list([
+          dict({
+            'bdew_maximale_wiederholungen': 1,
+            'bdew_status': 'M',
+            'bezeichnung': 'NAD',
+            'ebene': 1,
+            'inhalt': 'MP-ID Empfänger',
+            'nr': '00011',
+            'standard_maximale_wiederholungen': 1,
+            'standard_status': 'M',
+            'zaehler': '0110',
+          }),
+        ]),
+        'segmentgruppen': list([
+          dict({
+            'header_linie': dict({
+              'bdew_maximale_wiederholungen': 1,
+              'bdew_status': 'O',
+              'bezeichnung': 'SG3',
+              'ebene': 2,
+              'inhalt': 'Kontaktinformationen',
+              'nr': None,
+              'standard_maximale_wiederholungen': 9,
+              'standard_status': 'C',
+              'zaehler': '0150',
+            }),
+            'segmente': list([
+              dict({
+                'bdew_maximale_wiederholungen': 1,
+                'bdew_status': 'M',
+                'bezeichnung': 'CTA',
+                'ebene': 2,
+                'inhalt': 'Ansprechpartner',
+                'nr': '00009',
+                'standard_maximale_wiederholungen': 1,
+                'standard_status': 'M',
+                'zaehler': '0160',
+              }),
+              dict({
+                'bdew_maximale_wiederholungen': 5,
+                'bdew_status': 'R',
+                'bezeichnung': 'COM',
+                'ebene': 3,
+                'inhalt': 'Kommunikationsverbindung',
+                'nr': '00010',
+                'standard_maximale_wiederholungen': 9,
+                'standard_status': 'C',
+                'zaehler': '0170',
+              }),
+            ]),
+            'segmentgruppen': list([
+            ]),
+          }),
+        ]),
+      }),
+      dict({
+        'header_linie': dict({
+          'bdew_maximale_wiederholungen': 1,
+          'bdew_status': 'D',
+          'bezeichnung': 'SG4',
+          'ebene': 1,
+          'inhalt': 'Identifikation einer Liste',
+          'nr': None,
+          'standard_maximale_wiederholungen': 99999,
+          'standard_status': 'C',
+          'zaehler': '0180',
+        }),
+        'segmente': list([
+          dict({
+            'bdew_maximale_wiederholungen': 1,
+            'bdew_status': 'M',
+            'bezeichnung': 'IDE',
+            'ebene': 1,
+            'inhalt': 'Vorgang',
+            'nr': '00020',
+            'standard_maximale_wiederholungen': 1,
+            'standard_status': 'M',
+            'zaehler': '0190',
+          }),
+          dict({
+            'bdew_maximale_wiederholungen': 1,
+            'bdew_status': 'D',
+            'bezeichnung': 'IMD',
+            'ebene': 2,
+            'inhalt': 'Identifikationslogik',
+            'nr': '00021',
+            'standard_maximale_wiederholungen': 9,
+            'standard_status': 'C',
+            'zaehler': '0220',
+          }),
+          dict({
+            'bdew_maximale_wiederholungen': 1,
+            'bdew_status': 'D',
+            'bezeichnung': 'DTM',
+            'ebene': 2,
+            'inhalt': 'Datum zum geplanten Leistungsbeginn',
+            'nr': '00022',
+            'standard_maximale_wiederholungen': 99,
+            'standard_status': 'C',
+            'zaehler': '0230',
+          }),
+          dict({
+            'bdew_maximale_wiederholungen': 1,
+            'bdew_status': 'D',
+            'bezeichnung': 'STS',
+            'ebene': 2,
+            'inhalt': 'Transaktionsgrund',
+            'nr': '00037',
+            'standard_maximale_wiederholungen': 9,
+            'standard_status': 'C',
+            'zaehler': '0250',
+          }),
+          dict({
+            'bdew_maximale_wiederholungen': 1,
+            'bdew_status': 'D',
+            'bezeichnung': 'PTY',
+            'ebene': 2,
+            'inhalt': 'Vorgegebene Verarbeitungsreihenfolge des NB',
+            'nr': '00042',
+            'standard_maximale_wiederholungen': 9,
+            'standard_status': 'C',
+            'zaehler': '0270',
+          }),
+          dict({
+            'bdew_maximale_wiederholungen': 1,
+            'bdew_status': 'D',
+            'bezeichnung': 'FTX',
+            'ebene': 2,
+            'inhalt': 'Bemerkung (Feld für allgemeine Hinweise)',
+            'nr': '00043',
+            'standard_maximale_wiederholungen': 9,
+            'standard_status': 'C',
+            'zaehler': '0280',
+          }),
+          dict({
+            'bdew_maximale_wiederholungen': 2,
+            'bdew_status': 'D',
+            'bezeichnung': 'AGR',
+            'ebene': 2,
+            'inhalt': 'Beauftragung oder Beendigung liegt vor',
+            'nr': '00049',
+            'standard_maximale_wiederholungen': 9,
+            'standard_status': 'C',
+            'zaehler': '0290',
+          }),
+        ]),
+        'segmentgruppen': list([
+          dict({
+            'header_linie': dict({
+              'bdew_maximale_wiederholungen': 1,
+              'bdew_status': 'D',
+              'bezeichnung': 'SG5',
+              'ebene': 2,
+              'inhalt': 'MaBiS-Zählpunkt',
+              'nr': None,
+              'standard_maximale_wiederholungen': 999999,
+              'standard_status': 'C',
+              'zaehler': '0320',
+            }),
+            'segmente': list([
+              dict({
+                'bdew_maximale_wiederholungen': 1,
+                'bdew_status': 'M',
+                'bezeichnung': 'LOC',
+                'ebene': 2,
+                'inhalt': 'MaBiS-Zählpunkt',
+                'nr': '00056',
+                'standard_maximale_wiederholungen': 1,
+                'standard_status': 'M',
+                'zaehler': '0330',
+              }),
+            ]),
+            'segmentgruppen': list([
+            ]),
+          }),
+          dict({
+            'header_linie': dict({
+              'bdew_maximale_wiederholungen': 1,
+              'bdew_status': 'R',
+              'bezeichnung': 'SG6',
+              'ebene': 2,
+              'inhalt': 'Prüfidentifikator',
+              'nr': None,
+              'standard_maximale_wiederholungen': 99,
+              'standard_status': 'C',
+              'zaehler': '0350',
+            }),
+            'segmente': list([
+              dict({
+                'bdew_maximale_wiederholungen': 1,
+                'bdew_status': 'M',
+                'bezeichnung': 'RFF',
+                'ebene': 2,
+                'inhalt': 'Referenz auf die Lokationsbündelstruktur',
+                'nr': '00071',
+                'standard_maximale_wiederholungen': 1,
+                'standard_status': 'M',
+                'zaehler': '0360',
+              }),
+              dict({
+                'bdew_maximale_wiederholungen': 1,
+                'bdew_status': 'D',
+                'bezeichnung': 'DTM',
+                'ebene': 3,
+                'inhalt': 'Turnusablesung des MSB',
+                'nr': '00067',
+                'standard_maximale_wiederholungen': 9,
+                'standard_status': 'C',
+                'zaehler': '0370',
+              }),
+            ]),
+            'segmentgruppen': list([
+            ]),
+          }),
+          dict({
+            'header_linie': dict({
+              'bdew_maximale_wiederholungen': 1,
+              'bdew_status': 'D',
+              'bezeichnung': 'SG8',
+              'ebene': 2,
+              'inhalt': 'Daten der Summenzeitreihe',
+              'nr': None,
+              'standard_maximale_wiederholungen': 99999,
+              'standard_status': 'C',
+              'zaehler': '0410',
+            }),
+            'segmente': list([
+              dict({
+                'bdew_maximale_wiederholungen': 1,
+                'bdew_status': 'M',
+                'bezeichnung': 'SEQ',
+                'ebene': 2,
+                'inhalt': 'Daten des Kunden des Lieferanten',
+                'nr': '00509',
+                'standard_maximale_wiederholungen': 1,
+                'standard_status': 'M',
+                'zaehler': '0420',
+              }),
+              dict({
+                'bdew_maximale_wiederholungen': 1,
+                'bdew_status': 'D',
+                'bezeichnung': 'RFF',
+                'ebene': 3,
+                'inhalt': '''
+                  Referenz auf die ID der
+                  Bilanzierungsgebietssummenzeitreihe
+                ''',
+                'nr': '00498',
+                'standard_maximale_wiederholungen': 9,
+                'standard_status': 'C',
+                'zaehler': '0430',
+              }),
+              dict({
+                'bdew_maximale_wiederholungen': 1,
+                'bdew_status': 'R',
+                'bezeichnung': 'PIA',
+                'ebene': 3,
+                'inhalt': 'Produktidentifikation der Überführungszeitreihe',
+                'nr': '00451',
+                'standard_maximale_wiederholungen': 9,
+                'standard_status': 'C',
+                'zaehler': '0440',
+              }),
+            ]),
+            'segmentgruppen': list([
+              dict({
+                'header_linie': dict({
+                  'bdew_maximale_wiederholungen': 1,
+                  'bdew_status': 'D',
+                  'bezeichnung': 'SG9',
+                  'ebene': 3,
+                  'inhalt': '''
+                    Arbeit / Leistung für tagesparameterabhängige
+                    Marktlokation
+                  ''',
+                  'nr': None,
+                  'standard_maximale_wiederholungen': 99,
+                  'standard_status': 'C',
+                  'zaehler': '0450',
+                }),
+                'segmente': list([
+                  dict({
+                    'bdew_maximale_wiederholungen': 1,
+                    'bdew_status': 'M',
+                    'bezeichnung': 'QTY',
+                    'ebene': 3,
+                    'inhalt': 'Tatsächlich bilanzierte Energiemenge',
+                    'nr': '00501',
+                    'standard_maximale_wiederholungen': 1,
+                    'standard_status': 'M',
+                    'zaehler': '0460',
+                  }),
+                  dict({
+                    'bdew_maximale_wiederholungen': 1,
+                    'bdew_status': 'R',
+                    'bezeichnung': 'DTM',
+                    'ebene': 4,
+                    'inhalt': 'Bilanzierungsbeginn',
+                    'nr': '00502',
+                    'standard_maximale_wiederholungen': 9,
+                    'standard_status': 'C',
+                    'zaehler': '0470',
+                  }),
+                ]),
+                'segmentgruppen': list([
+                ]),
+              }),
+              dict({
+                'header_linie': dict({
+                  'bdew_maximale_wiederholungen': 1,
+                  'bdew_status': 'D',
+                  'bezeichnung': 'SG10',
+                  'ebene': 3,
+                  'inhalt': 'Bilanzkreis',
+                  'nr': None,
+                  'standard_maximale_wiederholungen': 99,
+                  'standard_status': 'C',
+                  'zaehler': '0500',
+                }),
+                'segmente': list([
+                  dict({
+                    'bdew_maximale_wiederholungen': 1,
+                    'bdew_status': 'M',
+                    'bezeichnung': 'CCI',
+                    'ebene': 3,
+                    'inhalt': 'Grundlage zur Verringerung der Umlagen nach EnFG',
+                    'nr': '00510',
+                    'standard_maximale_wiederholungen': 1,
+                    'standard_status': 'M',
+                    'zaehler': '0510',
+                  }),
+                  dict({
+                    'bdew_maximale_wiederholungen': 5,
+                    'bdew_status': 'D',
+                    'bezeichnung': 'CAV',
+                    'ebene': 4,
+                    'inhalt': 'Grund der Privilegierung nach EnFG',
+                    'nr': '00511',
+                    'standard_maximale_wiederholungen': 99,
+                    'standard_status': 'C',
+                    'zaehler': '0520',
+                  }),
+                ]),
+                'segmentgruppen': list([
+                ]),
+              }),
+            ]),
+          }),
+          dict({
+            'header_linie': dict({
+              'bdew_maximale_wiederholungen': 99,
+              'bdew_status': 'D',
+              'bezeichnung': 'SG12',
+              'ebene': 2,
+              'inhalt': 'Kunde des Lieferanten',
+              'nr': None,
+              'standard_maximale_wiederholungen': 99,
+              'standard_status': 'C',
+              'zaehler': '0570',
+            }),
+            'segmente': list([
+              dict({
+                'bdew_maximale_wiederholungen': 1,
+                'bdew_status': 'M',
+                'bezeichnung': 'NAD',
+                'ebene': 2,
+                'inhalt': 'Name und Adresse für die Ablesekarte',
+                'nr': '00532',
+                'standard_maximale_wiederholungen': 1,
+                'standard_status': 'M',
+                'zaehler': '0580',
+              }),
+              dict({
+                'bdew_maximale_wiederholungen': 9,
+                'bdew_status': 'D',
+                'bezeichnung': 'RFF',
+                'ebene': 3,
+                'inhalt': 'Referenz auf die ID einer Messlokation',
+                'nr': '00533',
+                'standard_maximale_wiederholungen': 9,
+                'standard_status': 'C',
+                'zaehler': '0590',
+              }),
+            ]),
+            'segmentgruppen': list([
+            ]),
+          }),
+        ]),
+      }),
+    ]),
+  })
+# ---
+# name: TestReducedNestedNachrichtenstruktur.test_output_tree[IFTSTA]
+  '''
+  /:UNB[M;M],UNH[M;M],UNZ[M;M]
+  UNH:BGM[M;M],DTM[C;R],SG1[C;R],SG4[C;D],SG14[C;D],UNT[M;M]
+  SG1:NAD[M;M],SG2[C;O]
+  SG2:CTA[M;M],COM[C;R]
+  SG4:EQD[M;M],RFF[C;R],SG6[C;R],SG7[C;D]
+  SG6:LOC[M;M],DTM[C;R]
+  SG7:STS[M;M]
+  SG14:CNI[M;M],LOC[C;D],SG15[M;D]
+  SG15:STS[M;M],RFF[C;R],DTM[C;R],SG16[C;D],SG17[C;D],SG25[C;D]
+  SG16:EFI[M;M],DTM[C;R],QTY[C;R]
+  SG17:NAD[M;M],SG18[C;R]
+  SG18:CTA[M;M],COM[C;R]
+  SG25:GID[M;M],FTX[C;R]
+
+  '''
+# ---
+# name: TestReducedNestedNachrichtenstruktur.test_output_tree[ORDCHG]
+  '''
+  /:UNB[M;M],UNH[M;M],UNZ[M;M]
+  UNH:BGM[M;M],DTM[M;M],UNS[M;M],SG1[C;D],SG3[C;R],UNT[M;M]
+  SG1:RFF[M;M]
+  SG3:NAD[M;M],SG6[C;D]
+  SG6:CTA[M;M],COM[C;R]
+
+  '''
+# ---
+# name: TestReducedNestedNachrichtenstruktur.test_output_tree[UTILMD]
+  '''
+  /:UNB[M;M],UNH[M;M],UNZ[M;M]
+  UNH:BGM[M;M],DTM[M;M],SG1[C;D],SG2[C;R],SG4[C;D],UNT[M;M]
+  SG1:RFF[M;M]
+  SG2:NAD[M;M],SG3[C;O]
+  SG3:CTA[M;M],COM[C;R]
+  SG4:IDE[M;M],IMD[C;D],DTM[C;D],STS[C;D],PTY[C;D],FTX[C;D],AGR[C;D],SG5[C;D],SG6[C;R],SG8[C;D],SG12[C;D]
+  SG5:LOC[M;M]
+  SG6:RFF[M;M],DTM[C;D]
+  SG8:SEQ[M;M],RFF[C;D],PIA[C;R],SG9[C;D],SG10[C;D]
+  SG9:QTY[M;M],DTM[C;R]
+  SG10:CCI[M;M],CAV[C;D]
+  SG12:NAD[M;M],RFF[C;D]
+
+  '''
+# ---

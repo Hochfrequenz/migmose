@@ -6,7 +6,11 @@ from maus.reader.tree_to_sgh import check_file_can_be_parsed_as_tree
 
 from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
-from migmose.mig.reducednestednachrichtenstruktur import ReducedNestedNachrichtenstruktur
+from migmose.mig.reducednestednachrichtenstruktur import (
+    ReducedNestedNachrichtenstruktur,
+    _build_tree_dict,
+    _dict_to_tree_str,
+)
 from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturzeile
 from unittests import expected_output_dir, path_to_test_edi_energy_mirror_repo
 
@@ -22,7 +26,7 @@ class TestReducedNestedNachrichtenstruktur:
             pytest.param(EdifactFormat.IFTSTA, id="IFTSTA"),
         ],
     )
-    def test_create_reduced_nested_nachrichtenstruktur(self, message_format: EdifactFormat, tmp_path):
+    def test_create_reduced_nested_nachrichtenstruktur(self, message_format: EdifactFormat, tmp_path, snapshot):
         """test if the reduced nested nachrichtenstruktur is created correctly"""
         file_path_dict = find_file_to_format(
             [message_format], path_to_test_edi_energy_mirror_repo, EdifactFormatVersion.FV2310
@@ -39,16 +43,7 @@ class TestReducedNestedNachrichtenstruktur:
         reduced_nested_nachrichtenstruktur.to_json(message_format, tmp_path)
         with open(tmp_path / "reduced_nested_nachrichtenstruktur.json", "r", encoding="utf-8") as file1:
             actual_reduced_nested_json = json.load(file1)
-            with open(
-                expected_output_dir
-                / EdifactFormatVersion.FV2310
-                / message_format
-                / "reduced_nested_nachrichtenstruktur.json",
-                "r",
-                encoding="utf-8",
-            ) as file2:
-                expected_reduced_nested_json = json.load(file2)
-                assert actual_reduced_nested_json == expected_reduced_nested_json
+            assert actual_reduced_nested_json == snapshot
 
     @pytest.mark.parametrize(
         "message_format",
@@ -58,11 +53,33 @@ class TestReducedNestedNachrichtenstruktur:
             pytest.param(EdifactFormat.IFTSTA, id="IFTSTA"),
         ],
     )
-    def test_to_tree(self, message_format: EdifactFormat, tmp_path):
+    def test_build_tree_dict_and_generate_str(self, message_format: EdifactFormat, snapshot):
         """test if the reduced nested nachrichtenstruktur is created correctly"""
-        file_path_dict = find_file_to_format(
-            [message_format], path_to_test_edi_energy_mirror_repo, EdifactFormatVersion.FV2310
+        # read the reduced_nested_nachrichtenstruktur.json
+        reduced_nested_nachrichtenstruktur_path = (
+            expected_output_dir
+            / EdifactFormatVersion.FV2310
+            / message_format
+            / "reduced_nested_nachrichtenstruktur.json"
         )
+        with open(reduced_nested_nachrichtenstruktur_path, "r", encoding="utf-8") as file1:
+            reduced_nested_json = json.load(file1)
+            reduced_nested_nachrichtenstruktur = ReducedNestedNachrichtenstruktur(**reduced_nested_json)
+            tree_dict = _build_tree_dict(reduced_nested_nachrichtenstruktur)
+            assert tree_dict == snapshot
+            tree_str = _dict_to_tree_str(tree_dict)
+            assert tree_str == snapshot
+
+    @pytest.mark.parametrize(
+        "message_format",
+        [
+            pytest.param(EdifactFormat.ORDCHG, id="ORDCHG"),
+            pytest.param(EdifactFormat.UTILMD, id="UTILMD"),
+            pytest.param(EdifactFormat.IFTSTA, id="IFTSTA"),
+        ],
+    )
+    def test_output_tree(self, message_format: EdifactFormat, tmp_path, snapshot):
+        """test if the reduced nested nachrichtenstruktur is created correctly"""
         file_path_dict = find_file_to_format(
             [message_format], path_to_test_edi_energy_mirror_repo, EdifactFormatVersion.FV2310
         )
@@ -75,14 +92,9 @@ class TestReducedNestedNachrichtenstruktur:
         reduced_nested_nachrichtenstruktur = ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(
             nested_nachrichtenstruktur
         )
-        reduced_nested_nachrichtenstruktur.to_tree(message_format, tmp_path)
+        reduced_nested_nachrichtenstruktur.output_tree(message_format, tmp_path)
         with open(tmp_path / f"{message_format}.tree", "r", encoding="utf-8") as actual_file:
-            with open(
-                expected_output_dir / EdifactFormatVersion.FV2310 / message_format / f"{message_format}.tree",
-                "r",
-                encoding="utf-8",
-            ) as expected_file:
-                assert actual_file.read() == expected_file.read()
+            assert actual_file.read() == snapshot
         try:
             check_file_can_be_parsed_as_tree(tmp_path / f"{message_format}.tree")
         except ValueError as e:

@@ -34,3 +34,4 @@ pytest-loguru==0.4.0
     # via -r .\dev_requirements\requirements-tests.in
 win32-setctime==1.1.0
     # via loguru
+syrupy==4.6.1

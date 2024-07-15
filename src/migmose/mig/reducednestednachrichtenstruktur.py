@@ -132,7 +132,7 @@ def _build_tree_dict(
     Build a dictionary to compose the .tree files in the MAUS library.
     """
     if tree_dict is None:
-        tree_dict: DefaultDict[str, list[NachrichtenstrukturZeile]] = defaultdict(list)
+        tree_dict = defaultdict(list)
     if (
         reduced_nestednachrichtenstruktur.header_linie is None
         and reduced_nestednachrichtenstruktur.segmente[0] is not None
