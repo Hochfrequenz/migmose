@@ -244,7 +244,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
         tree_str = _dict_to_tree_str(tree_dict)
         # write tree file
         output_dir.mkdir(parents=True, exist_ok=True)
-        file_path = output_dir.joinpath(f"{message_type}.tree")
+        file_path = output_dir / f"{message_type}.tree"
         with open(file_path, "w", encoding="utf-8") as tree_file:
             tree_file.write(tree_str)
         logger.info("Wrote reduced .tree file for {} to {}", message_type, file_path)
