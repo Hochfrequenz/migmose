@@ -53,8 +53,8 @@ from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturze
 @click.option(
     "-ft",
     "--file-type",
-    type=click.Choice(["csv", "nested_json", "reduced_nested_json", "sgh_json"], case_sensitive=False),
-    default=["csv", "nested_json", "reduced_nested_json", "sgh_json"],
+    type=click.Choice(["csv", "nested_json", "reduced_nested_json", "tree"], case_sensitive=False),
+    default=["csv", "nested_json", "reduced_nested_json", "tree"],
     help="Defines the output format. Choose between csv and nested_json and reduced_nested_json. Default is csv.",
     multiple=True,
 )
@@ -138,6 +138,21 @@ def main(
                 output_dir_for_format,
             )
             sgh.to_json(m_format, output_dir_for_format)
+        if "tree" in file_type:
+            nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
+                nachrichtenstrukturtabelle
+            )
+            reduced_nested_nachrichtenstruktur = (
+                ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(nested_nachrichtenstruktur)
+            )
+            # Save the reduced nested Nachrichtenstruktur as json
+            logger.info(
+                "💾 Saving tree for {} and {} as json to {}.",
+                m_format,
+                format_version,
+                output_dir_for_format,
+            )
+            reduced_nested_nachrichtenstruktur.output_tree(m_format, output_dir_for_format)
 
 
 if __name__ == "__main__":

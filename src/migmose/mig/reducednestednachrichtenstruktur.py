@@ -3,9 +3,11 @@ contains class for trees consisting of segments of mig tables
 """
 
 import json
+from collections import defaultdict
 from pathlib import Path
-from typing import Any, Optional, TypeAlias
+from typing import Any, DefaultDict, Optional, TypeAlias
 
+from jinja2 import Template
 from loguru import logger
 from maus.edifact import EdifactFormat
 from pydantic import BaseModel, Field
@@ -110,6 +112,90 @@ def _build_segment_dict(
     return segment_dict
 
 
+def _dict_to_tree_str(tree: DefaultDict[str, list[NachrichtenstrukturZeile]]) -> str:
+    template_str = """{%- for key, segment_list in tree.items() -%}
+    {{-key-}}:{%- for segment in segment_list -%}
+    {{segment.bezeichnung}}[{{segment.standard_status}};{{segment.bdew_status}}]
+    {%- if not loop.last -%},{%- endif -%}
+    {%- endfor -%}{{"\n"}}
+    {%- endfor -%}
+    """
+    template = Template(template_str)
+    return template.render(tree=tree)
+
+
+def _build_tree_dict(
+    reduced_nestednachrichtenstruktur: "ReducedNestedNachrichtenstruktur",
+    tree_dict: Optional[DefaultDict[str, list[NachrichtenstrukturZeile]]] = None,
+) -> DefaultDict[str, list[NachrichtenstrukturZeile]]:
+    """
+    Build a dictionary to compose the .tree files in the MAUS library.
+    """
+    if tree_dict is None:
+        tree_dict = defaultdict(list)
+    if (
+        reduced_nestednachrichtenstruktur.header_linie is None
+        and reduced_nestednachrichtenstruktur.segmente[0] is not None
+    ):
+        tree_dict["/"] = [
+            NachrichtenstrukturZeile(
+                zaehler="0",
+                nr="00000",
+                bezeichnung="UNB",
+                standard_status="M",
+                bdew_status="M",
+                standard_maximale_wiederholungen=0,
+                bdew_maximale_wiederholungen=0,
+                ebene=0,
+                inhalt="0",
+            ),
+            reduced_nestednachrichtenstruktur.segmente[0],
+            NachrichtenstrukturZeile(
+                zaehler="0",
+                nr="00000",
+                bezeichnung="UNZ",
+                standard_status="M",
+                bdew_status="M",
+                standard_maximale_wiederholungen=0,
+                bdew_maximale_wiederholungen=0,
+                ebene=0,
+                inhalt="0",
+            ),
+        ]
+        tree_dict["UNH"].extend(
+            [
+                segment
+                for segment in reduced_nestednachrichtenstruktur.segmente
+                if segment and segment.bezeichnung not in ["UNH", "UNT"]
+            ]
+        )
+        tree_dict["UNH"].extend(
+            [sg.header_linie for sg in reduced_nestednachrichtenstruktur.segmentgruppen if sg and sg.header_linie]
+        )
+        tree_dict["UNH"].extend(
+            [
+                segment
+                for segment in reduced_nestednachrichtenstruktur.segmente
+                if segment and segment.bezeichnung in ["UNT"]
+            ]
+        )
+    elif reduced_nestednachrichtenstruktur.header_linie is not None:
+        if reduced_nestednachrichtenstruktur.segmente not in [[], [None]]:
+            tree_dict[reduced_nestednachrichtenstruktur.header_linie.bezeichnung].extend(
+                [segment for segment in reduced_nestednachrichtenstruktur.segmente if segment]
+            )
+        if reduced_nestednachrichtenstruktur.segmentgruppen:
+            tree_dict[reduced_nestednachrichtenstruktur.header_linie.bezeichnung].extend(
+                [sg.header_linie for sg in reduced_nestednachrichtenstruktur.segmentgruppen if sg and sg.header_linie]
+            )
+    else:
+        raise ValueError("No header line or segment found.")
+    for segmentgruppe in reduced_nestednachrichtenstruktur.segmentgruppen:
+        if segmentgruppe is not None:
+            tree_dict = _build_tree_dict(segmentgruppe, tree_dict)
+    return tree_dict
+
+
 class ReducedNestedNachrichtenstruktur(BaseModel):
     """will contain the tree structure of nachrichtenstruktur tables"""
 
@@ -149,3 +235,16 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
             json.dump(structured_json, json_file, indent=4)
         logger.info("Wrote reduced nested Nachrichtenstruktur for {} to {}", message_type, file_path)
         return structured_json
+
+    def output_tree(self, message_type: EdifactFormat, output_dir: Path) -> None:
+        """Writes reduced NestedNachrichtenstruktur in the .tree grammar of MAUS."""
+        # generate tree dict
+        tree_dict = _build_tree_dict(self)
+        # convert tree dict to string
+        tree_str = _dict_to_tree_str(tree_dict)
+        # write tree file
+        output_dir.mkdir(parents=True, exist_ok=True)
+        file_path = output_dir / f"{message_type}.tree"
+        with open(file_path, "w", encoding="utf-8") as tree_file:
+            tree_file.write(tree_str)
+        logger.info("Wrote reduced .tree file for {} to {}", message_type, file_path)
