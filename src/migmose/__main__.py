@@ -153,7 +153,7 @@ def main(
                 output_dir_for_format,
             )
             document_version = _extract_document_version(file)
-            reduced_nested_nachrichtenstruktur.output_tree(m_format, output_dir_for_format)
+            reduced_nested_nachrichtenstruktur.output_tree(m_format, output_dir_for_format, document_version)
 
 
 if __name__ == "__main__":

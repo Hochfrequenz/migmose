@@ -35,11 +35,11 @@ def find_file_to_format(
                 and "Strom" not in file.name
                 and "Gas" not in file.name
             ):
-                all_file_dict[EdifactFormat.UTILMD].append(file)
+                all_file_dict[EdifactFormat.UTILMD.name].append(file)
             elif message_format in [EdifactFormat.UTILMD, EdifactFormat.UTILMDG] and "Gas" in file.name:
-                all_file_dict[EdifactFormat.UTILMDG].append(file)
+                all_file_dict[EdifactFormat.UTILMDG.name].append(file)
             elif message_format in [EdifactFormat.UTILMD, EdifactFormat.UTILMDS] and "Strom" in file.name:
-                all_file_dict[EdifactFormat.UTILMDS].append(file)
+                all_file_dict[EdifactFormat.UTILMDS.name].append(file)
             elif message_format in file.name:
                 all_file_dict[message_format].append(file)
     file_dict: dict[EdifactFormat, Path] = {
@@ -149,4 +149,10 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
 
 def _extract_document_version(path: Path) -> str:
     document_str = str(path)
-    return 0
+    pattern = r"MIG(?:Strom|Gas)?-?informatorischeLesefassung?(.*?)(?:_|KonsolidierteLesefassung|-AußerordentlicheVeröffentlichung)"
+    matches = re.search(pattern, document_str)
+    if matches:
+        document_version = matches.group(1)
+    if document_version == "":
+        logger.error(f"❌ No document version found in {path}.", fg="red")
+    return document_version
