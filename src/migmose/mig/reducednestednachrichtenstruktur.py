@@ -126,11 +126,13 @@ def _dict_to_tree_str(tree: DefaultDict[str, list[NachrichtenstrukturZeile]]) ->
 
 def _build_tree_dict(
     reduced_nestednachrichtenstruktur: "ReducedNestedNachrichtenstruktur",
-    tree_dict: DefaultDict[str, list[NachrichtenstrukturZeile]],
+    tree_dict: Optional[DefaultDict[str, list[NachrichtenstrukturZeile]]] = None,
 ) -> DefaultDict[str, list[NachrichtenstrukturZeile]]:
     """
     Build a dictionary to compose the .tree files in the MAUS library.
     """
+    if tree_dict is None:
+        tree_dict: DefaultDict[str, list[NachrichtenstrukturZeile]] = defaultdict(list)
     if (
         reduced_nestednachrichtenstruktur.header_linie is None
         and reduced_nestednachrichtenstruktur.segmente[0] is not None
@@ -234,15 +236,15 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
         logger.info("Wrote reduced nested Nachrichtenstruktur for {} to {}", message_type, file_path)
         return structured_json
 
-    def to_tree(self, message_type: EdifactFormat, output_dir: Path) -> None:
+    def output_tree(self, message_type: EdifactFormat, output_dir: Path) -> None:
         """Writes reduced NestedNachrichtenstruktur in the .tree grammar of MAUS."""
         # generate tree dict
-        tree_dict: DefaultDict[str, list[NachrichtenstrukturZeile]] = defaultdict(list)
-        tree_dict = _build_tree_dict(self, tree_dict)
+        tree_dict = _build_tree_dict(self)
+        # convert tree dict to string
+        tree_str = _dict_to_tree_str(tree_dict)
         # write tree file
         output_dir.mkdir(parents=True, exist_ok=True)
         file_path = output_dir.joinpath(f"{message_type}.tree")
-        tree_str = _dict_to_tree_str(tree_dict)
         with open(file_path, "w", encoding="utf-8") as tree_file:
             tree_file.write(tree_str)
         logger.info("Wrote reduced .tree file for {} to {}", message_type, file_path)

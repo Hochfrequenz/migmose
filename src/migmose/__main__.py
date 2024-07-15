@@ -152,7 +152,7 @@ def main(
                 format_version,
                 output_dir_for_format,
             )
-            reduced_nested_nachrichtenstruktur.to_tree(m_format, output_dir_for_format)
+            reduced_nested_nachrichtenstruktur.output_tree(m_format, output_dir_for_format)
 
 
 if __name__ == "__main__":
