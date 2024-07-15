@@ -82,7 +82,7 @@
   SG17:NAD[M;M],SG18[C;R]
   SG18:CTA[M;M],COM[C;R]
   SG25:GID[M;M],FTX[C;R]
-
+  
   '''
 # ---
 # name: TestReducedNestedNachrichtenstruktur.test_build_tree_dict_and_generate_str[ORDCHG]
@@ -120,7 +120,7 @@
   SG1:RFF[M;M]
   SG3:NAD[M;M],SG6[C;D]
   SG6:CTA[M;M],COM[C;R]
-
+  
   '''
 # ---
 # name: TestReducedNestedNachrichtenstruktur.test_build_tree_dict_and_generate_str[UTILMD]
@@ -204,7 +204,7 @@
   SG9:QTY[M;M],DTM[C;R]
   SG10:CCI[M;M],CAV[C;D]
   SG12:NAD[M;M],RFF[C;D]
-
+  
   '''
 # ---
 # name: TestReducedNestedNachrichtenstruktur.test_create_reduced_nested_nachrichtenstruktur[IFTSTA]
@@ -1338,7 +1338,7 @@
   SG17:NAD[M;M],SG18[C;R]
   SG18:CTA[M;M],COM[C;R]
   SG25:GID[M;M],FTX[C;R]
-
+  
   '''
 # ---
 # name: TestReducedNestedNachrichtenstruktur.test_output_tree[ORDCHG]
@@ -1348,7 +1348,7 @@
   SG1:RFF[M;M]
   SG3:NAD[M;M],SG6[C;D]
   SG6:CTA[M;M],COM[C;R]
-
+  
   '''
 # ---
 # name: TestReducedNestedNachrichtenstruktur.test_output_tree[UTILMD]
@@ -1365,6 +1365,6 @@
   SG9:QTY[M;M],DTM[C;R]
   SG10:CCI[M;M],CAV[C;D]
   SG12:NAD[M;M],RFF[C;D]
-
+  
   '''
 # ---
