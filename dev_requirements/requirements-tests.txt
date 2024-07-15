@@ -19,6 +19,7 @@ loguru==0.7.2
 marshmallow==3.21.2
     # via maus
 maus[tree]==0.5.3
+
     # via -r .\dev_requirements\requirements-tests.in
 more-itertools==10.3.0
     # via maus
