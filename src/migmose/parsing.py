@@ -135,3 +135,8 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
     # filter empty rows and headers
     mig_tables = [_zfill_nr(row) for row in mig_tables if row not in ("", "\n", nachrichtenstruktur_header)]
     return mig_tables
+
+
+def _extract_document_version(path: Path) -> str:
+    document_str = str(path)
+    return 0

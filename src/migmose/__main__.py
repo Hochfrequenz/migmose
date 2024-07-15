@@ -12,7 +12,7 @@ from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
 from migmose.mig.reducednestednachrichtenstruktur import ReducedNestedNachrichtenstruktur
 from migmose.mig.segmentgrouphierarchies import SegmentGroupHierarchy
-from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturzeile
+from migmose.parsing import _extract_document_version, find_file_to_format, parse_raw_nachrichtenstrukturzeile
 
 
 # add CLI logic
@@ -152,6 +152,7 @@ def main(
                 format_version,
                 output_dir_for_format,
             )
+            document_version = _extract_document_version(file)
             reduced_nested_nachrichtenstruktur.output_tree(m_format, output_dir_for_format)
 
 
