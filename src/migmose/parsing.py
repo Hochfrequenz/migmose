@@ -39,11 +39,6 @@ def find_file_to_format(
         if len(all_file_dict[message_format]) == 0:
             logger.warning(f"⚠️ No file found for {message_format}", fg="red")
             continue
-        # try:
-        #     all_file_dict[message_format]
-        # except KeyError:
-        #     logger.warning(f"⚠️ No file found for {message_format}", fg="red")
-        #     continue
         file_dict[message_format] = get_latest_file(all_file_dict[message_format])
     if file_dict:
         return file_dict
