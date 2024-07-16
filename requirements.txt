@@ -28,7 +28,7 @@ maus==0.5.2
     # via migmose (pyproject.toml)
 more-itertools==10.3.0
     # via maus
-packaging==24.0
+packaging==24.1
     # via marshmallow
 pydantic==2.8.2
     # via migmose (pyproject.toml)
