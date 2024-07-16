@@ -40,9 +40,9 @@ class TestSegmentGroupHierarchy:
         )
         sgh = SegmentGroupHierarchy.create_segmentgroup_hierarchy(reduced_nested_nachrichtenstruktur)
         sgh.to_json(message_format, tmp_path)
-        with open(tmp_path / "sgh.json", "r", encoding="utf-8") as file1:
+        with open(tmp_path / f"{message_format}.sgh.json", "r", encoding="utf-8") as file1:
             actual_sgh_json = json.load(file1)
             assert actual_sgh_json == snapshot
-        with open(tmp_path / "sgh.json", "r", encoding="utf-8") as sgh_file:
+        with open(tmp_path / f"{message_format}.sgh.json", "r", encoding="utf-8") as sgh_file:
             sgh = SegmentGroupHierarchySchema().loads(sgh_file.read())
             assert isinstance(sgh, MausSGH)
