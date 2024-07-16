@@ -9,7 +9,7 @@ iniconfig==2.0.0
     # via pytest
 loguru==0.7.2
     # via pytest-loguru
-packaging==24.0
+packaging==24.1
     # via pytest
 pluggy==1.5.0
     # via pytest
