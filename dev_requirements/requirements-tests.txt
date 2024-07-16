@@ -16,7 +16,7 @@ lark==1.1.9
     # via maus
 loguru==0.7.2
     # via pytest-loguru
-marshmallow==3.21.2
+marshmallow==3.21.3
     # via maus
 maus[tree]==0.5.3
     # via -r .\dev_requirements\requirements-tests.in
