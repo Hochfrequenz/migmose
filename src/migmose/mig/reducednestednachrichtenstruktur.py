@@ -236,9 +236,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
         logger.info("Wrote reduced nested Nachrichtenstruktur for {} to {}", message_type, file_path)
         return structured_json
 
-
     def output_tree(self, message_type: EdifactFormat, output_dir: Path, document_version: str) -> None:
-
         """Writes reduced NestedNachrichtenstruktur in the .tree grammar of MAUS."""
         # generate tree dict
         tree_dict = _build_tree_dict(self)
@@ -246,9 +244,7 @@ class ReducedNestedNachrichtenstruktur(BaseModel):
         tree_str = _dict_to_tree_str(tree_dict)
         # write tree file
         output_dir.mkdir(parents=True, exist_ok=True)
-
         file_path = output_dir / f"{message_type}{document_version}.tree"
-
         with open(file_path, "w", encoding="utf-8") as tree_file:
             tree_file.write(tree_str)
         logger.info("Wrote reduced .tree file for {} to {}", message_type, file_path)

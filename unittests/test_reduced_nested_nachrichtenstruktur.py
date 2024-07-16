@@ -11,7 +11,7 @@ from migmose.mig.reducednestednachrichtenstruktur import (
     _build_tree_dict,
     _dict_to_tree_str,
 )
-from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturzeile
+from migmose.parsing import _extract_document_version, find_file_to_format, parse_raw_nachrichtenstrukturzeile
 from unittests import expected_output_dir, path_to_test_edi_energy_mirror_repo
 
 
@@ -22,7 +22,7 @@ class TestReducedNestedNachrichtenstruktur:
         "message_format",
         [
             pytest.param(EdifactFormat.ORDCHG, id="ORDCHG"),
-            pytest.param(EdifactFormat.UTILMD, id="UTILMD"),
+            pytest.param(EdifactFormat.UTILMDS, id="UTILMDS"),
             pytest.param(EdifactFormat.IFTSTA, id="IFTSTA"),
         ],
     )
@@ -49,7 +49,7 @@ class TestReducedNestedNachrichtenstruktur:
         "message_format",
         [
             pytest.param(EdifactFormat.ORDCHG, id="ORDCHG"),
-            pytest.param(EdifactFormat.UTILMD, id="UTILMD"),
+            pytest.param(EdifactFormat.UTILMDS, id="UTILMDS"),
             pytest.param(EdifactFormat.IFTSTA, id="IFTSTA"),
         ],
     )
@@ -74,7 +74,7 @@ class TestReducedNestedNachrichtenstruktur:
         "message_format",
         [
             pytest.param(EdifactFormat.ORDCHG, id="ORDCHG"),
-            pytest.param(EdifactFormat.UTILMD, id="UTILMD"),
+            pytest.param(EdifactFormat.UTILMDS, id="UTILMDS"),
             pytest.param(EdifactFormat.IFTSTA, id="IFTSTA"),
         ],
     )
@@ -92,10 +92,11 @@ class TestReducedNestedNachrichtenstruktur:
         reduced_nested_nachrichtenstruktur = ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(
             nested_nachrichtenstruktur
         )
-        reduced_nested_nachrichtenstruktur.output_tree(message_format, tmp_path)
-        with open(tmp_path / f"{message_format}.tree", "r", encoding="utf-8") as actual_file:
+        document_version = _extract_document_version(file_path)
+        reduced_nested_nachrichtenstruktur.output_tree(message_format, tmp_path, document_version)
+        with open(tmp_path / f"{message_format}{document_version}.tree", "r", encoding="utf-8") as actual_file:
             assert actual_file.read() == snapshot
         try:
-            check_file_can_be_parsed_as_tree(tmp_path / f"{message_format}.tree")
+            check_file_can_be_parsed_as_tree(tmp_path / f"{message_format}{document_version}.tree")
         except ValueError as e:
             assert False, f"maus exception: {e}"
