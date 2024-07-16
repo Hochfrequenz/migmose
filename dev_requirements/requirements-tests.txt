@@ -6,10 +6,6 @@
 #
 attrs==23.2.0
     # via maus
-colorama==0.4.6
-    # via
-    #   loguru
-    #   pytest
 iniconfig==2.0.0
     # via pytest
 lark==1.1.9
@@ -18,8 +14,8 @@ loguru==0.7.2
     # via pytest-loguru
 marshmallow==3.21.2
     # via maus
-maus[tree]==0.5.2
-    # via -r .\dev_requirements\requirements-tests.in
+maus[tree]==0.5.3
+    # via -r dev_requirements/requirements-tests.in
 more-itertools==10.3.0
     # via maus
 packaging==24.1
@@ -29,9 +25,10 @@ packaging==24.1
 pluggy==1.5.0
     # via pytest
 pytest==8.2.2
-    # via -r dev_requirements/requirements-tests.in
+    # via
+    #   -r dev_requirements/requirements-tests.in
+    #   syrupy
 pytest-loguru==0.4.0
-    # via -r .\dev_requirements\requirements-tests.in
-win32-setctime==1.1.0
-    # via loguru
+    # via -r dev_requirements/requirements-tests.in
 syrupy==4.6.1
+    # via -r dev_requirements/requirements-tests.in
