@@ -123,7 +123,7 @@
   
   '''
 # ---
-# name: TestReducedNestedNachrichtenstruktur.test_build_tree_dict_and_generate_str[UTILMD]
+# name: TestReducedNestedNachrichtenstruktur.test_build_tree_dict_and_generate_str[UTILMDS]
   defaultdict({
     '/': list([
       NachrichtenstrukturZeile(zaehler='0', nr='00000', bezeichnung='UNB', standard_status='M', bdew_status='M', standard_maximale_wiederholungen=0, bdew_maximale_wiederholungen=0, ebene=0, inhalt='0'),
@@ -190,7 +190,7 @@
     ]),
   })
 # ---
-# name: TestReducedNestedNachrichtenstruktur.test_build_tree_dict_and_generate_str[UTILMD].1
+# name: TestReducedNestedNachrichtenstruktur.test_build_tree_dict_and_generate_str[UTILMDS].1
   '''
   /:UNB[M;M],UNH[M;M],UNZ[M;M]
   UNH:BGM[M;M],DTM[M;M],SG1[C;D],SG2[C;R],SG4[C;D],UNT[M;M]
@@ -841,7 +841,7 @@
     ]),
   })
 # ---
-# name: TestReducedNestedNachrichtenstruktur.test_create_reduced_nested_nachrichtenstruktur[UTILMD]
+# name: TestReducedNestedNachrichtenstruktur.test_create_reduced_nested_nachrichtenstruktur[UTILMDS]
   dict({
     'header_linie': None,
     'segmente': list([
@@ -1351,7 +1351,7 @@
   
   '''
 # ---
-# name: TestReducedNestedNachrichtenstruktur.test_output_tree[UTILMD]
+# name: TestReducedNestedNachrichtenstruktur.test_output_tree[UTILMDS]
   '''
   /:UNB[M;M],UNH[M;M],UNZ[M;M]
   UNH:BGM[M;M],DTM[M;M],SG1[C;D],SG2[C;R],SG4[C;D],UNT[M;M]

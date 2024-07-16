@@ -19,6 +19,7 @@ If you're looking for a tool to process the **official** BDEW XMLs for MIGs (ava
 - MIG_mose is a Python(3.11,3.12) project.
 - .docx files a processed by the [python-docx](https://python-docx.readthedocs.io/en/latest/) library.
 - EdiFact formats are used as in [maus.edifact](https://github.com/Hochfrequenz/mig_ahb_utility_stack/blob/main/src/maus/edifact.py).
+- syrupy for unittest snapshots
 
 ## Installation
 MIG_mose is a Python-based tool.
@@ -100,6 +101,10 @@ To run the tests, you can use tox.
 
 ```bash
 tox
+```
+To update the test snapshots run
+```bash
+tox -e update_snapshots
 ```
 See our [Python Template Repository](https://github.com/Hochfrequenz/python_template_repository#how-to-use-this-repository-on-your-machine) for detailed explanations.
 
