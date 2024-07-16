@@ -15,6 +15,15 @@ from migmose.mig.segmentgrouphierarchies import SegmentGroupHierarchy
 from migmose.parsing import _extract_document_version, find_file_to_format, parse_raw_nachrichtenstrukturzeile
 
 
+def check_message_format(ctx, param, value) -> list[EdifactFormat]:  # type: ignore[no-untyped-def] # pylint: disable=unused-argument
+    """
+    Check if the message format is valid.
+    """
+    if value is None:
+        value = map(lambda x: x.name, EdifactFormat)
+    return list(value)
+
+
 # add CLI logic
 @click.command()
 @click.option(
@@ -30,9 +39,9 @@ from migmose.parsing import _extract_document_version, find_file_to_format, pars
     "--message-format",
     type=click.Choice(list(map(lambda x: x.name, EdifactFormat)), case_sensitive=False),
     # Taken from https://github.com/pallets/click/issues/605#issuecomment-889462570
-    default=list(map(lambda x: x, EdifactFormat)),
     help="Defines the set of message formats to be parsed. If no format is specified, all formats are parsed.",
     multiple=True,
+    callback=check_message_format,
 )
 @click.option(
     "-fv",
@@ -63,7 +72,7 @@ def main(
     output_dir: Path,
     format_version: EdifactFormatVersion | str,
     message_format: list[EdifactFormat],
-    file_type: list[str],
+    file_type: tuple[str],
 ) -> None:
     """
     Main function. Uses CLI input.
