@@ -81,6 +81,12 @@ def main(
         output_dir_for_format = output_dir / format_version / m_format
         raw_lines = parse_raw_nachrichtenstrukturzeile(file)
         nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.create_nachrichtenstruktur_tabelle(raw_lines)
+        nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
+            nachrichtenstrukturtabelle
+        )
+        reduced_nested_nachrichtenstruktur = ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(
+            nested_nachrichtenstruktur
+        )
         if "csv" in file_type:
             logger.info(
                 "💾 Saving flat Nachrichtenstruktur table for {} and {} as csv to {}.",
@@ -90,9 +96,6 @@ def main(
             )
             nachrichtenstrukturtabelle.to_csv(m_format, output_dir_for_format)
         if "nested_json" in file_type:
-            nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
-                nachrichtenstrukturtabelle
-            )
             # Save the nested Nachrichtenstruktur as json
             logger.info(
                 "💾 Saving nested Nachrichtenstruktur for {} and {} as json to {}.",
@@ -103,12 +106,6 @@ def main(
             nested_nachrichtenstruktur.to_json(m_format, output_dir_for_format)
 
         if "reduced_nested_json" in file_type:
-            nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
-                nachrichtenstrukturtabelle
-            )
-            reduced_nested_nachrichtenstruktur = (
-                ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(nested_nachrichtenstruktur)
-            )
             # Save the reduced nested Nachrichtenstruktur as json
             logger.info(
                 "💾 Saving reduced nested Nachrichtenstruktur for {} and {} as json to {}.",
@@ -118,12 +115,6 @@ def main(
             )
             reduced_nested_nachrichtenstruktur.to_json(m_format, output_dir_for_format)
         if "sgh_json" in file_type:
-            nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
-                nachrichtenstrukturtabelle
-            )
-            reduced_nested_nachrichtenstruktur = (
-                ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(nested_nachrichtenstruktur)
-            )
             sgh = SegmentGroupHierarchy.create_segmentgroup_hierarchy(reduced_nested_nachrichtenstruktur)
             # Save the reduced nested Nachrichtenstruktur as json
             logger.info(
@@ -134,12 +125,6 @@ def main(
             )
             sgh.to_json(m_format, output_dir_for_format)
         if "tree" in file_type:
-            nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
-                nachrichtenstrukturtabelle
-            )
-            reduced_nested_nachrichtenstruktur = (
-                ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(nested_nachrichtenstruktur)
-            )
             # Save the reduced nested Nachrichtenstruktur as json
             logger.info(
                 "💾 Saving tree for {} and {} as json to {}.",

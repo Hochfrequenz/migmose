@@ -81,29 +81,34 @@ class TestParsing:
         "file_path",
         [
             pytest.param(
-                Path("edi_energy_de/FV2310/REQOTEMIG-informatorischeLesefassung1.3_20250403_20231001.docx"), id="REQOTE"
+                Path("edi_energy_de/FV2310/" "REQOTEMIG-informatorischeLesefassung1.3_20250403_20231001.docx"),
+                id="REQOTE",
             ),
             pytest.param(
                 Path(
                     "edi_energy_de/FV2310/"
-                    "UTILMDMIGStrom-informatorischeLesefassungS1.1-AußerordentlicheVeröffentlichung_20231022_20231001.docx"
+                    "UTILMDMIGStrom-informatorischeLesefassung"
+                    "S1.1-AußerordentlicheVeröffentlichung_20231022_20231001.docx"
                 ),
                 id="UTILMDS",
             ),
             pytest.param(
                 Path(
-                    "edi_energy_de/FV2310/UTILMDMIGGas-informatorischeLesefassungG1.0aKonsolidierteLesefassungmitFehlerkorrekturenStand12.12.2023_99991231_20231212.docx"
+                    "edi_energy_de/FV2310/"
+                    "UTILMDMIGGas-informatorischeLesefassungG1"
+                    ".0aKonsolidierteLesefassungmitFehlerkorrekturenStand12.12.2023_99991231_20231212.docx"
                 ),
                 id="UTILMDG",
             ),
             pytest.param(
                 Path(
-                    "edi_energy_de/FV2310/IFTSTAMIG-informatorischeLesefassung-AußerordentlicheVeröffentlichung_20231022_20231001.docx"
+                    "edi_energy_de/FV2310/"
+                    "IFTSTAMIG-informatorischeLesefassung-AußerordentlicheVeröffentlichung_20231022_20231001.docx"
                 ),
                 id="IFTSTA",
             ),
             pytest.param(
-                Path("edi_energy_de/FV2310/REMADVMIG-informatorischeLesefassung2.9b_20240402_20231001.docx"),
+                Path("edi_energy_de/FV2310/" "REMADVMIG-informatorischeLesefassung2.9b_20240402_20231001.docx"),
                 id="REMADV",
             ),
         ],
