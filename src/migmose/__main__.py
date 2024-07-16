@@ -30,7 +30,7 @@ from migmose.parsing import _extract_document_version, find_file_to_format, pars
     "--message-format",
     type=click.Choice(list(map(lambda x: x.name, EdifactFormat)), case_sensitive=False),
     # Taken from https://github.com/pallets/click/issues/605#issuecomment-889462570
-    default=list(map(lambda x: x.name, EdifactFormat)),
+    default=list(map(lambda x: x, EdifactFormat)),
     help="Defines the set of message formats to be parsed. If no format is specified, all formats are parsed.",
     multiple=True,
 )
@@ -68,19 +68,14 @@ def main(
     """
     Main function. Uses CLI input.
     """
-    if message_format is None:
-        message = "❌ No message format specified. Please specify the message format."
-        click.secho(message, fg="yellow")
-        logger.error(message)
-        raise click.Abort()
-    if file_type is None:
-        message = "❌ No output format specified. Please specify the output format."
-        click.secho(message, fg="yellow")
-        logger.error(message)
-        raise click.Abort()
     if isinstance(format_version, str):
         format_version = EdifactFormatVersion(format_version)
-
+    if int(str(format_version)[-4:]) >= 2310 and EdifactFormat.UTILMD in message_format:
+        logger.warning(
+            "💡 UTILMD is not available for format versions 2310 and above. Parse UTILMDS and UTILMDG instead."
+        )
+        message_format.remove(EdifactFormat.UTILMD)
+        message_format.extend([EdifactFormat.UTILMDG, EdifactFormat.UTILMDS])
     dict_files = find_file_to_format(message_format, edi_energy_mirror_path, format_version)
     for m_format, file in dict_files.items():
         output_dir_for_format = output_dir / format_version / m_format

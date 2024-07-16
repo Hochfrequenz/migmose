@@ -6,7 +6,7 @@ import re
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
-from typing import DefaultDict, Generator, Optional, Union
+from typing import DefaultDict, Generator, Union
 
 import click
 import docx
@@ -25,26 +25,26 @@ def find_file_to_format(
     """
     input_dir = edi_energy_repo / Path("edi_energy_de") / Path(format_version)
     all_file_dict: DefaultDict[EdifactFormat, list[Path]] = defaultdict(list)
-    for file in input_dir.iterdir():
-        if "MIG" not in file.name or file.suffix != ".docx":
-            continue
-        for message_format in message_formats:
-            if (
-                message_format == EdifactFormat.UTILMD
-                and "UTILMD" in file.name
-                and "Strom" not in file.name
-                and "Gas" not in file.name
-            ):
-                all_file_dict[EdifactFormat.UTILMD.name].append(file)
-            elif message_format in [EdifactFormat.UTILMD, EdifactFormat.UTILMDG] and "Gas" in file.name:
-                all_file_dict[EdifactFormat.UTILMDG.name].append(file)
-            elif message_format in [EdifactFormat.UTILMD, EdifactFormat.UTILMDS] and "Strom" in file.name:
-                all_file_dict[EdifactFormat.UTILMDS.name].append(file)
+    file_dict: dict[EdifactFormat, Path] = {}
+    for message_format in message_formats:
+        for file in input_dir.iterdir():
+            if "MIG" not in file.name or file.suffix != ".docx":
+                continue
+            if message_format is EdifactFormat.UTILMDG and "Gas" in file.name:
+                all_file_dict[EdifactFormat.UTILMDG].append(file)
+            elif message_format is EdifactFormat.UTILMDS and "Strom" in file.name:
+                all_file_dict[EdifactFormat.UTILMDS].append(file)
             elif message_format in file.name:
                 all_file_dict[message_format].append(file)
-    file_dict: dict[EdifactFormat, Path] = {
-        fmt: get_latest_file(files) for fmt, files in all_file_dict.items() if get_latest_file(files)
-    }
+        if len(all_file_dict[message_format]) == 0:
+            logger.warning(f"⚠️ No file found for {message_format}", fg="red")
+            continue
+        # try:
+        #     all_file_dict[message_format]
+        # except KeyError:
+        #     logger.warning(f"⚠️ No file found for {message_format}", fg="red")
+        #     continue
+        file_dict[message_format] = get_latest_file(all_file_dict[message_format])
     if file_dict:
         return file_dict
     logger.error("❌ No files found in the input directory.", fg="red")
@@ -66,7 +66,7 @@ def _extract_date(file_path: Path) -> tuple[datetime, Path]:
     raise click.Abort()
 
 
-def get_latest_file(file_list: list[Path]) -> Optional[Path]:
+def get_latest_file(file_list: list[Path]) -> Path:
     """
     This function takes a list of docx files Path
     and returns the Path of the latest MIG docx file based on the timestamp in its name.
@@ -78,9 +78,6 @@ def get_latest_file(file_list: list[Path]) -> Optional[Path]:
     Returns:
         Path: The path of the latest file. Returns None if no valid date is found.
     """
-    if len(file_list) == 0:
-        logger.warning(f"⚠️ No file found for {message_format}.", fg="red")
-        return None
     # Initialize variables to keep track of the latest file and date
     latest_file: Path
     latest_date: datetime | None = None
@@ -149,10 +146,15 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
 
 def _extract_document_version(path: Path) -> str:
     document_str = str(path)
-    pattern = r"MIG(?:Strom|Gas)?-?informatorischeLesefassung?(.*?)(?:_|KonsolidierteLesefassung|-AußerordentlicheVeröffentlichung)"
+    pattern = (
+        r"MIG(?:Strom|Gas)?-?informatorischeLesefassung?(.*?)"
+        r"(?:_|KonsolidierteLesefassung|-AußerordentlicheVeröffentlichung)"
+    )
     matches = re.search(pattern, document_str)
     if matches:
         document_version = matches.group(1)
-    if document_version == "":
-        logger.error(f"❌ No document version found in {path}.", fg="red")
-    return document_version
+        if document_version == "":
+            logger.warning(f"❌ No document version found in {path}.", fg="red")
+        return document_version
+    logger.error(f"❌ Unexpected document name in {path}.", fg="red")
+    return ""
