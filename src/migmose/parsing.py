@@ -142,12 +142,12 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
 def _extract_document_version(path: Path) -> str:
     document_str = str(path)
     pattern = (
-        r"MIG(?:Strom|Gas)?-?informatorischeLesefassung?(.*?)"
-        r"(?:_|KonsolidierteLesefassung|-AußerordentlicheVeröffentlichung)"
+        r"mig(?:strom|gas)?-?informatorischelesefassung?(.*?)"
+        r"(?:_|konsolidiertelesefassung|-außerordentlicheveröffentlichung)"
     )
-    matches = re.search(pattern, document_str)
+    matches = re.search(pattern, document_str.lower())
     if matches:
-        document_version = matches.group(1)
+        document_version = matches.group(1).capitalize()
         if document_version == "":
             logger.warning(f"❌ No document version found in {path}.", fg="red")
         return document_version
