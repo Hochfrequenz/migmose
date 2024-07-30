@@ -24,7 +24,9 @@ class NachrichtenstrukturZeile(BaseModel):
     """
 
     zaehler: str
-    nr: str | None = Field(default=None, pattern=r"^\d{5}$")  #: the segment ID (can be used to match with AHBs)
+    nr: str | None = Field(
+        default=None, pattern=r"^\d{5}$|^[A-Za-z]+\d{4}$"
+    )  #: the segment ID (can be used to match with AHBs)
     bezeichnung: str
     standard_status: str
     bdew_status: str
