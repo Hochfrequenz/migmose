@@ -145,7 +145,7 @@ def _extract_document_version(path: Path) -> str:
         r"MIG(?:Strom|Gas)?-?informatorischeLesefassung?(.*?)"
         r"(?:_|KonsolidierteLesefassung|-AußerordentlicheVeröffentlichung)"
     )
-    matches = re.search(pattern, document_str)
+    matches = re.search(pattern, document_str, re.IGNORECASE)
     if matches:
         document_version = matches.group(1)
         if document_version == "":
