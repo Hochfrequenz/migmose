@@ -19,7 +19,7 @@ def check_message_format(ctx, param, value) -> list[EdifactFormat]:  # type: ign
     """
     Check if the message format is valid.
     """
-    if value is None:
+    if len(value) == 0:
         value = map(lambda x: x.name, EdifactFormat)
     return list(value)
 
