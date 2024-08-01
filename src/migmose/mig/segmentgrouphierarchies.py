@@ -6,8 +6,8 @@ import json
 from pathlib import Path
 from typing import Optional
 
+from efoli import EdifactFormat
 from loguru import logger
-from maus.edifact import EdifactFormat
 from pydantic import BaseModel, Field
 
 from migmose.mig.reducednestednachrichtenstruktur import ReducedNestedNachrichtenstruktur

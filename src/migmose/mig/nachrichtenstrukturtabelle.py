@@ -5,8 +5,8 @@ contains class mig tables
 import csv
 from pathlib import Path
 
+from efoli import EdifactFormat
 from loguru import logger
-from maus.edifact import EdifactFormat
 from pydantic import BaseModel
 
 from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile

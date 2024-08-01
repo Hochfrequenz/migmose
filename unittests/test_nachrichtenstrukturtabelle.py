@@ -1,7 +1,7 @@
 import csv
 from pathlib import Path
 
-from maus.edifact import EdifactFormat, EdifactFormatVersion
+from efoli import EdifactFormat, EdifactFormatVersion
 
 from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
 from migmose.parsing import parse_raw_nachrichtenstrukturzeile

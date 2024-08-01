@@ -6,7 +6,7 @@ import logging
 from pathlib import Path
 
 import pytest
-from maus.edifact import EdifactFormat, EdifactFormatVersion
+from efoli import EdifactFormat, EdifactFormatVersion
 from pytest_loguru.plugin import caplog  # type: ignore[import-untyped] # pylint: disable=unused-import
 
 from migmose.parsing import _extract_document_version, find_file_to_format, parse_raw_nachrichtenstrukturzeile

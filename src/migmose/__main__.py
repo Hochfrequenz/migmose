@@ -5,8 +5,8 @@ contains CLI logic for migmose.
 from pathlib import Path
 
 import click
+from efoli import EdifactFormat, EdifactFormatVersion
 from loguru import logger
-from maus.edifact import EdifactFormat, EdifactFormatVersion
 
 from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
