@@ -6,6 +6,8 @@
 #
 attrs==23.2.0
     # via maus
+efoli==1.1.0
+    # via maus
 iniconfig==2.0.0
     # via pytest
 lark==1.1.9
@@ -14,7 +16,7 @@ loguru==0.7.2
     # via pytest-loguru
 marshmallow==3.21.3
     # via maus
-maus[tree]==0.5.3
+maus[tree]==0.6.0
     # via -r dev_requirements/requirements-tests.in
 more-itertools==10.3.0
     # via maus
@@ -30,5 +32,7 @@ pytest==8.3.2
     #   syrupy
 pytest-loguru==0.4.0
     # via -r dev_requirements/requirements-tests.in
+pytz==2024.1
+    # via efoli
 syrupy==4.6.1
     # via -r dev_requirements/requirements-tests.in
