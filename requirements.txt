@@ -24,7 +24,7 @@ markupsafe==2.1.5
     # via jinja2
 marshmallow==3.21.3
     # via maus
-maus==0.5.3
+maus==0.6.0
     # via migmose (pyproject.toml)
 more-itertools==10.3.0
     # via maus
