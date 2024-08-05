@@ -1,7 +1,7 @@
 import json
 
 import pytest
-from maus.edifact import EdifactFormat, EdifactFormatVersion
+from efoli import EdifactFormat, EdifactFormatVersion
 from maus.models.message_implementation_guide import SegmentGroupHierarchy as MausSGH
 from maus.models.message_implementation_guide import SegmentGroupHierarchySchema
 

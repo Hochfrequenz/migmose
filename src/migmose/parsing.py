@@ -13,8 +13,8 @@ import docx
 from docx.document import Document
 from docx.oxml import CT_Tbl  # type:ignore[attr-defined]
 from docx.table import Table, _Cell
+from efoli import EdifactFormat, EdifactFormatVersion
 from loguru import logger
-from maus.edifact import EdifactFormat, EdifactFormatVersion
 
 
 def find_file_to_format(

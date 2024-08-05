@@ -1,7 +1,7 @@
 import json
 
 import pytest
-from maus.edifact import EdifactFormat, EdifactFormatVersion
+from efoli import EdifactFormat, EdifactFormatVersion
 from maus.reader.tree_to_sgh import check_file_can_be_parsed_as_tree
 
 from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle

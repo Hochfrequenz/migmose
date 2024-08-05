@@ -7,9 +7,9 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, DefaultDict, Optional, TypeAlias
 
+from efoli import EdifactFormat
 from jinja2 import Template
 from loguru import logger
-from maus.edifact import EdifactFormat
 from pydantic import BaseModel, Field
 
 from migmose.mig.nachrichtenstrukturzeile import NachrichtenstrukturZeile
