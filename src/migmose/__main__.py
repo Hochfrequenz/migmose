@@ -20,7 +20,7 @@ def check_message_format(ctx, param, value) -> list[EdifactFormat]:  # type: ign
     Check if the message format is valid.
     """
     if len(value) == 0:
-        value = map(lambda x: x.name, EdifactFormat)
+        value = map(lambda x: x, EdifactFormat)
     return list(value)
 
 
@@ -37,7 +37,7 @@ def check_message_format(ctx, param, value) -> list[EdifactFormat]:  # type: ign
 @click.option(
     "-mf",
     "--message-format",
-    type=click.Choice(list(map(lambda x: x.name, EdifactFormat)), case_sensitive=False),
+    type=click.Choice(list(map(lambda x: x, EdifactFormat)), case_sensitive=False),
     # Taken from https://github.com/pallets/click/issues/605#issuecomment-889462570
     help="Defines the set of message formats to be parsed. If no format is specified, all formats are parsed.",
     multiple=True,
