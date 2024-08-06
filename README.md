@@ -18,7 +18,7 @@ If you're looking for a tool to process the **official** BDEW XMLs for MIGs (ava
 ## Tech-Stack
 - MIG_mose is a Python(3.11,3.12) project.
 - .docx files a processed by the [python-docx](https://python-docx.readthedocs.io/en/latest/) library.
-- EdiFact formats are used as in [maus.edifact](https://github.com/Hochfrequenz/mig_ahb_utility_stack/blob/main/src/maus/edifact.py).
+- EdiFact formats are used as in [efoli](https://github.com/Hochfrequenz/efoli)).
 - syrupy for unittest snapshots
 
 ## Installation
@@ -59,7 +59,7 @@ Below the available options are listed:
     - Example: `--edi-energy-mirror-path /path/to/edi_energy_mirror`
 
 - **Message Format (`-mf`, `--message-format`):**
-    - Description: This option defines the set of message formats to be parsed. Users can specify multiple message formats by providing multiple values. The formats are EdiFact formats (cf. [maus.edifact.EdifactFormat](https://github.com/Hochfrequenz/mig_ahb_utility_stack/blob/main/src/maus/edifact.py)). If no format is specified, all formats are parsed.
+    - Description: This option defines the set of message formats to be parsed. Users can specify multiple message formats by providing multiple values. The formats are EdiFact formats (cf. [efoli.EdifactFormat](https://github.com/Hochfrequenz/efoli/blob/src/efoli/edifact_format.py)). If no format is specified, all formats are parsed.
     - Example: `--message_format "UTILMD" --message_format "ORDCHG"`
 
 - **Output Directory (`-o`, `--output-dir`):**
