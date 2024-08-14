@@ -5,13 +5,23 @@ contains CLI logic for migmose.
 from pathlib import Path
 
 import click
+from efoli import EdifactFormat, EdifactFormatVersion
 from loguru import logger
-from maus.edifact import EdifactFormat, EdifactFormatVersion
 
 from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle
 from migmose.mig.nestednachrichtenstruktur import NestedNachrichtenstruktur
 from migmose.mig.reducednestednachrichtenstruktur import ReducedNestedNachrichtenstruktur
-from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturzeile
+from migmose.mig.segmentgrouphierarchies import SegmentGroupHierarchy
+from migmose.parsing import _extract_document_version, find_file_to_format, parse_raw_nachrichtenstrukturzeile
+
+
+def check_message_format(ctx, param, value) -> list[EdifactFormat]:  # type: ignore[no-untyped-def] # pylint: disable=unused-argument
+    """
+    Check if the message format is valid.
+    """
+    if len(value) == 0:
+        value = map(lambda x: x, EdifactFormat)
+    return list(value)
 
 
 # add CLI logic
@@ -27,11 +37,11 @@ from migmose.parsing import find_file_to_format, parse_raw_nachrichtenstrukturze
 @click.option(
     "-mf",
     "--message-format",
-    type=click.Choice(list(map(lambda x: x.name, EdifactFormat)), case_sensitive=False),
+    type=click.Choice(list(map(lambda x: x, EdifactFormat)), case_sensitive=False),
     # Taken from https://github.com/pallets/click/issues/605#issuecomment-889462570
-    default=list(map(lambda x: x.name, EdifactFormat)),
     help="Defines the set of message formats to be parsed. If no format is specified, all formats are parsed.",
     multiple=True,
+    callback=check_message_format,
 )
 @click.option(
     "-fv",
@@ -62,29 +72,30 @@ def main(
     output_dir: Path,
     format_version: EdifactFormatVersion | str,
     message_format: list[EdifactFormat],
-    file_type: list[str],
+    file_type: tuple[str],
 ) -> None:
     """
     Main function. Uses CLI input.
     """
-    if message_format is None:
-        message = "❌ No message format specified. Please specify the message format."
-        click.secho(message, fg="yellow")
-        logger.error(message)
-        raise click.Abort()
-    if file_type is None:
-        message = "❌ No output format specified. Please specify the output format."
-        click.secho(message, fg="yellow")
-        logger.error(message)
-        raise click.Abort()
     if isinstance(format_version, str):
         format_version = EdifactFormatVersion(format_version)
-
+    if int(str(format_version)[-4:]) >= 2310 and EdifactFormat.UTILMD in message_format:
+        logger.warning(
+            "💡 UTILMD is not available for format versions 2310 and above. Parse UTILMDS and UTILMDG instead."
+        )
+        message_format.remove(EdifactFormat.UTILMD)
+        message_format.extend([EdifactFormat.UTILMDG, EdifactFormat.UTILMDS])
     dict_files = find_file_to_format(message_format, edi_energy_mirror_path, format_version)
     for m_format, file in dict_files.items():
         output_dir_for_format = output_dir / format_version / m_format
         (raw_lines, _) = parse_raw_nachrichtenstrukturzeile(file)
         nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.create_nachrichtenstruktur_tabelle(raw_lines)
+        nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
+            nachrichtenstrukturtabelle
+        )
+        reduced_nested_nachrichtenstruktur = ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(
+            nested_nachrichtenstruktur
+        )
         if "csv" in file_type:
             logger.info(
                 "💾 Saving flat Nachrichtenstruktur table for {} and {} as csv to {}.",
@@ -94,9 +105,6 @@ def main(
             )
             nachrichtenstrukturtabelle.to_csv(m_format, output_dir_for_format)
         if "nested_json" in file_type:
-            nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
-                nachrichtenstrukturtabelle
-            )
             # Save the nested Nachrichtenstruktur as json
             logger.info(
                 "💾 Saving nested Nachrichtenstruktur for {} and {} as json to {}.",
@@ -107,12 +115,6 @@ def main(
             nested_nachrichtenstruktur.to_json(m_format, output_dir_for_format)
 
         if "reduced_nested_json" in file_type:
-            nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
-                nachrichtenstrukturtabelle
-            )
-            reduced_nested_nachrichtenstruktur = (
-                ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(nested_nachrichtenstruktur)
-            )
             # Save the reduced nested Nachrichtenstruktur as json
             logger.info(
                 "💾 Saving reduced nested Nachrichtenstruktur for {} and {} as json to {}.",
@@ -121,13 +123,17 @@ def main(
                 output_dir_for_format,
             )
             reduced_nested_nachrichtenstruktur.to_json(m_format, output_dir_for_format)
+        if "sgh_json" in file_type:
+            sgh = SegmentGroupHierarchy.create_segmentgroup_hierarchy(reduced_nested_nachrichtenstruktur)
+            # Save the reduced nested Nachrichtenstruktur as json
+            logger.info(
+                "💾 Saving reduced nested Nachrichtenstruktur for {} and {} as json to {}.",
+                m_format,
+                format_version,
+                output_dir_for_format,
+            )
+            sgh.to_json(m_format, output_dir_for_format)
         if "tree" in file_type:
-            nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
-                nachrichtenstrukturtabelle
-            )
-            reduced_nested_nachrichtenstruktur = (
-                ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(nested_nachrichtenstruktur)
-            )
             # Save the reduced nested Nachrichtenstruktur as json
             logger.info(
                 "💾 Saving tree for {} and {} as json to {}.",
@@ -135,7 +141,8 @@ def main(
                 format_version,
                 output_dir_for_format,
             )
-            reduced_nested_nachrichtenstruktur.to_tree(m_format, output_dir_for_format)
+            document_version = _extract_document_version(file)
+            reduced_nested_nachrichtenstruktur.output_tree(m_format, output_dir_for_format, document_version)
 
 
 if __name__ == "__main__":

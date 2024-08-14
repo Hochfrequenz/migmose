@@ -7,8 +7,8 @@ from pathlib import Path
 from types import NoneType
 from typing import Any, Optional, Tuple
 
+from efoli import EdifactFormat
 from loguru import logger
-from maus.edifact import EdifactFormat
 from pydantic import BaseModel, Field
 
 from migmose.mig.nachrichtenstrukturtabelle import NachrichtenstrukturTabelle

@@ -1,0 +1,22 @@
+{
+    "opening_segment": "UNH",
+    "segment_group": null,
+    "sub_hierarchy": [
+        {
+            "opening_segment": "RFF",
+            "segment_group": "SG1",
+            "sub_hierarchy": []
+        },
+        {
+            "opening_segment": "NAD",
+            "segment_group": "SG3",
+            "sub_hierarchy": [
+                {
+                    "opening_segment": "CTA",
+                    "segment_group": "SG6",
+                    "sub_hierarchy": []
+                }
+            ]
+        }
+    ]
+}

@@ -36,7 +36,7 @@ more-itertools==10.2.0
     # via jaraco-classes
 nh3==0.2.15
     # via readme-renderer
-packaging==24.0
+packaging==24.1
     # via build
 pkginfo==1.10.0
     # via twine
@@ -62,7 +62,7 @@ rich==13.7.1
     # via twine
 secretstorage==3.3.3
     # via keyring
-twine==5.1.0
+twine==5.1.1
     # via -r dev_requirements/requirements-packaging.in
 urllib3==2.2.1
     # via

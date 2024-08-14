@@ -6,15 +6,15 @@ import re
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
-from typing import Generator, Union
+from typing import DefaultDict, Generator, Union
 
 import click
 import docx
 from docx.document import Document
 from docx.oxml import CT_Tbl  # type:ignore[attr-defined]
 from docx.table import Table, _Cell
+from efoli import EdifactFormat, EdifactFormatVersion
 from loguru import logger
-from maus.edifact import EdifactFormat, EdifactFormatVersion
 
 from migmose.mig.segmentlayout import SegmentLayout, SegmentLayoutLine
 
@@ -26,20 +26,22 @@ def find_file_to_format(
     finds the file with the message type in the input directory
     """
     input_dir = edi_energy_repo / Path("edi_energy_de") / Path(format_version)
+    all_file_dict: DefaultDict[EdifactFormat, list[Path]] = defaultdict(list)
     file_dict: dict[EdifactFormat, Path] = {}
     for message_format in message_formats:
-        list_of_all_files: list[Path] = [
-            file
-            for file in input_dir.iterdir()
-            if message_format in file.name and "MIG" in file.name and file.suffix == ".docx"
-        ]
-
-        if len(list_of_all_files) == 1:
-            file_dict[message_format] = list_of_all_files[0]
-        elif len(list_of_all_files) > 1:
-            file_dict[message_format] = get_latest_file(list_of_all_files)
-        else:
-            logger.warning(f"⚠️ No file found for {message_format}.", fg="red")
+        for file in input_dir.iterdir():
+            if "MIG" not in file.name or file.suffix != ".docx":
+                continue
+            if message_format is EdifactFormat.UTILMDG and "Gas" in file.name:
+                all_file_dict[EdifactFormat.UTILMDG].append(file)
+            elif message_format is EdifactFormat.UTILMDS and "Strom" in file.name:
+                all_file_dict[EdifactFormat.UTILMDS].append(file)
+            elif message_format in file.name:
+                all_file_dict[message_format].append(file)
+        if len(all_file_dict[message_format]) == 0:
+            logger.warning(f"⚠️ No file found for {message_format}", fg="red")
+            continue
+        file_dict[message_format] = get_latest_file(all_file_dict[message_format])
     if file_dict:
         return file_dict
     logger.error("❌ No files found in the input directory.", fg="red")
@@ -73,7 +75,6 @@ def get_latest_file(file_list: list[Path]) -> Path:
     Returns:
         Path: The path of the latest file. Returns None if no valid date is found.
     """
-
     # Initialize variables to keep track of the latest file and date
     latest_file: Path
     latest_date: datetime | None = None
