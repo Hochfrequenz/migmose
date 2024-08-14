@@ -231,3 +231,19 @@ def process_segmentlayouts(segmentlayout_tables: list[list[_Cell]]) -> dict[str,
             )
         )
     return segment_layouts_dict
+
+
+def _extract_document_version(path: Path) -> str:
+    document_str = str(path)
+    pattern = (
+        r"MIG(?:Strom|Gas)?-?informatorischeLesefassung?(.*?)"
+        r"(?:_|KonsolidierteLesefassung|-AußerordentlicheVeröffentlichung)"
+    )
+    matches = re.search(pattern, document_str, re.IGNORECASE)
+    if matches:
+        document_version = matches.group(1)
+        if document_version == "":
+            logger.warning(f"❌ No document version found in {path}.", fg="red")
+        return document_version
+    logger.error(f"❌ Unexpected document name in {path}.", fg="red")
+    return ""
