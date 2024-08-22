@@ -46,9 +46,12 @@ def find_file_to_format(
     raise click.Abort()
 
 
+_date_pattern = re.compile(r"(\d{8})\.docx$")
+
+
 def _extract_date(file_path: Path) -> tuple[datetime, Path]:
     # Regex to extract the date format YYYYMMDD from the filename as a string
-    match = re.search(r"(\d{8})\.docx$", file_path.name)
+    match = _date_pattern.search(file_path.name)
     if match:
         # Return the date as a datetime object for comparison and the path for use
         return datetime.strptime(match.group(1), "%Y%m%d"), file_path
@@ -129,7 +132,7 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
     nachrichtenstruktur_header = "Status\tMaxWdh\n\tZähler\tNr\tBez\tSta\tBDEW\tSta\tBDEW\tEbene\tInhalt"
     for docx_object in docx_objects:
         for ind, line in enumerate(docx_object._cells):
-            # marks the beginning of the complete nachrichtentruktur table
+            # marks the beginning of the complete nachrichtenstruktur table
             if line.text == nachrichtenstruktur_header:
                 mig_tables.extend([row.text for row in docx_object._cells[ind + 1 :]])
                 break
@@ -139,13 +142,16 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
     return mig_tables
 
 
+_pattern = re.compile(
+    r"MIG(?:Strom|Gas)?-?informatorischeLesefassung?(.*?)"
+    r"(?:_|KonsolidierteLesefassung|-AußerordentlicheVeröffentlichung)",
+    re.IGNORECASE,
+)
+
+
 def _extract_document_version(path: Path) -> str:
     document_str = str(path)
-    pattern = (
-        r"MIG(?:Strom|Gas)?-?informatorischeLesefassung?(.*?)"
-        r"(?:_|KonsolidierteLesefassung|-AußerordentlicheVeröffentlichung)"
-    )
-    matches = re.search(pattern, document_str, re.IGNORECASE)
+    matches = _pattern.search(document_str)
     if matches:
         document_version = matches.group(1)
         if document_version == "":
