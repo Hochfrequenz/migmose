@@ -34,5 +34,5 @@ pytest-loguru==0.4.0
     # via -r dev_requirements/requirements-tests.in
 pytz==2024.1
     # via efoli
-syrupy==4.6.1
+syrupy==4.7.1
     # via -r dev_requirements/requirements-tests.in
