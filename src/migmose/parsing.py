@@ -74,15 +74,26 @@ def get_latest_file(file_list: list[Path]) -> Path:
         Path: The path of the latest file. Returns None if no valid date is found.
     """
     # Initialize variables to keep track of the latest file and date
-    latest_file: Path
-    latest_date: datetime | None = None
+    if len(file_list) == 1:
+        logger.info("Using the only file: {}", file_list[0])
+        return file_list[0]
+    try:
+        # Define the keywords to filter relevant files
+        keywords = ["konsolidiertelesefassungmitfehlerkorrekturen", "außerordentlicheveröffentlichung"]
 
-    for file_path in file_list:
-        date, path = _extract_date(file_path)
-        if latest_date is None or date > latest_date:
-            latest_file = path
-            latest_date = date
+        # Find the most recent file based on keywords and date suffixes
+        latest_file = max(
+            (path for path in file_list if any(keyword in path.name.lower() for keyword in keywords)),
+            key=lambda path: (
+                int(path.stem.split("_")[-1]),  # "gültig von" date
+                int(path.stem.split("_")[-2]),  # "gültig bis" date
+            ),
+        )
 
+    except ValueError as e:
+        logger.error("Error processing file list: {}", e)
+
+    logger.info("Using the latest file: {}", latest_file)
     # Return the path of the file with the latest date
     return latest_file
 
