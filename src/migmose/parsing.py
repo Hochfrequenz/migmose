@@ -48,9 +48,12 @@ def find_file_to_format(
     raise click.Abort()
 
 
+_date_pattern = re.compile(r"(\d{8})\.docx$")
+
+
 def _extract_date(file_path: Path) -> tuple[datetime, Path]:
     # Regex to extract the date format YYYYMMDD from the filename as a string
-    match = re.search(r"(\d{8})\.docx$", file_path.name)
+    match = _date_pattern.search(file_path.name)
     if match:
         # Return the date as a datetime object for comparison and the path for use
         return datetime.strptime(match.group(1), "%Y%m%d"), file_path
@@ -76,15 +79,26 @@ def get_latest_file(file_list: list[Path]) -> Path:
         Path: The path of the latest file. Returns None if no valid date is found.
     """
     # Initialize variables to keep track of the latest file and date
-    latest_file: Path
-    latest_date: datetime | None = None
+    if len(file_list) == 1:
+        logger.info("Using the only file: {}", file_list[0])
+        return file_list[0]
+    try:
+        # Define the keywords to filter relevant files
+        keywords = ["konsolidiertelesefassungmitfehlerkorrekturen", "außerordentlicheveröffentlichung"]
 
-    for file_path in file_list:
-        date, path = _extract_date(file_path)
-        if latest_date is None or date > latest_date:
-            latest_file = path
-            latest_date = date
+        # Find the most recent file based on keywords and date suffixes
+        latest_file = max(
+            (path for path in file_list if any(keyword in path.name.lower() for keyword in keywords)),
+            key=lambda path: (
+                int(path.stem.split("_")[-1]),  # "gültig von" date
+                int(path.stem.split("_")[-2]),  # "gültig bis" date
+            ),
+        )
 
+    except ValueError as e:
+        logger.error("Error processing file list: {}", e)
+
+    logger.info("Using the latest file: {}", latest_file)
     # Return the path of the file with the latest date
     return latest_file
 
@@ -134,7 +148,7 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> tuple[list[str], dic
     for docx_object in docx_objects:
         segmentlayout_table = []
         for ind, line in enumerate(docx_object._cells):
-            # marks the beginning of the complete nachrichtentruktur table
+            # marks the beginning of the complete nachrichtenstruktur table
             if line.text == nachrichtenstruktur_header:
                 mig_tables.extend([row.text for row in docx_object._cells[ind + 1 :]])
                 break
@@ -233,13 +247,16 @@ def process_segmentlayouts(segmentlayout_tables: list[list[_Cell]]) -> dict[str,
     return segment_layouts_dict
 
 
+_pattern = re.compile(
+    r"MIG(?:Strom|Gas)?-?informatorischeLesefassung?(.*?)"
+    r"(?:_|KonsolidierteLesefassung|-AußerordentlicheVeröffentlichung)",
+    re.IGNORECASE,
+)
+
+
 def _extract_document_version(path: Path) -> str:
     document_str = str(path)
-    pattern = (
-        r"MIG(?:Strom|Gas)?-?informatorischeLesefassung?(.*?)"
-        r"(?:_|KonsolidierteLesefassung|-AußerordentlicheVeröffentlichung)"
-    )
-    matches = re.search(pattern, document_str, re.IGNORECASE)
+    matches = _pattern.search(document_str)
     if matches:
         document_version = matches.group(1)
         if document_version == "":

@@ -84,7 +84,8 @@ def main(
             "💡 UTILMD is not available for format versions 2310 and above. Parse UTILMDS and UTILMDG instead."
         )
         message_format.remove(EdifactFormat.UTILMD)
-        message_format.extend([EdifactFormat.UTILMDG, EdifactFormat.UTILMDS])
+        message_format.extend([EdifactFormat.UTILMDG, EdifactFormat.UTILMDS, EdifactFormat.UTILMDW])
+    message_format = list(set(message_format))
     dict_files = find_file_to_format(message_format, edi_energy_mirror_path, format_version)
     for m_format, file in dict_files.items():
         output_dir_for_format = output_dir / format_version / m_format

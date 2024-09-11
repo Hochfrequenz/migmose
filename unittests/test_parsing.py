@@ -57,7 +57,7 @@ class TestParsing:
         assert (
             file_dict[EdifactFormat.IFTSTA]
             == path_to_test_FV2310
-            / "IFTSTAMIG-informatorischeLesefassung2.0emitFehlerkorrekturenStand11.03.2024_99991231_20240311.docx"
+            / "IFTSTAMIG-informatorischeLesefassung2.0e-AußerordentlicheVeröffentlichung_20250403_20240311.docx"
         )
 
     def test_parse_raw_nachrichtenstrukturzeile(self):
