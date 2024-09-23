@@ -22,7 +22,7 @@ lxml==5.3.0
     # via python-docx
 markupsafe==2.1.5
     # via jinja2
-pydantic==2.8.2
+pydantic==2.9.2
     # via migmose (pyproject.toml)
 pydantic-core==2.20.1
     # via pydantic
