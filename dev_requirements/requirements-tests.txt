@@ -16,7 +16,7 @@ loguru==0.7.2
     # via pytest-loguru
 marshmallow==3.21.3
     # via maus
-maus[tree]==0.6.0
+maus[tree]==0.6.1
     # via -r dev_requirements/requirements-tests.in
 more-itertools==10.3.0
     # via maus
