@@ -32,7 +32,7 @@ pytest==8.3.3
     #   syrupy
 pytest-loguru==0.4.0
     # via -r dev_requirements/requirements-tests.in
-pytz==2024.1
+pytz==2024.2
     # via efoli
 syrupy==4.7.1
     # via -r dev_requirements/requirements-tests.in
