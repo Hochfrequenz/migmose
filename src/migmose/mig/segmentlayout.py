@@ -1,5 +1,6 @@
 """Contains class SegmentLayout"""
 
+from collections import defaultdict
 from typing import Optional
 
 from pydantic import BaseModel
@@ -32,3 +33,5 @@ class SegmentLayout(BaseModel):
 
 class SegmentLayoutCollection(BaseModel):
     """Class to capture the complete collection of all segment layouts of a format"""
+
+    segment_layouts: defaultdict[str, list[SegmentLayout]] = defaultdict(list)

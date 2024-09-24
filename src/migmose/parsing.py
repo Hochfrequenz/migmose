@@ -16,7 +16,7 @@ from docx.table import Table, _Cell
 from efoli import EdifactFormat, EdifactFormatVersion
 from loguru import logger
 
-from migmose.mig.segmentlayout import SegmentLayout, SegmentLayoutLine
+from migmose.mig.segmentlayout import SegmentLayout, SegmentLayoutCollection, SegmentLayoutLine
 
 
 def find_file_to_format(
@@ -134,7 +134,7 @@ def _zfill_nr(row_str: str) -> str:
     return f"{left}{nr.zfill(5)}{right}"
 
 
-def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> tuple[list[str], dict[str, list[SegmentLayout]]]:
+def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> tuple[list[str], SegmentLayoutCollection]:
     """
     parses raw nachrichtenstrukturzeile from a table. returns list of raw lines
     """
@@ -180,7 +180,7 @@ def iter_visual_cells(row: Table) -> Generator[_Cell, None, None]:
 
 
 # pylint: disable=too-many-locals
-def process_segmentlayouts(segmentlayout_tables: list[list[_Cell]]) -> dict[str, list[SegmentLayout]]:
+def process_segmentlayouts(segmentlayout_tables: list[list[_Cell]]) -> SegmentLayoutCollection:
     """
     Create Segmentlayouts from list of _Cell objects
     """
@@ -244,7 +244,7 @@ def process_segmentlayouts(segmentlayout_tables: list[list[_Cell]]) -> dict[str,
                 beispiel="".join(cell.text for cell in segmentlayout_table[start_index_example:]),
             )
         )
-    return segment_layouts_dict
+    return SegmentLayoutCollection(segment_layouts=segment_layouts_dict)
 
 
 _pattern = re.compile(
