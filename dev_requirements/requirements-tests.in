@@ -1,5 +1,0 @@
-# specific requirements for the tox tests env
-pytest
-pytest_loguru # makes loguru logs accessible to pytest
-maus[tree]
-syrupy
