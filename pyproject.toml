@@ -17,10 +17,44 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 
-dependencies = ["click", "loguru", "jinja2", "pydantic", "python-docx", "efoli>=0.0.3"] # add all the dependencies here
-
+dependencies = [
+    "click",
+    "loguru",
+    "jinja2",
+    "pydantic",
+    "python-docx",
+    "efoli>=0.0.3"
+] # add all the dependencies here
 
 dynamic = ["readme", "version"]
+
+[project.optional-dependencies]
+coverage = [
+    "coverage==7.6.1"
+]
+formatting = [
+    "black==24.8.0",
+    "isort==5.13.2"
+]
+linting = [
+    "pylint==3.3.0"
+]
+spellcheck = [
+    "codespell==2.3.0"
+]
+test_packaging = [
+    "build==1.2.2",
+    "twine==5.1.1"
+]
+tests = [
+    "maus[tree]==0.6.1",
+    "pytest==8.3.3",
+    "pytest-loguru==0.4.0",
+    "syrupy==4.7.1"
+]
+type_check = [
+    "mypy==1.11.2"
+]
 
 [project.urls]
 Changelog = "https://github.com/Hochfrequenz/migmose/releases"
