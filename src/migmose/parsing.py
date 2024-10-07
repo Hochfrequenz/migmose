@@ -175,7 +175,10 @@ _pattern = re.compile(
 
 
 def _extract_document_version(path: Path | str) -> str:
-    document_str = str(path)
+    if isinstance(path, str):
+        document_str = path
+    else:
+        document_str = str(path)
     matches = _pattern.search(document_str)
     if matches:
         document_version = matches.group(1)
