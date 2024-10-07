@@ -91,20 +91,12 @@ def get_latest_file(file_list: list[Path]) -> Path:
             # Find the most recent file based on keywords and date suffixes
             latest_file = max(
                 (path for path in files_containing_keywords),
-                key=lambda path: (
-                    int(path.stem.split("_")[-1]),  # "gültig von" date
-                    int(path.stem.split("_")[-2]),  # "gültig bis" date
-                    _extract_document_version(path.stem.split("_")[-3]),  # version number
-                ),
+                key=_get_sort_key,
             )
         else:  # different versions but no kosildierte Lesefassung or außerordentliche Veröffentlichung at all
             latest_file = max(
                 (path for path in file_list),
-                key=lambda path: (
-                    int(path.stem.split("_")[-1]),  # "gültig von" date
-                    int(path.stem.split("_")[-2]),  # "gültig bis" date
-                    _extract_document_version(path.stem.split("_")[-3]),  # version number
-                ),
+                key=_get_sort_key,
             )
 
     except ValueError as e:
@@ -187,3 +179,20 @@ def _extract_document_version(path: Path | str) -> str:
         return document_version
     logger.error(f"❌ Unexpected document name in {path}.", fg="red")
     return ""
+
+
+def _get_sort_key(path: Path) -> tuple[int, int, str]:
+    """
+    Extracts the sort key from the given path.
+
+    Parameters:
+    - path (Path): The path object to extract the sort key from.
+
+    Returns:
+    - tuple: A tuple containing the "gültig von" date, "gültig bis" date, and version number.
+    """
+    parts = path.stem.split("_")
+    gueltig_von_date = int(parts[-1])
+    gueltig_bis_date = int(parts[-2])
+    version_number = _extract_document_version(parts[-3])
+    return gueltig_von_date, gueltig_bis_date, version_number
