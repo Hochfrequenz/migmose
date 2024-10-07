@@ -87,7 +87,7 @@ def get_latest_file(file_list: list[Path]) -> Path:
             path for path in file_list if any(keyword in path.name.lower() for keyword in keywords)
         ]
         # Find the most recent file based on keywords and date suffixes
-        if files_containing_keywords != []:
+        if any(files_containing_keywords):
             # Find the most recent file based on keywords and date suffixes
             latest_file = max(
                 (path for path in files_containing_keywords),
