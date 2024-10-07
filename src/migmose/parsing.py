@@ -83,15 +83,29 @@ def get_latest_file(file_list: list[Path]) -> Path:
     try:
         # Define the keywords to filter relevant files
         keywords = ["konsolidiertelesefassungmitfehlerkorrekturen", "außerordentlicheveröffentlichung"]
-
+        files_containing_keywords = [
+            path for path in file_list if any(keyword in path.name.lower() for keyword in keywords)
+        ]
         # Find the most recent file based on keywords and date suffixes
-        latest_file = max(
-            (path for path in file_list if any(keyword in path.name.lower() for keyword in keywords)),
-            key=lambda path: (
-                int(path.stem.split("_")[-1]),  # "gültig von" date
-                int(path.stem.split("_")[-2]),  # "gültig bis" date
-            ),
-        )
+        if files_containing_keywords != []:
+            # Find the most recent file based on keywords and date suffixes
+            latest_file = max(
+                (path for path in files_containing_keywords),
+                key=lambda path: (
+                    int(path.stem.split("_")[-1]),  # "gültig von" date
+                    int(path.stem.split("_")[-2]),  # "gültig bis" date
+                    _extract_document_version(path.stem.split("_")[-3]),  # version number
+                ),
+            )
+        else:  # different versions but no kosildierte Lesefassung or außerordentliche Veröffentlichung at all
+            latest_file = max(
+                (path for path in file_list),
+                key=lambda path: (
+                    int(path.stem.split("_")[-1]),  # "gültig von" date
+                    int(path.stem.split("_")[-2]),  # "gültig bis" date
+                    _extract_document_version(path.stem.split("_")[-3]),  # version number
+                ),
+            )
 
     except ValueError as e:
         logger.error("Error processing file list: {}", e)
@@ -160,7 +174,7 @@ _pattern = re.compile(
 )
 
 
-def _extract_document_version(path: Path) -> str:
+def _extract_document_version(path: Path | str) -> str:
     document_str = str(path)
     matches = _pattern.search(document_str)
     if matches:
