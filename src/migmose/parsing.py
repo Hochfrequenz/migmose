@@ -160,28 +160,29 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
 
 
 _pattern = re.compile(
-    r"MIG(?:Strom|Gas)?-?informatorischeLesefassung?(.*?)"
+    r"MIG(?:Strom|Gas)?-?informatorischeLesefassung?((\d+)\.(\d+)([a-z]?))"
     r"(?:_|KonsolidierteLesefassung|-AußerordentlicheVeröffentlichung)",
     re.IGNORECASE,
 )
 
 
-def _extract_document_version(path: Path | str) -> str:
+def _extract_document_version(path: Path | str) -> tuple[str, int | None, int | None, str]:
+    """Returns the document version, major, minor, and suffix from the given file path."""
     if isinstance(path, str):
         document_str = path
     else:
         document_str = str(path)
     matches = _pattern.search(document_str)
     if matches:
-        document_version = matches.group(1)
+        document_version, major, minor, suffix = matches.groups()
         if document_version == "":
             logger.warning(f"❌ No document version found in {path}.", fg="red")
-        return document_version
+        return document_version or "", int(major) or 0, int(minor) or 0, suffix or ""
     logger.error(f"❌ Unexpected document name in {path}.", fg="red")
-    return ""
+    return "", None, None, ""
 
 
-def _get_sort_key(path: Path) -> tuple[int, int, str]:
+def _get_sort_key(path: Path) -> tuple[int, int, int | None, int | None, str]:
     """
     Extracts the sort key from the given path.
 
@@ -194,5 +195,5 @@ def _get_sort_key(path: Path) -> tuple[int, int, str]:
     parts = path.stem.split("_")
     gueltig_von_date = int(parts[-1])
     gueltig_bis_date = int(parts[-2])
-    version_number = _extract_document_version(parts[-3])
-    return gueltig_von_date, gueltig_bis_date, version_number
+    _, major, minor, suffix = _extract_document_version(parts[-3])
+    return gueltig_von_date, gueltig_bis_date, major, minor, suffix

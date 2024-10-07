@@ -1,16 +1,41 @@
 # serializer version: 1
 # name: TestParsing.test_extract_document_version[IFTSTA]
-  ''
+  tuple(
+    '',
+    None,
+    None,
+    '',
+  )
 # ---
 # name: TestParsing.test_extract_document_version[REMADV]
-  '2.9b'
+  tuple(
+    '2.9b',
+    2,
+    9,
+    'b',
+  )
 # ---
 # name: TestParsing.test_extract_document_version[REQOTE]
-  '1.3'
+  tuple(
+    '1.3',
+    1,
+    3,
+    '',
+  )
 # ---
 # name: TestParsing.test_extract_document_version[UTILMDG]
-  'G1.0a'
+  tuple(
+    '',
+    None,
+    None,
+    '',
+  )
 # ---
 # name: TestParsing.test_extract_document_version[UTILMDS]
-  'S1.1'
+  tuple(
+    '',
+    None,
+    None,
+    '',
+  )
 # ---
