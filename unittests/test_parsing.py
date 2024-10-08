@@ -100,7 +100,7 @@ class TestParsing:
             pytest.param(
                 Path(
                     "edi_energy_de/FV2310/IFTSTAMIG-informatorischeLesefassung-AußerordentlicheVeröffentlichung_20231022_20231001.docx"
-                ),
+                ),  # will return nothing as there is no version number
                 id="IFTSTA",
             ),
             pytest.param(

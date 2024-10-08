@@ -76,10 +76,6 @@ def get_latest_file(file_list: list[Path]) -> Path:
     Returns:
         Path: The path of the latest file. Returns None if no valid date is found.
     """
-    # Initialize variables to keep track of the latest file and date
-    if len(file_list) == 1:
-        logger.info("Using the only file: {}", file_list[0])
-        return file_list[0]
     try:
         # Define the keywords to filter relevant files
         keywords = ["konsolidiertelesefassungmitfehlerkorrekturen", "außerordentlicheveröffentlichung"]
@@ -160,8 +156,9 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
 
 
 _pattern = re.compile(
-    r"MIG(?:Strom|Gas)?-?informatorischeLesefassung?(?P<version>(?P<major>\d+)\.(?P<minor>\d+)(?P<suffix>[a-z]?))"
-    r"(?:_|KonsolidierteLesefassung|-AußerordentlicheVeröffentlichung)",
+    r"MIG(?:Strom|Gas)?(?:-informatorischeLesefassung)?"
+    r"(?P<version>(?:S|G)?(?P<major>\d+)\.(?P<minor>\d+)(?P<suffix>[a-z]?))"
+    r"(?:_|KonsolidierteLesefassung|-AußerordentlicheVeröffentlichung)?",
     re.IGNORECASE,
 )
 
