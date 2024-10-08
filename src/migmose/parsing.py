@@ -156,7 +156,9 @@ def parse_raw_nachrichtenstrukturzeile(input_path: Path) -> list[str]:
 
 
 _pattern = re.compile(
-    r"MIG(?:Strom|Gas)?(?:-informatorischeLesefassung)?(?P<version>(?:S|G)?(?P<major>\d+)\.(?P<minor>\d+)(?P<suffix>[a-z]?))(?:_|KonsolidierteLesefassung|-AußerordentlicheVeröffentlichung)?",
+    r"MIG(?:Strom|Gas)?(?:-informatorischeLesefassung)?"
+    r"(?P<version>(?:S|G)?(?P<major>\d+)\.(?P<minor>\d+)(?P<suffix>[a-z]?))"
+    r"(?:_|KonsolidierteLesefassung|-AußerordentlicheVeröffentlichung)?",
     re.IGNORECASE,
 )
 
