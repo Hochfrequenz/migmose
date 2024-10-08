@@ -92,7 +92,7 @@ class TestReducedNestedNachrichtenstruktur:
         reduced_nested_nachrichtenstruktur = ReducedNestedNachrichtenstruktur.create_reduced_nested_nachrichtenstruktur(
             nested_nachrichtenstruktur
         )
-        document_version = _extract_document_version(file_path)
+        document_version, *_ = _extract_document_version(file_path)
         reduced_nested_nachrichtenstruktur.output_tree(message_format, tmp_path, document_version)
         with open(tmp_path / f"{message_format}{document_version}.tree", "r", encoding="utf-8") as actual_file:
             assert actual_file.read() == snapshot
