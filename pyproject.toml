@@ -23,7 +23,7 @@ dependencies = [
     "jinja2",
     "pydantic",
     "python-docx",
-    "efoli>=0.0.3"
+    "efoli>=1.4.0"
 ] # add all the dependencies here
 
 dynamic = ["readme", "version"]
