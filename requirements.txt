@@ -12,7 +12,7 @@ colorama==0.4.6
     # via
     #   click
     #   loguru
-efoli==1.4.0
+efoli==2.0.0
     # via migmose (pyproject.toml)
 jinja2==3.1.6
     # via migmose (pyproject.toml)
