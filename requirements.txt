@@ -26,7 +26,7 @@ pydantic==2.9.2
     # via migmose (pyproject.toml)
 pydantic-core==2.23.4
     # via pydantic
-python-docx==1.1.2
+python-docx==1.2.0
     # via migmose (pyproject.toml)
 pytz==2025.2
     # via efoli
