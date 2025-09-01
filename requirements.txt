@@ -30,7 +30,7 @@ python-docx==1.2.0
     # via migmose (pyproject.toml)
 pytz==2025.2
     # via efoli
-typing-extensions==4.14.1
+typing-extensions==4.15.0
     # via
     #   pydantic
     #   pydantic-core
