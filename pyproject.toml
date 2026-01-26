@@ -51,7 +51,7 @@ tests = [
     "maus[tree]==0.6.1",
     "pytest==9.0.2",
     "pytest-loguru==0.4.0",
-    "syrupy==5.0.0"
+    "syrupy==5.1.0"
 ]
 type_check = [
     "mypy==1.19.1"
