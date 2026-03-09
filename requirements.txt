@@ -28,7 +28,7 @@ pydantic-core==2.23.4
     # via pydantic
 python-docx==1.2.0
     # via migmose (pyproject.toml)
-pytz==2025.2
+pytz==2026.1.post1
     # via efoli
 typing-extensions==4.15.0
     # via
