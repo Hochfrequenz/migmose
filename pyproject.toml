@@ -50,7 +50,7 @@ test_packaging = [
 tests = [
     "maus[tree]==0.6.1",
     "pytest==9.0.3",
-    "pytest-loguru==0.4.0",
+    "pytest-loguru==0.4.1",
     "syrupy==5.1.0"
 ]
 type_check = [
