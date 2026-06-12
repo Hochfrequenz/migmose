@@ -16,7 +16,7 @@ class TestNestedNachrichtenstruktur:
 
     def test_create_nested_nachrichtenstruktur(self):
         file_path = path_to_test_FV2310 / "ORDCHGMIG-informatorischeLesefassung1.1_99991231_20231001.docx"
-        raw_lines = parse_raw_nachrichtenstrukturzeile(file_path)
+        raw_lines, _ = parse_raw_nachrichtenstrukturzeile(file_path)
         nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.create_nachrichtenstruktur_tabelle(raw_lines)
         nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
             nachrichtenstrukturtabelle
@@ -29,7 +29,7 @@ class TestNestedNachrichtenstruktur:
         input_file = path_to_test_FV2310 / "ORDCHGMIG-informatorischeLesefassung1.1_99991231_20231001.docx"
         message_format = EdifactFormat.ORDCHG
         output_dir = tmp_path
-        raw_lines = parse_raw_nachrichtenstrukturzeile(input_file)
+        raw_lines, _ = parse_raw_nachrichtenstrukturzeile(input_file)
         nachrichtenstrukturtabelle = NachrichtenstrukturTabelle.create_nachrichtenstruktur_tabelle(raw_lines)
         nested_nachrichtenstruktur, _ = NestedNachrichtenstruktur.create_nested_nachrichtenstruktur(
             nachrichtenstrukturtabelle
